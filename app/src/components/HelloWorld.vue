@@ -2,108 +2,23 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
+      <button @click="initPeer" :disabled="peerConnection">Create Room</button>
+      <span>
+        {{ roomData.roomCode }}
+      </span>
     </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-          >babel</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router"
-          target="_blank"
-          rel="noopener"
-          >router</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex"
-          target="_blank"
-          rel="noopener"
-          >vuex</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
-          >Forum</a
-        >
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
-          >Community Chat</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-          >Twitter</a
-        >
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
-          >vue-router</a
-        >
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          rel="noopener"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
-          >vue-loader</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-          rel="noopener"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
+    <p>
+      <input type="text" v-model="roomCode" />
+      <button @click="joinRoom" >
+        Join Room
+      </button>
+    </p>
   </div>
 </template>
 
 <script>
 import io from "socket.io-client";
+import Peer from "simple-peer";
 
 export default {
   name: "HelloWorld",
@@ -112,6 +27,82 @@ export default {
   },
   created() {
     this.socket = io("http://localhost:8989");
+  },
+  data() {
+    return {
+      peerConnection: false,
+      roomData: {},
+      roomCode: "",
+    };
+  },
+  methods: {
+    async createRoom(data) {
+      const self = this;
+      self.socket.emit("room:create", data);
+
+      return new Promise((res) => {
+        self.socket.on("room:newID", (data) => {
+          return res(data);
+        });
+      });
+    },
+    async initPeer() {
+      const self = this;
+      const peer = new Peer({ initiator: true, trickle: false });
+      self.peerConnection = true;
+
+      peer.on("error", (err) => {
+        console.log("error", err);
+      });
+
+      peer.on("signal", async (data) => {
+        console.log('hit asdasfdsa', data)
+        self.roomData = await self.createRoom({
+          signal: data,
+        });
+
+        console.log(this.roomData);
+      });
+
+      peer.on("connect", () => {
+        console.log("CONNECTED A NEW PEER????");
+        peer.send("New peer connected!");
+      });
+
+      peer.on("data", (data) => {
+        self.log.push(data.toString());
+      });
+      // return peer;
+    },
+    joinRoom() {
+      const self = this;
+      const peer = new Peer({ initiator: false, trickle: false });
+      self.peerConnection = true;
+
+      self.socket.emit("room:join", { roomCode: self.roomCode });
+
+      self.socket.on('room:signal', (signal) => {
+        peer.signal(signal)
+        console.log('we made it? ', signal)
+      })
+
+      peer.on("error", (err) => {
+        console.log("error", err);
+      });
+
+      // peer.on("signal", async (data) => {
+      // self.roomData = await self.createRoom({
+      //   signal: data,
+      // });
+
+      // console.log(this.roomData);
+      // });
+
+      peer.on("connect", () => {
+        console.log("CONNECTED A NEW PEER????");
+        peer.send("New peer connected!");
+      });
+    },
   },
 };
 </script>
