@@ -1,0 +1,2 @@
+export { sampleService } from './sample';
+
