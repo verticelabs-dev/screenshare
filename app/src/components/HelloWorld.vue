@@ -51,27 +51,38 @@ export default {
       const peer = new Peer({ initiator: true, trickle: false });
       self.peerConnection = true;
 
-      peer.on("error", (err) => {
-        console.log("error", err);
-      });
-
-      peer.on("signal", async (data) => {
-        console.log('hit asdasfdsa', data)
-        self.roomData = await self.createRoom({
-          signal: data,
-        });
-
-        console.log(this.roomData);
-      });
-
       peer.on("connect", () => {
         console.log("CONNECTED A NEW PEER????");
         peer.send("New peer connected!");
       });
 
       peer.on("data", (data) => {
-        self.log.push(data.toString());
+        console.log(data.toString())
       });
+
+      peer.on("error", (err) => {
+        console.log("error", err);
+      });
+
+      peer.on('close', (err) => {
+        console.log('CLOSE', err)
+      })
+      peer.on("signal", async (data) => {
+
+        if (data.type === "offer") {
+          console.log('hit asdasfdsa', data)
+          self.roomData = await self.createRoom({
+            signal: data,
+          });
+        }
+
+        console.log(this.roomData);
+      });
+
+      self.socket.on('room:signal', (signal) => {
+        peer.signal(signal)
+      })
+
       // return peer;
     },
     joinRoom() {
@@ -83,20 +94,28 @@ export default {
 
       self.socket.on('room:signal', (signal) => {
         peer.signal(signal)
-        console.log('we made it? ', signal)
       })
 
       peer.on("error", (err) => {
         console.log("error", err);
       });
 
-      // peer.on("signal", async (data) => {
-      // self.roomData = await self.createRoom({
-      //   signal: data,
-      // });
+      peer.on("data", (data) => {
+        console.log(data.toString())
+      });
 
-      // console.log(this.roomData);
-      // });
+      peer.on('close', (err) => {
+        console.log('CLOSE', err)
+      })
+
+      peer.on("signal", async (data) => {
+        if (data.type === "answer") {
+          self.socket.emit("room:join:answer", {
+            signal: data,
+            roomCode: self.roomCode
+          });
+        }
+      });
 
       peer.on("connect", () => {
         console.log("CONNECTED A NEW PEER????");

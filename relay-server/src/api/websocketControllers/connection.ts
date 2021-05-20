@@ -17,6 +17,12 @@ export default (socket: Socket) => {
     socket.emit('room:signal', cache[data.roomCode].signal)
   });
 
+  socket.on("room:join:answer", function(data: any) {
+    // cache[data.roomCode].ownerSocketID
+    // socket.to('/#'+cache[data.roomCode].ownerSocketID)
+    socket.broadcast.emit('room:signal', data.signal)
+  });
+
   socket.on("disconnect", (reason) => {
     console.log(reason);
   });
