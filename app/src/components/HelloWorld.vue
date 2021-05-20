@@ -103,10 +103,15 @@
 </template>
 
 <script>
+import io from "socket.io-client";
+
 export default {
   name: "HelloWorld",
   props: {
     msg: String,
+  },
+  created() {
+    this.socket = io("http://localhost:8989");
   },
 };
 </script>

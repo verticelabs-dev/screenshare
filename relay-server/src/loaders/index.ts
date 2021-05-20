@@ -1,7 +1,8 @@
 import logger from './logger'
 import express from './express'
+import socketio from './socketio'
 
-export default async ({ expressApp }) => {
+export default async ({ expressApp, httpServer }) => {
 
   // console.log('💾 TypeORM   Initialized 💾');
 
@@ -11,4 +12,6 @@ export default async ({ expressApp }) => {
   await express({ app: expressApp });
   console.log('🚀 Express   Initialized 🚀');
 
+  await socketio({ httpServer })
+  console.log('🚄 SocketIO  Initialized 🚄');
 }
