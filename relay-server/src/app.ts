@@ -1,14 +1,16 @@
 import 'reflect-metadata'; // We need this in order to use @Decorators
 import express from 'express';
 import config from './config';
+import { Server } from 'http'
 
 async function startServer() {
 
-  const app = express();
+  const expressApp = express();
+  const httpServer = new Server(expressApp);
 
-  await require('./loaders').default({ expressApp: app });
+  await require('./loaders').default({ expressApp, httpServer });
 
-  app.listen(config.port, () => {
+  httpServer.listen(config.port, () => {
 
     console.log(`
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

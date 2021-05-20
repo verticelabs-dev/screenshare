@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Relay-server dev",
+      "request": "launch",
+      "runtimeArgs": [
+        "run-script",
+        "dev:inspect"
+      ],
+      "runtimeExecutable": "npm",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node",
+      "cwd":  "${workspaceFolder}/relay-server"
+    },
+    {
+      "name": "Vue dev",
+      "request": "launch",
+      "runtimeArgs": [
+        "run-script",
+        "serve"
+      ],
+      "runtimeExecutable": "npm",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node",
+      "cwd":  "${workspaceFolder}/app"
+    },
+  ]
+}
