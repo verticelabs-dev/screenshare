@@ -15,7 +15,13 @@ export default (socket: Socket) => {
   });
 
   socket.on("room:join", function(data: any) {
+    socket.join(data.roomCode);
     socket.emit('room:signal', cache[data.roomCode].signal)
+  });
+
+  socket.on("room:stream:create", function(data: any) {
+    console.log('I GOT THE STREAM')
+    socket.to(data.roomCode).emit('room:signal', data.signal)
   });
 
   socket.on("room:join:answer", function(data: any) {
