@@ -9,9 +9,7 @@
     </p>
     <p>
       <input type="text" v-model="roomCode" />
-      <button @click="joinRoom" >
-        Join Room
-      </button>
+      <button @click="joinRoom">Join Room</button>
     </p>
   </div>
 </template>
@@ -23,7 +21,7 @@ import Peer from "simple-peer";
 export default {
   name: "HelloWorld",
   props: {
-    msg: String,
+    msg: String
   },
   created() {
     this.socket = io("http://localhost:8989");
@@ -32,7 +30,7 @@ export default {
     return {
       peerConnection: false,
       roomData: {},
-      roomCode: "",
+      roomCode: ""
     };
   },
   methods: {
@@ -40,8 +38,8 @@ export default {
       const self = this;
       self.socket.emit("room:create", data);
 
-      return new Promise((res) => {
-        self.socket.on("room:newID", (data) => {
+      return new Promise(res => {
+        self.socket.on("room:newID", data => {
           return res(data);
         });
       });
@@ -56,32 +54,31 @@ export default {
         peer.send("New peer connected!");
       });
 
-      peer.on("data", (data) => {
-        console.log(data.toString())
+      peer.on("data", data => {
+        console.log(data.toString());
       });
 
-      peer.on("error", (err) => {
+      peer.on("error", err => {
         console.log("error", err);
       });
 
-      peer.on('close', (err) => {
-        console.log('CLOSE', err)
-      })
-      peer.on("signal", async (data) => {
-
+      peer.on("close", err => {
+        console.log("CLOSE", err);
+      });
+      peer.on("signal", async data => {
         if (data.type === "offer") {
-          console.log('hit asdasfdsa', data)
+          console.log("hit asdasfdsa", data);
           self.roomData = await self.createRoom({
-            signal: data,
+            signal: data
           });
         }
 
         console.log(this.roomData);
       });
 
-      self.socket.on('room:signal', (signal) => {
-        peer.signal(signal)
-      })
+      self.socket.on("room:signal", signal => {
+        peer.signal(signal);
+      });
 
       // return peer;
     },
@@ -92,23 +89,23 @@ export default {
 
       self.socket.emit("room:join", { roomCode: self.roomCode });
 
-      self.socket.on('room:signal', (signal) => {
-        peer.signal(signal)
-      })
+      self.socket.on("room:signal", signal => {
+        peer.signal(signal);
+      });
 
-      peer.on("error", (err) => {
+      peer.on("error", err => {
         console.log("error", err);
       });
 
-      peer.on("data", (data) => {
-        console.log(data.toString())
+      peer.on("data", data => {
+        console.log(data.toString());
       });
 
-      peer.on('close', (err) => {
-        console.log('CLOSE', err)
-      })
+      peer.on("close", err => {
+        console.log("CLOSE", err);
+      });
 
-      peer.on("signal", async (data) => {
+      peer.on("signal", async data => {
         if (data.type === "answer") {
           self.socket.emit("room:join:answer", {
             signal: data,
@@ -121,8 +118,8 @@ export default {
         console.log("CONNECTED A NEW PEER????");
         peer.send("New peer connected!");
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
