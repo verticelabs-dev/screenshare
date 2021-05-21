@@ -10,7 +10,8 @@ export default (socket: Socket) => {
   socket.on("room:create", function(data: any) {
     const responseData = { roomCode: nanoid(), signal: data.signal }
     cache[responseData.roomCode] = { ownerSocketID: socket.id, connectedUsers: [], signal: data.signal }
-    socket.emit('room:newID', responseData)
+    socket.join(responseData.roomCode);
+    socket.emit('room:newID', responseData);
   });
 
   socket.on("room:join", function(data: any) {
