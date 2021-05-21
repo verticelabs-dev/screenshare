@@ -9,9 +9,7 @@
     </p>
     <p>
       <input type="text" v-model="roomCode" />
-      <button @click="joinRoom" >
-        Join Room
-      </button>
+      <button @click="joinRoom">Join Room</button>
     </p>
   </div>
 </template>
@@ -33,6 +31,7 @@ export default {
       peerConnection: false,
       roomData: {},
       roomCode: "",
+      peer: {},
     };
   },
   methods: {
@@ -49,70 +48,58 @@ export default {
     async initPeer() {
       const self = this;
       const peer = new Peer({ initiator: true, trickle: false });
+      this.peerListeners(peer);
       self.peerConnection = true;
 
-      peer.on("connect", () => {
-        console.log("CONNECTED A NEW PEER????");
-        peer.send("New peer connected!");
+      self.socket.on("room:signal", (signal) => {
+        peer.signal(signal);
       });
-
-      peer.on("data", (data) => {
-        console.log(data.toString())
-      });
-
-      peer.on("error", (err) => {
-        console.log("error", err);
-      });
-
-      peer.on('close', (err) => {
-        console.log('CLOSE', err)
-      })
-      peer.on("signal", async (data) => {
-
-        if (data.type === "offer") {
-          console.log('hit asdasfdsa', data)
-          self.roomData = await self.createRoom({
-            signal: data,
-          });
-        }
-
-        console.log(this.roomData);
-      });
-
-      self.socket.on('room:signal', (signal) => {
-        peer.signal(signal)
-      })
-
-      // return peer;
     },
     joinRoom() {
       const self = this;
       const peer = new Peer({ initiator: false, trickle: false });
+      this.peerListeners(peer);
       self.peerConnection = true;
 
       self.socket.emit("room:join", { roomCode: self.roomCode });
 
-      self.socket.on('room:signal', (signal) => {
-        peer.signal(signal)
-      })
+      self.socket.on("room:signal", (signal) => {
+        peer.signal(signal);
+      });
+    },
+    peerListeners(peer) {
+      const self = this;
+      self.peer = peer;
 
       peer.on("error", (err) => {
         console.log("error", err);
       });
 
       peer.on("data", (data) => {
-        console.log(data.toString())
+        console.log(data.toString());
       });
 
-      peer.on('close', (err) => {
-        console.log('CLOSE', err)
-      })
+      peer.on("close", (err) => {
+        console.log("CLOSE", err);
+      });
+
+      peer.on("stream", (stream) => {
+        const video = document.getElementById("video");
+
+        video.srcObject = stream;
+
+        video.play();
+      });
 
       peer.on("signal", async (data) => {
-        if (data.type === "answer") {
+        if (data.type === "offer") {
+          self.roomData = await self.createRoom({
+            signal: data,
+          });
+        } else if (data.type === "answer") {
           self.socket.emit("room:join:answer", {
             signal: data,
-            roomCode: self.roomCode
+            roomCode: self.roomCode,
           });
         }
       });
@@ -121,6 +108,9 @@ export default {
         console.log("CONNECTED A NEW PEER????");
         peer.send("New peer connected!");
       });
+    },
+    addStream(stream) {
+      this.peer.addStream(stream);
     },
   },
 };
