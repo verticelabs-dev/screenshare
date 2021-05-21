@@ -64,9 +64,9 @@ export default {
         });
       });
     },
-    async initPeer() {
+    async initPeer(stream) {
       const self = this;
-      const peer = new Peer({ initiator: true, trickle: false });
+      const peer = new Peer({ initiator: true, trickle: false, stream });
       this.peerListeners(peer);
       self.peerConnection = true;
 
@@ -130,7 +130,9 @@ export default {
       });
     },
     addStream(stream) {
-      this.peer.addStream(stream);
+      this.initPeer(stream)
+      // console.log()
+      // this.peer._pc.addStream(stream);
     }
   }
 };
