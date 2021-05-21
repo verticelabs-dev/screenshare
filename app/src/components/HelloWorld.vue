@@ -9,9 +9,7 @@
     </p>
     <p>
       <input type="text" v-model="roomCode" />
-      <button @click="joinRoom" >
-        Join Room
-      </button>
+      <button @click="joinRoom">Join Room</button>
     </p>
   </div>
 </template>
@@ -33,7 +31,7 @@ export default {
       peerConnection: false,
       roomData: {},
       roomCode: "",
-      peer: {}
+      peer: {},
     };
   },
   methods: {
@@ -53,9 +51,9 @@ export default {
       this.peerListeners(peer);
       self.peerConnection = true;
 
-      self.socket.on('room:signal', (signal) => {
-        peer.signal(signal)
-      })
+      self.socket.on("room:signal", (signal) => {
+        peer.signal(signal);
+      });
     },
     joinRoom() {
       const self = this;
@@ -65,25 +63,33 @@ export default {
 
       self.socket.emit("room:join", { roomCode: self.roomCode });
 
-      self.socket.on('room:signal', (signal) => {
-        peer.signal(signal)
-      })
+      self.socket.on("room:signal", (signal) => {
+        peer.signal(signal);
+      });
     },
     peerListeners(peer) {
       const self = this;
-      self.peer = peer
+      self.peer = peer;
 
       peer.on("error", (err) => {
         console.log("error", err);
       });
 
       peer.on("data", (data) => {
-        console.log(data.toString())
+        console.log(data.toString());
       });
 
-      peer.on('close', (err) => {
-        console.log('CLOSE', err)
-      })
+      peer.on("close", (err) => {
+        console.log("CLOSE", err);
+      });
+
+      peer.on("stream", (stream) => {
+        const video = document.getElementById("video");
+
+        video.srcObject = stream;
+
+        video.play();
+      });
 
       peer.on("signal", async (data) => {
         if (data.type === "offer") {
@@ -93,7 +99,7 @@ export default {
         } else if (data.type === "answer") {
           self.socket.emit("room:join:answer", {
             signal: data,
-            roomCode: self.roomCode
+            roomCode: self.roomCode,
           });
         }
       });
@@ -105,7 +111,7 @@ export default {
     },
     addStream(stream) {
       this.peer.addStream(stream);
-    }
+    },
   },
 };
 </script>
