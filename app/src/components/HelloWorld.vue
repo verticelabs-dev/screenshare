@@ -64,13 +64,14 @@ export default {
         });
       });
     },
-    async initPeer(stream) {
+    async initPeer() {
       const self = this;
-      const peer = new Peer({ initiator: true, trickle: false, stream });
+      const peer = new Peer({ initiator: true, trickle: false });
       this.peerListeners(peer);
       self.peerConnection = true;
 
       self.socket.on("room:signal", signal => {
+        console.log('THE FUCKIN STREAM')
         peer.signal(signal);
       });
     },
@@ -83,6 +84,7 @@ export default {
       self.socket.emit("room:join", { roomCode: self.roomCode });
 
       self.socket.on("room:signal", signal => {
+        console.log('THE FUCKIN STREAM')
         peer.signal(signal);
       });
     },
@@ -112,10 +114,12 @@ export default {
       });
 
       peer.on("signal", async data => {
-        if (data.type === "offer") {
+        if (data.type === "offer" && !self.roomData.roomCode) {
           self.roomData = await self.createRoom({
             signal: data
           });
+        } else if (data.type === "offer") {
+          self.socket.emit("room:stream:create", { roomCode: self.roomData.roomCode, signal: data });
         } else if (data.type === "answer") {
           self.socket.emit("room:join:answer", {
             signal: data,
@@ -130,9 +134,9 @@ export default {
       });
     },
     addStream(stream) {
-      this.initPeer(stream)
+      // this.initPeer(stream)
       // console.log()
-      // this.peer._pc.addStream(stream);
+      this.peer.addStream(stream);
     }
   }
 };
