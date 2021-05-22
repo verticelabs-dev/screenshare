@@ -89,6 +89,8 @@ export default {
       });
     },
     joinRoom(roomCode) {
+      this.roomCode = roomCode;
+
       const self = this;
       const peer = new Peer({ initiator: false, trickle: false });
       this.peerListeners(peer);
@@ -159,6 +161,7 @@ export default {
       });
 
       self.socket.on("room:signal", signal => {
+        console.log("got signal");
         peer.signal(signal);
       });
     },
