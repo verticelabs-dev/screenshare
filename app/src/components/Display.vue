@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="flex flex-row justify-center mt-10">
-      <RoomControl />
+      <RoomControl
+        :join-room="joinRoom"
+        :init-peer="initPeer"
+        :room-data.sync="roomData"
+        :peer-connection.sync="peerConnection"
+      />
     </div>
 
     <div class="flex flex-row justify-center mt-5">
@@ -36,7 +41,7 @@ export default {
     msg: String
   },
   created() {
-    this.socket = io("http://310d0d6b8670.ngrok.io/");
+    this.socket = io("https://734ed97643b9.ngrok.io/");
   },
   data() {
     return {
@@ -83,17 +88,19 @@ export default {
         });
       });
     },
-    joinRoom() {
+    joinRoom(roomCode) {
       const self = this;
       const peer = new Peer({ initiator: false, trickle: false });
       this.peerListeners(peer);
       self.peerConnection = true;
 
       self.roomData = {
-        roomCode: self.roomCode
+        roomCode: roomCode
       };
 
-      self.socket.emit("room:join", { roomCode: self.roomCode });
+      console.log("sending ", roomCode);
+
+      self.socket.emit("room:join", { roomCode: roomCode });
     },
     peerListeners(peer) {
       const self = this;

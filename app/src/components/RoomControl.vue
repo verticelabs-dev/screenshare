@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col align-middle" style="max-width: 900px">
+  <div class="flex flex-col align-middle" style="max-width: 1200px">
     <!-- Create Room -->
     <div class="flex flex-row">
       <button
@@ -23,7 +23,7 @@
         type="text"
         v-model="roomCode"
       />
-      <button class="btn btn-sm btn-primary" @click="joinRoom">
+      <button class="btn btn-sm btn-primary" @click="joinRoom(roomCode)">
         Join Room
       </button>
     </div>
@@ -33,12 +33,13 @@
 <script>
 export default {
   components: {},
+  props: ["joinRoom", "roomData", "peerConnection", "initPeer"],
   data() {
     return {
-      roomData: {},
       roomCode: ""
     };
-  }
+  },
+  methods: {}
 };
 </script>
 
