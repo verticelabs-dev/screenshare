@@ -28,6 +28,7 @@ import Peer from "simple-peer";
 import {
   getCaptureScreen,
   displayVideoStream,
+  getAudioInput,
 } from "../services/StreamCaptureService";
 
 export default {
@@ -48,10 +49,15 @@ export default {
   },
   methods: {
     async handleStartStreaming() {
-      const captureStream = await getCaptureScreen();
+      const captureStream = await getCaptureScreen({
+        video: true,
+        audio: true,
+      });
+      const audioStream = await getAudioInput();
 
       displayVideoStream("video1", captureStream);
 
+      this.addTrack(audioStream, captureStream);
       this.addStream(captureStream);
     },
     async createRoom(data) {
@@ -71,7 +77,11 @@ export default {
       self.peerConnection = true;
 
       self.socket.on("room:join:request", (userInfo) => {
-        self.socket.emit("room:join:request:answer", { roomCode: self.roomData.roomCode, id: userInfo.id, signal: self.roomData.signal });
+        self.socket.emit("room:join:request:answer", {
+          roomCode: self.roomData.roomCode,
+          id: userInfo.id,
+          signal: self.roomData.signal,
+        });
       });
     },
     joinRoom() {
@@ -79,6 +89,10 @@ export default {
       const peer = new Peer({ initiator: false, trickle: false });
       this.peerListeners(peer);
       self.peerConnection = true;
+
+      self.roomData = {
+        roomCode: self.roomCode,
+      }
 
       self.socket.emit("room:join", { roomCode: self.roomCode });
     },
@@ -106,6 +120,10 @@ export default {
         video.play();
       });
 
+      peer.on("track", () => {
+        // console.log("HIT HERE track");
+      });
+
       peer.on("signal", async (data) => {
         if (data.type === "offer" && !self.roomData.roomCode) {
           self.roomData = await self.createRoom({
@@ -122,6 +140,11 @@ export default {
             signal: data,
             roomCode: self.roomCode,
           });
+        } else if (data.type === "renegotiate") {
+          self.socket.emit("room:stream:create", {
+            roomCode: self.roomData.roomCode,
+            signal: data,
+          });
         }
       });
 
@@ -134,9 +157,11 @@ export default {
       });
     },
     addStream(stream) {
-      // this.initPeer(stream)
-      // console.log()
       this.peer.addStream(stream);
+    },
+    addTrack(audioStream, stream) {
+      const self = this;
+      audioStream.getTracks().forEach(track => self.peer.addTrack(track, stream));
     },
   },
 };

@@ -28,7 +28,7 @@ export default (socket: Socket) => {
   })
 
   socket.on("room:stream:create", function(data: any) {
-    console.log('I GOT THE STREAM')
+    // console.log('I GOT THE STREAM', JSON.stringify(data))
     socket.to(data.roomCode).emit('room:signal', data.signal)
   });
 
