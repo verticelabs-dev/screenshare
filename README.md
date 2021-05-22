@@ -7,3 +7,4 @@
 [Headless UI](https://headlessui.dev/vue/menu)
 [Starter Kit](https://www.creative-tim.com/learning-lab/tailwind-starter-kit/documentation/css/inputs/regular)
 [Tailwind Cheatsheet](https://tailwindcomponents.com/cheatsheet/)
+[VSCode Tailwind Intellisense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)

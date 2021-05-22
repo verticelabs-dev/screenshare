@@ -12,7 +12,9 @@
     </p>
 
     <div>
-      <button @click="handleStartStreaming">Start Streaming</button>
+      <button class="btn sm primary" @click="handleStartStreaming">
+        Start Streaming
+      </button>
     </div>
 
     <div class="video-container">

@@ -1,0 +1,12 @@
+.btn {
+  &.sm {
+    @apply font-bold text-xs;
+    @apply px-4 py-2 mr-1 mb-1;
+  }
+
+  &.primary {
+    @apply text-white
+    @apply bg-blue-600 active:bg-blue-600;
+    @apply rounded shadow hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150;
+  }
+}
