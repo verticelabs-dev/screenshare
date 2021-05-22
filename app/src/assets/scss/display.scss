@@ -1,3 +1,8 @@
+.room-code-box {
+  width: 200px;
+  @apply rounded border-2 border-gray-400 border-dashed;
+}
+
 .video-container {
   display: flex;
   flex-direction: row;
