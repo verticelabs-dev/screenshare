@@ -27,13 +27,13 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import {
   getCaptureScreen,
-  displayVideoStream
+  displayVideoStream,
 } from "../services/StreamCaptureService";
 
 export default {
   name: "HelloWorld",
   props: {
-    msg: String
+    msg: String,
   },
   created() {
     this.socket = io("http://localhost:8989");
@@ -43,7 +43,7 @@ export default {
       peerConnection: false,
       roomData: {},
       roomCode: "",
-      peer: {}
+      peer: {},
     };
   },
   methods: {
@@ -58,8 +58,8 @@ export default {
       const self = this;
       self.socket.emit("room:create", data);
 
-      return new Promise(res => {
-        self.socket.on("room:newID", data => {
+      return new Promise((res) => {
+        self.socket.on("room:newID", (data) => {
           return res(data);
         });
       });
@@ -70,9 +70,8 @@ export default {
       this.peerListeners(peer);
       self.peerConnection = true;
 
-      self.socket.on("room:signal", signal => {
-        console.log('THE FUCKIN STREAM')
-        peer.signal(signal);
+      self.socket.on("room:join:request", (userInfo) => {
+        self.socket.emit("room:join:request:answer", { roomCode: self.roomData.roomCode, id: userInfo.id, signal: self.roomData.signal });
       });
     },
     joinRoom() {
@@ -82,30 +81,24 @@ export default {
       self.peerConnection = true;
 
       self.socket.emit("room:join", { roomCode: self.roomCode });
-
-      self.socket.on("room:signal", signal => {
-        console.log('THE FUCKIN STREAM')
-        peer.signal(signal);
-      });
     },
     peerListeners(peer) {
       const self = this;
       self.peer = peer;
 
-      peer.on("error", err => {
+      peer.on("error", (err) => {
         console.log("error", err);
       });
 
-      peer.on("data", data => {
+      peer.on("data", (data) => {
         console.log(data.toString());
       });
 
-      peer.on("close", err => {
+      peer.on("close", (err) => {
         console.log("CLOSE", err);
       });
 
-      peer.on("stream", stream => {
-        console.log("we got a stream!");
+      peer.on("stream", (stream) => {
         const video = document.getElementById("video2");
 
         video.srcObject = stream;
@@ -113,32 +106,39 @@ export default {
         video.play();
       });
 
-      peer.on("signal", async data => {
+      peer.on("signal", async (data) => {
         if (data.type === "offer" && !self.roomData.roomCode) {
           self.roomData = await self.createRoom({
-            signal: data
+            signal: data,
           });
         } else if (data.type === "offer") {
-          self.socket.emit("room:stream:create", { roomCode: self.roomData.roomCode, signal: data });
+          self.roomData.signal = data;
+          self.socket.emit("room:stream:create", {
+            roomCode: self.roomData.roomCode,
+            signal: data,
+          });
         } else if (data.type === "answer") {
           self.socket.emit("room:join:answer", {
             signal: data,
-            roomCode: self.roomCode
+            roomCode: self.roomCode,
           });
         }
       });
 
       peer.on("connect", () => {
-        console.log("CONNECTED A NEW PEER????");
         peer.send("New peer connected!");
+      });
+
+      self.socket.on("room:signal", (signal) => {
+        peer.signal(signal);
       });
     },
     addStream(stream) {
       // this.initPeer(stream)
       // console.log()
       this.peer.addStream(stream);
-    }
-  }
+    },
+  },
 };
 </script>
 
