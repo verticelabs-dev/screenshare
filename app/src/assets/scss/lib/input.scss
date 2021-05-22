@@ -1,0 +1,6 @@
+.input {
+  @apply px-4 py-2 mr-1 mb-1 relative;
+  @apply placeholder-gray-500 text-gray-600;
+  @apply bg-white bg-white rounded shadow;
+  @apply text-sm border-0 outline-none focus:outline-none focus:ring;
+}

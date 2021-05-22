@@ -1,18 +1,11 @@
 <template>
   <div>
-    <p>
-      <button @click="initPeer" :disabled="peerConnection">Create Room</button>
-      <span>
-        {{ roomData.roomCode }}
-      </span>
-    </p>
-    <p>
-      <input type="text" v-model="roomCode" />
-      <button @click="joinRoom">Join Room</button>
-    </p>
+    <div class="flex flex-row justify-center mt-10">
+      <RoomControl />
+    </div>
 
-    <div>
-      <button class="btn sm primary" @click="handleStartStreaming">
+    <div class="flex flex-row justify-center mt-5">
+      <button class="btn btn-sm btn-primary" @click="handleStartStreaming">
         Start Streaming
       </button>
     </div>
@@ -25,6 +18,8 @@
 </template>
 
 <script>
+import RoomControl from "./RoomControl";
+
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import {
@@ -34,7 +29,9 @@ import {
 } from "../services/StreamCaptureService";
 
 export default {
-  name: "HelloWorld",
+  components: {
+    RoomControl
+  },
   props: {
     msg: String
   },
