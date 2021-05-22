@@ -1,18 +1,18 @@
 <template>
   <div>
-    <p>
-      <button @click="initPeer" :disabled="peerConnection">Create Room</button>
-      <span>
-        {{ roomData.roomCode }}
-      </span>
-    </p>
-    <p>
-      <input type="text" v-model="roomCode" />
-      <button @click="joinRoom">Join Room</button>
-    </p>
+    <div class="flex flex-row justify-center mt-10">
+      <RoomControl
+        :join-room="joinRoom"
+        :init-peer="initPeer"
+        :room-data.sync="roomData"
+        :peer-connection.sync="peerConnection"
+      />
+    </div>
 
-    <div>
-      <button @click="handleStartStreaming">Start Streaming</button>
+    <div class="flex flex-row justify-center mt-5">
+      <button class="btn btn-sm btn-primary" @click="handleStartStreaming">
+        Start Streaming
+      </button>
     </div>
 
     <div class="video-container">
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import RoomControl from "./RoomControl";
+
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import {
@@ -32,12 +34,14 @@ import {
 } from "../services/StreamCaptureService";
 
 export default {
-  name: "HelloWorld",
+  components: {
+    RoomControl
+  },
   props: {
     msg: String
   },
   created() {
-    this.socket = io("http://310d0d6b8670.ngrok.io/");
+    this.socket = io("https://734ed97643b9.ngrok.io/");
   },
   data() {
     return {
@@ -84,17 +88,21 @@ export default {
         });
       });
     },
-    joinRoom() {
+    joinRoom(roomCode) {
+      this.roomCode = roomCode;
+
       const self = this;
       const peer = new Peer({ initiator: false, trickle: false });
       this.peerListeners(peer);
       self.peerConnection = true;
 
       self.roomData = {
-        roomCode: self.roomCode
+        roomCode: roomCode
       };
 
-      self.socket.emit("room:join", { roomCode: self.roomCode });
+      console.log("sending ", roomCode);
+
+      self.socket.emit("room:join", { roomCode: roomCode });
     },
     peerListeners(peer) {
       const self = this;
@@ -153,6 +161,7 @@ export default {
       });
 
       self.socket.on("room:signal", signal => {
+        console.log("got signal");
         peer.signal(signal);
       });
     },
@@ -170,16 +179,4 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-.video-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  height: 700px;
-
-  video {
-    width: 100%;
-    height: 100%;
-  }
-}
-</style>
+<style scoped lang="scss"></style>
