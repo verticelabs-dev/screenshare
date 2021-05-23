@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Display from "../components/Display";
+import Display from "../views/Display";
 
 Vue.use(VueRouter);
 
