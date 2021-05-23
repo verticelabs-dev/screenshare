@@ -168,16 +168,14 @@ export default {
       });
 
       self.socket.on("room:signal", (signal) => {
-
-
         peer.signal(signal);
-        if (signal.type === "renegotiate") self.renegotiate = true;
-        if (signal.type === "answer" && self.renegotiate) {
-          self.renegotiate = false;
-          peer.streams.forEach((stream) => {
-            self.addTrack(stream);
-          });
-        }
+        // if (signal.type === "renegotiate") self.renegotiate = true;
+        // if (signal.type === "answer" && self.renegotiate) {
+        //   self.renegotiate = false;
+        //   peer.streams.forEach((stream) => {
+        //     self.addTrack(stream);
+        //   });
+        // }
       });
     },
     addStream(stream) {
