@@ -28,6 +28,7 @@ export default {
    */
   api: {
     prefix: '/',
+    jwtSecret: String(process.env.JWT_SECRET)
   },
 
   db: {

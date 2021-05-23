@@ -3,7 +3,7 @@
     <div class="flex flex-row justify-center mt-10">
       <RoomControl
         :join-room="joinRoom"
-        :init-peer="initPeer"
+        :create-room="createRoom"
         :room-data.sync="roomData"
         :peer-connection.sync="peerConnection"
       />
@@ -24,103 +24,105 @@
 
 <script>
 import RoomControl from "./RoomControl";
-
-import io from "socket.io-client";
-import Peer from "simple-peer";
 import {
   getCaptureScreen,
   displayVideoStream,
-  getAudioInput
+  getAudioInput,
 } from "../services/StreamCaptureService";
+
+import io from "socket.io-client";
+import Peer from "simple-peer";
+// import jwt_decode from "jwt-decode";
 
 export default {
   components: {
-    RoomControl
+    RoomControl,
   },
   props: {
-    msg: String
+    msg: String,
   },
   created() {
-    this.socket = io("https://734ed97643b9.ngrok.io/");
+    this.socket = io("localhost:8989");
+    this.socket.on("error", (err) => {
+      console.error(err);
+    });
   },
   data() {
     return {
       peerConnection: false,
       roomData: {},
       roomCode: "",
-      peer: {}
+      peer: {},
+      joinRequest: false,
+      renegotiate: false,
+      audioStream: undefined,
     };
   },
   methods: {
     async handleStartStreaming() {
       const captureStream = await getCaptureScreen({
         video: true,
-        audio: true
+        audio: true,
       });
-      const audioStream = await getAudioInput();
 
       displayVideoStream("video1", captureStream);
 
-      this.addTrack(audioStream, captureStream);
+      // this.addTrack(audioStream, captureStream);
       this.addStream(captureStream);
     },
-    async createRoom(data) {
+    async createRoom() {
       const self = this;
-      self.socket.emit("room:create", data);
+      self.socket.emit("room:create", {}); //- could pass auth here
 
-      return new Promise(res => {
-        self.socket.on("room:newID", data => {
-          return res(data);
-        });
+      self.socket.on("room:join:request", (userInfo) => {
+        self.joinRequest = true;
+        // console.log(jwt_decode(userInfo)); - we can view the data but not edit it  - this way we can verify the user is valid on our server (uncomment import to use)
+        self.initPeer(true, userInfo);
+      });
+
+      self.socket.on("room:newID", (data) => {
+        self.roomData = {
+          roomCode: data.roomCode,
+        };
       });
     },
-    async initPeer() {
+    async initPeer(initiator = true, userInfo = {}) {
       const self = this;
-      const peer = new Peer({ initiator: true, trickle: false });
-      this.peerListeners(peer);
+      const audioStream = self.audioStream || (await getAudioInput());
+      if (!self.audioStream) self.audioStream = audioStream;
+      const peer = new Peer({ initiator, trickle: false, stream: audioStream });
+      self.peerListeners(peer, userInfo);
       self.peerConnection = true;
-
-      self.socket.on("room:join:request", userInfo => {
-        self.socket.emit("room:join:request:answer", {
-          roomCode: self.roomData.roomCode,
-          id: userInfo.id,
-          signal: self.roomData.signal
-        });
-      });
     },
-    joinRoom(roomCode) {
-      this.roomCode = roomCode;
-
+    async joinRoom(roomCode) {
       const self = this;
-      const peer = new Peer({ initiator: false, trickle: false });
-      this.peerListeners(peer);
-      self.peerConnection = true;
-
+      self.roomCode = roomCode;
       self.roomData = {
-        roomCode: roomCode
+        roomCode: roomCode,
       };
 
-      console.log("sending ", roomCode);
+      self.initPeer(false);
 
       self.socket.emit("room:join", { roomCode: roomCode });
     },
-    peerListeners(peer) {
+    peerListeners(peer, userInfo) {
       const self = this;
       self.peer = peer;
 
-      peer.on("error", err => {
+      peer.on("error", (err) => {
         console.log("error", err);
       });
 
-      peer.on("data", data => {
+      peer.on("data", (data) => {
         console.log(data.toString());
       });
 
-      peer.on("close", err => {
+      peer.on("close", (err) => {
         console.log("CLOSE", err);
       });
 
-      peer.on("stream", stream => {
+      peer.on("stream", (stream) => {
+        console.log(stream);
         const video = document.getElementById("video2");
 
         video.srcObject = stream;
@@ -132,26 +134,31 @@ export default {
         console.log("HIT HERE track");
       });
 
-      peer.on("signal", async data => {
-        if (data.type === "offer" && !self.roomData.roomCode) {
-          self.roomData = await self.createRoom({
-            signal: data
+      peer.on("signal", async (data) => {
+        if (data.type === "offer" && self.joinRequest) {
+          console.log("HIT HERE OFFER 1");
+          self.joinRequest = false;
+          self.socket.emit("room:join:request:answer", {
+            roomCode: self.roomData.roomCode,
+            token: userInfo,
+            signal: data,
           });
         } else if (data.type === "offer") {
-          self.roomData.signal = data;
+          console.log("HIT HERE OFFER 2");
+          // self.roomData.signal = data;
           self.socket.emit("room:stream:create", {
             roomCode: self.roomData.roomCode,
-            signal: data
+            signal: data,
           });
         } else if (data.type === "answer") {
           self.socket.emit("room:join:answer", {
             signal: data,
-            roomCode: self.roomCode
+            roomCode: self.roomCode,
           });
         } else if (data.type === "renegotiate") {
           self.socket.emit("room:stream:create", {
             roomCode: self.roomData.roomCode,
-            signal: data
+            signal: data,
           });
         }
       });
@@ -160,9 +167,17 @@ export default {
         peer.send("New peer connected!");
       });
 
-      self.socket.on("room:signal", signal => {
-        console.log("got signal");
+      self.socket.on("room:signal", (signal) => {
+
+
         peer.signal(signal);
+        if (signal.type === "renegotiate") self.renegotiate = true;
+        if (signal.type === "answer" && self.renegotiate) {
+          self.renegotiate = false;
+          peer.streams.forEach((stream) => {
+            self.addTrack(stream);
+          });
+        }
       });
     },
     addStream(stream) {
@@ -172,9 +187,9 @@ export default {
       const self = this;
       audioStream
         .getTracks()
-        .forEach(track => self.peer.addTrack(track, stream));
-    }
-  }
+        .forEach((track) => self.peer.addTrack(track, stream));
+    },
+  },
 };
 </script>
 
