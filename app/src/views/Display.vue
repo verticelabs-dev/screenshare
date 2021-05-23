@@ -15,16 +15,13 @@
       </button>
     </div>
 
-    <div class="video-container">
-      <video id="video1"></video>
-      <video id="video2"></video>
-    </div>
+    <Grid />
   </div>
 </template>
 
 <script>
 import Peer from "simple-peer";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 
 import {
   getCaptureScreen,
@@ -32,17 +29,19 @@ import {
   getAudioInput
 } from "../services/StreamCaptureService";
 
+import Grid from "./Grid";
 import RoomControl from "../components/RoomControl";
 
 export default {
   components: {
+    Grid,
     RoomControl
   },
   props: {
     msg: String
   },
   created() {
-    this.socket = io("https://734ed97643b9.ngrok.io/");
+    // this.socket = io("https://734ed97643b9.ngrok.io/");
   },
   data() {
     return {
