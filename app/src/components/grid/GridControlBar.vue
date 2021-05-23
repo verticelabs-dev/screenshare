@@ -24,7 +24,7 @@
             'text-white bg-blue-600': isSelectedTab(tab.name)
           }"
         >
-          {{ tab.name }}
+          {{ capitalize(tab.name) }}
         </a>
       </li>
     </ul>
@@ -32,17 +32,25 @@
 </template>
 
 <script>
+import { capitalize } from "../../utils/string";
+
 const tabs = [
   {
-    name: "Users"
+    name: "users"
   },
   {
-    name: "Screens"
+    name: "screens"
   }
 ];
 
 export default {
-  components: {},
+  props: {
+    defaultTab: {
+      default: "users",
+      type: String,
+      required: false
+    }
+  },
   computed: {
     isSelectedTab() {
       return tabName => {
@@ -53,12 +61,17 @@ export default {
   data() {
     return {
       tabs,
-      selectedTab: "Users"
+      selectedTab: this.defaultTab
     };
   },
   methods: {
+    capitalize,
     toggleTab(tab) {
       this.selectedTab = tab.name;
+
+      console.log("emit");
+
+      this.$emit("update:selectedTab", tab.name);
     }
   }
 };

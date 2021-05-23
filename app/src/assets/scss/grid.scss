@@ -1,0 +1,13 @@
+.grid-item {
+  @apply rounded border-2 border-blue-500 border-dashed;
+}
+
+.user-grid-item {
+  height: 250px;
+  width: 250px;
+}
+
+.screen-grid-item {
+  height: 500px;
+  width: 500px;
+}
