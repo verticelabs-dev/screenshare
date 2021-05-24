@@ -1,16 +1,12 @@
 <template>
   <div class="grid grid-cols-2 gap-4">
-    <div
-      class="grid-item screen-grid-item text-center"
-      v-for="screen in screens"
-      :key="screen.id"
-    >
-      <h1>{{ screen.username }} is sharing their screen</h1>
-    </div>
+    <Card class="screen-grid-item" v-for="screen in screens" :key="screen.id" />
   </div>
 </template>
 
 <script>
+import Card from "./Card";
+
 const screens = [
   {
     id: 2,
@@ -19,7 +15,9 @@ const screens = [
 ];
 
 export default {
-  components: {},
+  components: {
+    Card
+  },
   data() {
     return {
       screens
