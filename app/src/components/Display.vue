@@ -68,7 +68,7 @@ export default {
       displayVideoStream("video1", captureStream);
 
       // this.addTrack(audioStream, captureStream);
-      this.addStream(captureStream);
+      this.addTrack(captureStream, this.audioStream);
     },
     async createRoom() {
       const self = this;
@@ -122,7 +122,6 @@ export default {
       });
 
       peer.on("stream", (stream) => {
-        console.log(stream);
         const video = document.getElementById("video2");
 
         video.srcObject = stream;
@@ -156,6 +155,11 @@ export default {
             roomCode: self.roomCode,
           });
         } else if (data.type === "renegotiate") {
+          self.socket.emit("room:stream:create", {
+            roomCode: self.roomData.roomCode,
+            signal: data,
+          });
+        } else if (data.type === "transceiverRequest") {
           self.socket.emit("room:stream:create", {
             roomCode: self.roomData.roomCode,
             signal: data,
