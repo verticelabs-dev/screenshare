@@ -63,6 +63,7 @@ export default (socket: Socket) => {
       return socket.emit('error', basicErrorMessage)
     }
 
+    socket.join(data.roomCode);
     socket.broadcast.to(data.roomCode).emit('room:signal', data.signal)
   });
 
@@ -80,7 +81,6 @@ export default (socket: Socket) => {
       return socket.emit('error', basicErrorMessage)
     }
 
-    socket.join(data.roomCode);
     socket.to(cacheData.ownerSocketID).emit('room:signal', data.signal)
   });
 };

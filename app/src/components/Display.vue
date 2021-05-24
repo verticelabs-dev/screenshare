@@ -135,31 +135,13 @@ export default {
 
       peer.on("signal", async (data) => {
         if (data.type === "offer" && self.joinRequest) {
-          console.log("HIT HERE OFFER 1");
           self.joinRequest = false;
           self.socket.emit("room:join:request:answer", {
             roomCode: self.roomData.roomCode,
             token: userInfo,
             signal: data,
           });
-        } else if (data.type === "offer") {
-          console.log("HIT HERE OFFER 2");
-          // self.roomData.signal = data;
-          self.socket.emit("room:stream:create", {
-            roomCode: self.roomData.roomCode,
-            signal: data,
-          });
-        } else if (data.type === "answer") {
-          self.socket.emit("room:join:answer", {
-            signal: data,
-            roomCode: self.roomCode,
-          });
-        } else if (data.type === "renegotiate") {
-          self.socket.emit("room:stream:create", {
-            roomCode: self.roomData.roomCode,
-            signal: data,
-          });
-        } else if (data.type === "transceiverRequest") {
+        } else {
           self.socket.emit("room:stream:create", {
             roomCode: self.roomData.roomCode,
             signal: data,
