@@ -1,11 +1,9 @@
-.grid-item {
+.grid-item-border {
   @apply rounded border-2 border-blue-500 border-dashed;
 }
 
-.grid-card {
-}
-
 .user-grid-item {
+  @apply shadow rounded-lg border;
   height: 250px;
   width: 250px;
 }
@@ -13,4 +11,9 @@
 .screen-grid-item {
   height: 500px;
   width: 500px;
+}
+
+.screen-grid-item-lg {
+  height: 950px;
+  width: 950px;
 }
