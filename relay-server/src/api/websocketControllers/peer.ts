@@ -8,6 +8,9 @@ const basicErrorMessage = "you have not been accepted to the room";
 // { [roomCode]: { ownerSocketID: "", connectedUsers: []}}
 
 export default (socket: Socket) => {
+  const authToken = sign({ firstName: 'Test', id: 'test' }, config.api.jwtSecret);// - sign user data
+  socket.emit('token', authToken);
+
   // comes from room owner
   socket.on("room:create", (data: any) => {
     const responseData = { roomCode: nanoid() }
@@ -22,22 +25,22 @@ export default (socket: Socket) => {
 
     if (cacheData) {
       cacheData.connectingUsers.push(socket.id)
-      const token = sign({ firstName: 'Test', id: socket.id }, config.api.jwtSecret);// - sign user data
-      socket.to(cacheData.ownerSocketID).emit('room:join:request', token)
+      // const token = sign({ firstName: 'Test', id: socket.id }, config.api.jwtSecret);// - sign user data
+      socket.to(cacheData.ownerSocketID).emit('room:join:request', {id: socket.id})
     }
   });
 
-  // comes from room owner
+  // comes from room owner - sends offer signal
   socket.on("room:join:request:answer", (data: any) => {
     const cacheData = cache[data.roomCode]
-    const token: any = verify(data.token, config.api.jwtSecret)
+    // const token: any = verify(data.token, config.api.jwtSecret)
 
-    if (!cacheData || !token || typeof token === "string" || !token.id) {
+    if (!cacheData ) {
       return socket.emit('error', basicErrorMessage)
     }
 
     const allowedToAccept = cacheData.ownerSocketID === socket.id
-    const connectTrue = cacheData.connectingUsers.find(d => d === token.id)
+    const connectTrue = cacheData.connectingUsers.find(d => d === data.token.id)
 
     if (!connectTrue || !allowedToAccept) {
       return socket.emit('error', basicErrorMessage)
@@ -45,7 +48,7 @@ export default (socket: Socket) => {
 
     cacheData.connectingUsers = cacheData.connectingUsers.filter(d => d !== connectTrue)
     cacheData.connectedUsers.push(connectTrue)
-    socket.to(connectTrue).emit('room:signal', data.signal)
+    socket.to(connectTrue).emit('room:join:request:answer', {id: socket.id, signal: data.signal})
   })
 
   // comes from anyone
@@ -63,8 +66,13 @@ export default (socket: Socket) => {
       return socket.emit('error', basicErrorMessage)
     }
 
+    const sendTo = cacheData.connectedUsers.find(d => d === data.token.id)
+
+    // const token: any = verify(data.token, config.api.jwtSecret)
+
     socket.join(data.roomCode);
-    socket.broadcast.to(data.roomCode).emit('room:signal', data.signal)
+
+    socket.broadcast.to(sendTo).emit('room:signal', {signal: data.signal, id: socket.id})
   });
 
   // comes from another peer

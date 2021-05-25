@@ -42,9 +42,23 @@ export default {
     msg: String,
   },
   created() {
+    const self = this;
     this.socket = io("localhost:8989");
+
+    this.socket.on('token', token => {
+      this.token = token;
+    });
+
     this.socket.on("error", (err) => {
       console.error(err);
+    });
+
+    this.socket.on("room:signal", (signalData) => {
+      self.peers.forEach(peer => {
+        if (signalData.id === peer._peerID) {
+          peer.signal(signalData.signal);
+        }
+      })
     });
   },
   data() {
@@ -52,10 +66,11 @@ export default {
       peerConnection: false,
       roomData: {},
       roomCode: "",
-      peer: {},
+      peers: [],
       joinRequest: false,
       renegotiate: false,
       audioStream: undefined,
+      token: ''
     };
   },
   methods: {
@@ -91,6 +106,8 @@ export default {
       const audioStream = self.audioStream || (await getAudioInput());
       if (!self.audioStream) self.audioStream = audioStream;
       const peer = new Peer({ initiator, trickle: false, stream: audioStream });
+      peer._peerID = userInfo.id;
+      if (userInfo.signal) peer.signal(userInfo.signal)
       self.peerListeners(peer, userInfo);
       self.peerConnection = true;
     },
@@ -101,13 +118,17 @@ export default {
         roomCode: roomCode,
       };
 
-      self.initPeer(false);
+      // self.initPeer(false);
 
       self.socket.emit("room:join", { roomCode: roomCode });
+      self.socket.on("room:join:request:answer", (userInfo) => {
+        self.initPeer(false, userInfo);
+      });
+
     },
     peerListeners(peer, userInfo) {
       const self = this;
-      self.peer = peer;
+      self.peers.push(peer);
 
       peer.on("error", (err) => {
         console.log("error", err);
@@ -118,6 +139,7 @@ export default {
       });
 
       peer.on("close", (err) => {
+        self.peers = self.peers.filter((p) => p._id === peer._id);
         console.log("CLOSE", err);
       });
 
@@ -142,9 +164,11 @@ export default {
             signal: data,
           });
         } else {
+          debugger
           self.socket.emit("room:stream:create", {
             roomCode: self.roomData.roomCode,
             signal: data,
+            token: {id: peer._peerID}
           });
         }
       });
@@ -152,26 +176,18 @@ export default {
       peer.on("connect", () => {
         peer.send("New peer connected!");
       });
-
-      self.socket.on("room:signal", (signal) => {
-        peer.signal(signal);
-        // if (signal.type === "renegotiate") self.renegotiate = true;
-        // if (signal.type === "answer" && self.renegotiate) {
-        //   self.renegotiate = false;
-        //   peer.streams.forEach((stream) => {
-        //     self.addTrack(stream);
-        //   });
-        // }
-      });
     },
     addStream(stream) {
-      this.peer.addStream(stream);
+      this.peers.forEach((peer) => {
+        peer.addStream(stream);
+      });
     },
     addTrack(audioStream, stream) {
-      const self = this;
-      audioStream
-        .getTracks()
-        .forEach((track) => self.peer.addTrack(track, stream));
+      this.peers.forEach((peer) => {
+        audioStream
+          .getTracks()
+          .forEach((track) => peer.addTrack(track, stream));
+      });
     },
   },
 };
