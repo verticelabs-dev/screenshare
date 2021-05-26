@@ -1,6 +1,6 @@
 <template>
   <div class="grid-control-bar flex flex-col">
-    <button class="btn btn-sm btn-primary" @click="handleStartStreaming">
+    <button class="btn btn-sm btn-primary">
       Start Streaming
     </button>
   </div>

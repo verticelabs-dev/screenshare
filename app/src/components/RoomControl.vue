@@ -14,6 +14,7 @@
           >Code: {{ roomData.roomCode }}</span
         >
       </div>
+
     </div>
     <!-- Join Room -->
     <div class="mt-4">
