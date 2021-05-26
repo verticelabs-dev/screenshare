@@ -45,7 +45,7 @@ export default {
     const self = this;
     this.socket = io("localhost:8989");
 
-    this.socket.on('token', token => {
+    this.socket.on("token", (token) => {
       this.token = token;
     });
 
@@ -53,12 +53,15 @@ export default {
       console.error(err);
     });
 
+    // A peer is sending a singal ( We may or may not know about them already )
     this.socket.on("room:signal", (signalData) => {
-      self.peers.forEach(peer => {
-        if (signalData.id === peer._peerID) {
-          peer.signal(signalData.signal);
-        }
-      })
+      const matchingPeer = self.peers.find(d => d._peerID === signalData.id)
+
+      if (matchingPeer) {
+        matchingPeer.signal(signalData.signal);
+      } else {
+        self.initPeer(false, {id: signalData.id, signal: signalData.signal})
+      }
     });
   },
   data() {
@@ -70,7 +73,7 @@ export default {
       joinRequest: false,
       renegotiate: false,
       audioStream: undefined,
-      token: ''
+      token: "",
     };
   },
   methods: {
@@ -107,7 +110,7 @@ export default {
       if (!self.audioStream) self.audioStream = audioStream;
       const peer = new Peer({ initiator, trickle: false, stream: audioStream });
       peer._peerID = userInfo.id;
-      if (userInfo.signal) peer.signal(userInfo.signal)
+      if (userInfo.signal) peer.signal(userInfo.signal);
       self.peerListeners(peer, userInfo);
       self.peerConnection = true;
     },
@@ -121,10 +124,14 @@ export default {
       // self.initPeer(false);
 
       self.socket.emit("room:join", { roomCode: roomCode });
-      self.socket.on("room:join:request:answer", (userInfo) => {
-        self.initPeer(false, userInfo);
-      });
 
+      // triggers when initially joining a room
+      self.socket.on("room:join:request:answer", (roomInfo) => {
+        self.initPeer(false, roomInfo); //-room owner
+        roomInfo.connectedUsers.forEach(d => {
+          self.initPeer(true, {id: d}); // any connected users
+        })
+      });
     },
     peerListeners(peer, userInfo) {
       const self = this;
@@ -164,11 +171,11 @@ export default {
             signal: data,
           });
         } else {
-          debugger
+          if (data.type === "offer") debugger;
           self.socket.emit("room:stream:create", {
             roomCode: self.roomData.roomCode,
             signal: data,
-            token: {id: peer._peerID}
+            token: { id: peer._peerID },
           });
         }
       });

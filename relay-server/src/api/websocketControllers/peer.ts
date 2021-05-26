@@ -48,7 +48,10 @@ export default (socket: Socket) => {
 
     cacheData.connectingUsers = cacheData.connectingUsers.filter(d => d !== connectTrue)
     cacheData.connectedUsers.push(connectTrue)
-    socket.to(connectTrue).emit('room:join:request:answer', {id: socket.id, signal: data.signal})
+
+    // filter out own socket.id and the room owners id
+    const connectedUsers = cacheData.connectedUsers.filter(d => d !== socket.id && d !== connectTrue)
+    socket.to(connectTrue).emit('room:join:request:answer', {id: socket.id, signal: data.signal, connectedUsers})
   })
 
   // comes from anyone
