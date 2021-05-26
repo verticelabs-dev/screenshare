@@ -1,8 +1,11 @@
 <template>
   <div class="transition ease-in-out duration-300">
     <!-- Grid View -->
-
-    <div class="grid grid-cols-2 gap-4" v-if="!activeScreenId">
+    <div
+      class="grid grid-flow-row auto-rows-max md:auto-rows-min"
+      v-if="!activeScreenId"
+    >
+      <GridControlBar />
       <Card
         :hide-close="true"
         @expanded="cardExpand"
@@ -14,19 +17,32 @@
     </div>
 
     <!-- Expanded View -->
-    <div class="flex" v-if="activeScreenId">
+    <div class="flex flex-row" v-if="activeScreenId">
       <Card
         :hide-expand="true"
         @closed="cardClose"
         class="screen-grid-item-lg"
         :id="expandedScreen.id"
       />
+
+      <!-- Side Menu -->
+      <div class="flex flex-col pl-6">
+        <Card
+          :hide-close="true"
+          @expanded="cardExpand"
+          class="screen-grid-item mb-2"
+          v-for="screen in screens"
+          :key="screen.id"
+          :id="screen.id"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Card from "./Card";
+import GridControlBar from "./GridControlBar";
 
 const screens = [
   {
@@ -41,7 +57,8 @@ const screens = [
 
 export default {
   components: {
-    Card
+    Card,
+    GridControlBar
   },
   computed: {
     expandedScreen() {

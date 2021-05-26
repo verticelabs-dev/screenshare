@@ -5,7 +5,7 @@
 
       <!-- Top Right Control Buttons -->
       <div>
-        <!-- C;pse Button -->
+        <!-- Close Button -->
         <div
           v-if="!hideClose"
           @click="$emit('closed', id)"
