@@ -13,7 +13,11 @@
         <span class="text-center align-middle pt-1"
           >Code: {{ roomData.roomCode }}</span
         >
+        <input type="hidden" id="roomCode" :value="roomData.roomCode">
       </div>
+      <button class="btn btn-sm btn-primary ml-1" @click="copyRoomCode" :disabled="!roomData.roomCode">
+        Copy
+      </button>
 
     </div>
     <!-- Join Room -->
@@ -37,10 +41,27 @@ export default {
   props: ["joinRoom", "roomData", "peerConnection", "createRoom"],
   data() {
     return {
-      roomCode: ""
+      roomCode: "",
     };
   },
-  methods: {}
+  methods: {
+    copyRoomCode() {
+      let copyRoomCode = document.querySelector("#roomCode");
+      copyRoomCode.setAttribute('type', 'text')
+      copyRoomCode.select();
+
+      try {
+        document.execCommand("copy");
+        console.log('Copied room code')
+
+      } catch (err) {
+        console.error('Failed to copy room code')
+      }
+
+      copyRoomCode.setAttribute('type', 'hidden')
+      window.getSelection().removeAllRanges();
+    },
+  },
 };
 </script>
 
