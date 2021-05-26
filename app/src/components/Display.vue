@@ -171,7 +171,6 @@ export default {
             signal: data,
           });
         } else {
-          if (data.type === "offer") debugger;
           self.socket.emit("room:stream:create", {
             roomCode: self.roomData.roomCode,
             signal: data,

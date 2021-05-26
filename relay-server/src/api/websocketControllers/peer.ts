@@ -56,7 +56,7 @@ export default (socket: Socket) => {
 
   // comes from anyone
   socket.on("room:stream:create", function(data: any) {
-    console.log('GOT STREAM', data)
+    // console.log('GOT STREAM', data)
     const cacheData = cache[data.roomCode];
 
     if (!cacheData) {
