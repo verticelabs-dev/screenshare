@@ -4,8 +4,8 @@
     <div class="flex flex-row">
       <button
         class="btn btn-sm btn-primary pr-4"
-        @click="initPeer"
-        :disabled="peerConnection"
+        @click="createRoom"
+        :disabled="peerConnection || roomData.roomCode"
       >
         Create Room
       </button>
@@ -23,7 +23,7 @@
         type="text"
         v-model="roomCode"
       />
-      <button class="btn btn-sm btn-primary" @click="joinRoom(roomCode)">
+      <button class="btn btn-sm btn-primary" @click="joinRoom(roomCode)" :disabled="peerConnection || roomData.roomCode">
         Join Room
       </button>
     </div>
@@ -33,7 +33,7 @@
 <script>
 export default {
   components: {},
-  props: ["joinRoom", "roomData", "peerConnection", "initPeer"],
+  props: ["joinRoom", "roomData", "peerConnection", "createRoom"],
   data() {
     return {
       roomCode: ""

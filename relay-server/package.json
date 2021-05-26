@@ -12,6 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.8",
+    "@types/jsonwebtoken": "^8.5.1",
     "@types/node": "^14.11.8",
     "@types/pino": "^6.3.2",
     "@types/pino-http": "^5.0.5",
@@ -27,6 +28,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^4.1.1",
+    "jsonwebtoken": "^8.5.1",
     "nanoid": "^3.1.23",
     "pino-http": "^5.3.0",
     "pino-pretty": "^4.3.0",
