@@ -2,7 +2,7 @@
   <div>
     <!-- Grid Display -->
     <div class="flex flex-row justify-center">
-      <ScreenGrid :peers="peers" />
+      <ScreenGrid />
     </div>
   </div>
 </template>
@@ -11,7 +11,7 @@
 import ScreenGrid from "../components/grid/ScreenGrid";
 
 export default {
-  props: ['peers'],
+  props: [],
   components: {
     ScreenGrid
   }

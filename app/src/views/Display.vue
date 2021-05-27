@@ -32,9 +32,7 @@ export default {
     Grid,
     RoomControl,
   },
-  props: {
-    msg: String,
-  },
+  props: {},
   created() {
     const self = this;
     const socket = self.$socket;
@@ -64,7 +62,6 @@ export default {
   },
   data() {
     return {
-      audioStream: undefined,
       token: "",
     };
   },
@@ -78,12 +75,7 @@ export default {
         audio: true,
       });
 
-      // displayVideoStream("video1", captureStream);
-
-      this.addStream(captureStream)
-
-      // this.addTrack(audioStream, captureStream);
-      // this.addTrack(captureStream, this.audioStream);
+      this.addStream(captureStream);
     },
     addStream(stream) {
       this.peers.forEach((peer) => {
