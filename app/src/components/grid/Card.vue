@@ -28,55 +28,51 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+// import { mapState } from "vuex";
 
 export default {
   props: ["id", "peer", "hideClose", "hideExpand"],
   components: {},
-  watch: {
-    streamUpdates() {
-        const matchingPeerStream = this.streams[this.peer._peerID];
-        if(matchingPeerStream) {
-          console.log(this.peer._peerID)
-
-          const video = document.getElementById(this.peer._peerID);
-          if(video) {
-            video.srcObject = matchingPeerStream;
-            video.play();
-          }
-        }
-    }
-  },
-  computed: {
-    ...mapState(['streams', 'streamUpdates']),
-    getPeerStreams() {
-      return this.peer.streams
-    }
-  },
+  watch: {},
+  computed: {},
   mounted() {
-    const streams = this.peer.streams
+    const self = this;
+    const stream = self.peer.streams[0];
 
-    if(streams) {
-      this.renderStream(streams[0])
+    if (self.peer._peerID !== "You") {
+      self.peer.on("stream", (stream) => {
+        console.log(1)
+        self.renderStream(stream);
+      });
+
+      self.peer.on("track", (track) => {
+        if (track.kind === "video" && stream) {
+          console.log(2)
+          self.renderStream(stream);
+        }
+      });
+    }
+
+    if (stream) {
+      // self.renderStream(stream);
     }
   },
   data() {
     return {
-      renderingStream: false
+      renderingStream: false,
     };
   },
   methods: {
     renderStream(stream) {
-      this.renderStream = true
       const video = document.getElementById(this.peer._peerID);
-      if(video && stream) {
+      if (video && stream) {
         video.srcObject = stream;
         video.play();
-      }else{
-        console.log('Tried rendering stream', this.peer)
+      } else {
+        console.log("Tried rendering stream", video , stream, this.peer);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

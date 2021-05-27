@@ -1,13 +1,7 @@
 <template>
   <div>
     <div class="flex flex-row justify-center mt-10">
-      <RoomControl
-        :join-room="joinRoom"
-        :init-peer="initPeer"
-        :create-room="createRoom"
-        :room-data.sync="roomData"
-        :peer-connection.sync="peerConnection"
-      />
+      <RoomControl />
     </div>
 
     <div class="flex flex-row justify-center mt-5">
@@ -18,19 +12,17 @@
 
     <!-- Render out the Grid -->
     <template v-if="peers">
-      <Grid :peers="peers" />
+      <Grid />
     </template>
   </div>
 </template>
 
 <script>
-import Peer from "simple-peer";
-import io from "socket.io-client";
+// import Peer from "simple-peer";
+// import io from "socket.io-client";
+import { mapState } from "vuex";
 
-import {
-  getCaptureScreen,
-  getAudioInput,
-} from "../services/StreamCaptureService";
+import { getCaptureScreen } from "../services/StreamCaptureService";
 
 import Grid from "./Grid";
 import RoomControl from "../components/RoomControl";
@@ -45,18 +37,18 @@ export default {
   },
   created() {
     const self = this;
-    this.socket = io("localhost:8989");
+    const socket = self.$socket;
 
-    this.socket.on("token", (token) => {
+    socket.on("token", (token) => {
       this.token = token;
     });
 
-    this.socket.on("error", (err) => {
+    socket.on("error", (err) => {
       console.error(err);
     });
 
     // A peer is sending a singal ( We may or may not know about them already )
-    this.socket.on("room:signal", (signalData) => {
+    socket.on("room:signal", (signalData) => {
       const matchingPeer = self.peers.find((d) => d._peerID === signalData.id);
 
       if (matchingPeer) {
@@ -66,14 +58,12 @@ export default {
       }
     });
   },
+  computed: {
+    ...mapState('peer', ['peers']),
+    ...mapState(['roomCode'])
+  },
   data() {
     return {
-      peerConnection: false,
-      roomData: {},
-      roomCode: "",
-      peers: [],
-      joinRequest: false,
-      renegotiate: false,
       audioStream: undefined,
       token: "",
     };
@@ -87,102 +77,10 @@ export default {
 
       // displayVideoStream("video1", captureStream);
 
+      this.addStream(captureStream)
+
       // this.addTrack(audioStream, captureStream);
-      this.addTrack(captureStream, this.audioStream);
-    },
-    async createRoom() {
-      const self = this;
-      self.socket.emit("room:create", {}); //- could pass auth here
-
-      self.socket.on("room:join:request", (userInfo) => {
-        self.joinRequest = true;
-        // console.log(jwt_decode(userInfo)); - we can view the data but not edit it  - this way we can verify the user is valid on our server (uncomment import to use)
-        self.initPeer(true, userInfo);
-      });
-
-      self.socket.on("room:newID", (data) => {
-        self.roomData = {
-          roomCode: data.roomCode,
-        };
-      });
-    },
-    async initPeer(initiator = true, userInfo = {}) {
-      const self = this;
-      const audioStream = self.audioStream || (await getAudioInput());
-      if (!self.audioStream) self.audioStream = audioStream;
-      const peer = new Peer({ initiator, trickle: false, stream: audioStream });
-      peer._peerID = userInfo.id;
-      if (userInfo.signal) peer.signal(userInfo.signal);
-      self.peerListeners(peer, userInfo);
-      self.peerConnection = true;
-    },
-    async joinRoom(roomCode) {
-      const self = this;
-      self.roomCode = roomCode;
-      self.roomData = {
-        roomCode: roomCode,
-      };
-
-      self.socket.emit("room:join", { roomCode: roomCode });
-
-      // triggers when initially joining a room
-      self.socket.on("room:join:request:answer", (roomInfo) => {
-        self.initPeer(false, roomInfo); //-room owner
-        roomInfo.connectedUsers.forEach((d) => {
-          self.initPeer(true, { id: d }); // any connected users
-        });
-      });
-    },
-    peerListeners(peer, userInfo) {
-      const self = this;
-      self.peers.push(peer);
-
-      peer.on("error", (err) => {
-        console.log("error", err);
-      });
-
-      peer.on("data", (data) => {
-        console.log(data.toString());
-      });
-
-      peer.on("close", (err) => {
-        self.peers = self.peers.filter((p) => p._id === peer._id);
-        console.log("CLOSE", err);
-      });
-
-      peer.on("stream", (stream) => {
-        console.log('got stream')
-         this.$store.dispatch('addPeerStream', {
-          peerId: peer._peerID,
-          stream: stream
-        })
-      });
-
-      peer.on("track", () => {
-        console.log('I AM A TRACK')
-        this.$store.dispatch('incrementStreamUpdates')
-      });
-
-      peer.on("signal", async (data) => {
-        if (data.type === "offer" && self.joinRequest) {
-          self.joinRequest = false;
-          self.socket.emit("room:join:request:answer", {
-            roomCode: self.roomData.roomCode,
-            token: userInfo,
-            signal: data,
-          });
-        } else {
-          self.socket.emit("room:stream:create", {
-            roomCode: self.roomData.roomCode,
-            signal: data,
-            token: { id: peer._peerID },
-          });
-        }
-      });
-
-      peer.on("connect", () => {
-        peer.send("New peer connected!");
-      });
+      // this.addTrack(captureStream, this.audioStream);
     },
     addStream(stream) {
       this.peers.forEach((peer) => {

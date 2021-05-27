@@ -104,9 +104,9 @@ export default {
         console.log("error", err);
       });
 
-      peer.on("data", data => {
-        console.log(data.toString());
-      });
+      // peer.on("data", data => {
+      //   console.log(data.toString());
+      // });
 
       peer.on("close", err => {
         console.log("CLOSE", err);

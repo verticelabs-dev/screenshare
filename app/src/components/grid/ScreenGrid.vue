@@ -41,26 +41,22 @@
 
 <script>
 import Card from "./Card";
+import { mapState } from 'vuex';
 
 export default {
-  props: {
-    peers: {
-      type: Array,
-      required: true,
-    },
-  },
   components: {
     Card,
   },
   computed: {
+    ...mapState('peer', ['peers']),
     getScreenPeers() {
-      const _peers = [...[], ...this.peers];
-      _peers.push({
-        id: 1234,
-        _peerID: 'You'
-      })
+      // const _peers = [...[], ...this.peers];
+      // _peers.push({
+      //   id: 1234,
+      //   _peerID: 'You'
+      // })
 
-      return _peers
+      return this.peers
     },
     expandedScreen() {
       return this.screens.find((s) => s.id == this.activeScreenId);

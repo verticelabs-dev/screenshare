@@ -35,7 +35,7 @@ export default (socket: Socket) => {
     const cacheData = cache[data.roomCode]
     // const token: any = verify(data.token, config.api.jwtSecret)
 
-    if (!cacheData ) {
+    if (!cacheData) {
       return socket.emit('error', basicErrorMessage)
     }
 
