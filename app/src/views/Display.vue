@@ -69,6 +69,9 @@ export default {
     };
   },
   methods: {
+    initPeer(initiator, userInfo) {
+      this.$store.dispatch("peer/initPeer", { initiator, userInfo });
+    },
     async handleStartStreaming() {
       const captureStream = await getCaptureScreen({
         video: true,
