@@ -1,12 +1,14 @@
 import Peer from "simple-peer";
 import { mutations } from "./types";
 import socket from "../services/SocketService";
+import { getAudioInput } from "../services/StreamCaptureService";
 
 export default {
   namespaced: true,
   state: {
     peers: [],
-    roomCode: undefined
+    roomCode: undefined,
+    audioStream: undefined
   },
   mutations: {
     [mutations.ADD_PEER](state, peer) {
@@ -14,6 +16,9 @@ export default {
     },
     [mutations.SET_ROOM_CODE](state, { roomCode }) {
       state.roomCode = roomCode;
+    },
+    [mutations.SET_AUDIO_STREAM](state, { audioStream }) {
+      state.audioStream = audioStream;
     }
   },
   actions: {
@@ -23,8 +28,14 @@ export default {
     addPeer(context, params) {
       context.commit(mutations.ADD_PEER, params);
     },
-    initPeer(context, { initiator = true, userInfo = {} }) {
-      const peer = new Peer({ initiator, trickle: false });
+    async initPeer(context, { initiator = true, userInfo = {} }) {
+      let audioStream = context.state.audioStream;
+      if (!audioStream) {
+        audioStream = await getAudioInput();
+        context.commit(mutations.SET_AUDIO_STREAM, { audioStream });
+      }
+
+      const peer = new Peer({ initiator, trickle: false, stream: audioStream });
       peer._peerID = userInfo.id;
       peer._joinRequest = userInfo.joinRequest;
 
