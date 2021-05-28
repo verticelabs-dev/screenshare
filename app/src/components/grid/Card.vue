@@ -37,24 +37,23 @@ export default {
   computed: {},
   mounted() {
     const self = this;
+
+    if (!self.peer || self.peer._peerID === "You") return
+
     const stream = self.peer.streams[0];
 
-    if (self.peer._peerID !== "You") {
-      self.peer.on("stream", (stream) => {
-        console.log(1)
-        self.renderStream(stream);
-      });
+    self.peer.on("stream", (stream) => {
+      self.renderStream(stream);
+    });
 
-      self.peer.on("track", (track) => {
-        if (track.kind === "video" && stream) {
-          console.log(2)
-          self.renderStream(stream);
-        }
-      });
-    }
+    self.peer.on("track", (track) => {
+      if (track.kind === "video" && stream) {
+        self.renderStream(stream);
+      }
+    });
 
     if (stream) {
-      // self.renderStream(stream);
+      self.renderStream(stream);
     }
   },
   data() {

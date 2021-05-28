@@ -6,7 +6,7 @@ import { getAudioInput } from "../services/StreamCaptureService";
 export default {
   namespaced: true,
   state: {
-    peers: [],
+    peers: [{ id: 'You', _peerID: 'You' }],
     roomCode: undefined,
     audioStream: undefined
   },

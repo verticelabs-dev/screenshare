@@ -11,7 +11,7 @@
     </div>
 
     <!-- Render out the Grid -->
-    <template v-if="peers">
+    <template>
       <Grid />
     </template>
   </div>
@@ -75,18 +75,26 @@ export default {
         audio: true,
       });
 
+      const video = document.getElementById("You");
+      if (video && captureStream) {
+        video.srcObject = captureStream;
+        video.play();
+      }
+
       this.addStream(captureStream);
     },
     addStream(stream) {
       this.peers.forEach((peer) => {
-        peer.addStream(stream);
+        if (peer._peerID !== "You")
+          peer.addStream(stream);
       });
     },
     addTrack(audioStream, stream) {
       this.peers.forEach((peer) => {
-        audioStream
-          .getTracks()
-          .forEach((track) => peer.addTrack(track, stream));
+        if (peer._peerID !== "You")
+          audioStream
+            .getTracks()
+            .forEach((track) => peer.addTrack(track, stream));
       });
     },
   },
