@@ -1,5 +1,7 @@
 import io from "socket.io-client";
 
-const socket = io("localhost:8989");
+const socketServerURL = process.env.SOCKET_SERVER ?? "localhost:8989";
 
-export default socket
+const socket = io(socketServerURL);
+
+export default socket;

@@ -7,6 +7,7 @@ COPY ./relay-server/package*.json ./
 RUN npm install
 
 COPY ./relay-server .
+COPY ./relay-server/.env.example ./relay-server/.env
 
 EXPOSE 8989
 
