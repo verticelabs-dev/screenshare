@@ -81,13 +81,6 @@ export default {
 
       this.$store.dispatch("peer/setVideoStream", { videoStream: captureStream });
 
-      this.addStream(captureStream);
-    },
-    addStream(stream) {
-      this.peers.forEach((peer) => {
-        if (peer._peerID !== "You")
-          peer.addStream(stream);
-      });
     },
   },
 };
