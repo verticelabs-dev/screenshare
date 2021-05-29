@@ -6,14 +6,17 @@ import { getAudioInput } from "../services/StreamCaptureService";
 export default {
   namespaced: true,
   state: {
-    peers: [{ id: 'You', _peerID: 'You' }],
+    peers: [{ id: "You", _peerID: "You" }],
     roomCode: undefined,
     audioStream: undefined,
-    videoStream: undefined
+    videoStream: undefined,
   },
   mutations: {
     [mutations.ADD_PEER](state, peer) {
       state.peers.push(peer);
+    },
+    [mutations.SET_PEERS](state, peers) {
+      state.peers = peers;
     },
     [mutations.SET_ROOM_CODE](state, { roomCode }) {
       state.roomCode = roomCode;
@@ -23,7 +26,7 @@ export default {
     },
     [mutations.SET_VIDEO_STREAM](state, { videoStream }) {
       state.videoStream = videoStream;
-    }
+    },
   },
   actions: {
     setVideoStream(context, params) {
@@ -32,15 +35,12 @@ export default {
       if (context.state.audioStream) {
         context.state.peers.forEach((peer) => {
           if (peer._peerID !== "You") {
-            params.videoStream
-              .getTracks()
-              .forEach((track) => {
-                peer.addTrack(track, context.state.audioStream)
-              });
+            params.videoStream.getTracks().forEach((track) => {
+              peer.addTrack(track, context.state.audioStream);
+            });
           }
         });
-      }
-      else {
+      } else {
         context.state.peers.forEach((peer) => {
           if (peer._peerID !== "You") {
             peer.addStream(params.videoStream);
@@ -91,7 +91,9 @@ export default {
       });
 
       peer.on("close", (err) => {
-        // self.peers = self.peers.filter((p) => p._id === peer._id);
+        const newPeers = context.state.peers.filter((p) => p._id !== peer._id);
+
+        context.commit(mutations.SET_PEERS, newPeers);
         console.log("CLOSE", err);
       });
 
