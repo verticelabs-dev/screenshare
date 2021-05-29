@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div :class="{ 'card': true, 'screen-grid-item-lg': peer._peerID === activeScreenId }">
     <div class="card-header">
       <div class="text-white mb-1 mt-1 ml-4">{{ peer._peerID }}</div>
 
@@ -40,7 +40,7 @@
 // import { mapState } from "vuex";
 
 export default {
-  props: ["id", "peer", "hideClose", "hideExpand"],
+  props: ["id", "peer", "hideClose", "hideExpand", "activeScreenId"],
   components: {},
   watch: {},
   computed: {},
