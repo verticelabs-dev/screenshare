@@ -19,4 +19,15 @@
   .green-circle-btn {
     @apply float-right rounded-full h-4 w-4 mr-2 bg-green-500 shadow-md cursor-pointer;
   }
+
+  .circle-btn {
+    @apply float-right rounded-full h-4 w-4 mr-2 shadow-md cursor-pointer;
+
+    svg {
+      width: 0.75em;
+      position: absolute;
+      left: auto;
+      right: auto;
+    }
+  }
 }

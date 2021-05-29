@@ -18,11 +18,20 @@
           @click="$emit('expanded', id)"
           class="green-circle-btn"
         ></div>
+
+        <!-- Mute Button -->
+        <div
+          @click="toggleMute"
+          class="circle-btn"
+        >
+          <font-awesome-icon icon="volume-mute" v-if="muted"/>
+          <font-awesome-icon icon="volume-up" v-else/>
+        </div>
       </div>
     </div>
 
     <div class="card-video">
-      <video :id="peer._peerID"></video>
+      <video :id="peer._peerID" :muted="muted ? 'muted': ''"></video>
     </div>
   </div>
 </template>
@@ -59,6 +68,7 @@ export default {
   data() {
     return {
       renderingStream: false,
+      muted: false
     };
   },
   methods: {
@@ -71,6 +81,9 @@ export default {
         console.log("Tried rendering stream", video , stream, this.peer);
       }
     },
+    toggleMute() {
+      this.muted = !this.muted
+    }
   },
 };
 </script>
