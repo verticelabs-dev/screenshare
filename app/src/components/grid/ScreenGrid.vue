@@ -1,40 +1,18 @@
 <template>
   <div class="transition ease-in-out duration-300">
     <!-- Grid View -->
-    <div class="grid grid-cols-3 gap-4" v-if="!activeScreenId">
+    <div class="grid grid-cols-3 gap-4">
       <!-- <GridControlBar /> -->
       <Card
         :hide-close="true"
         @expanded="cardExpand"
         class="screen-grid-item"
         v-for="peer in peers"
+        :activeScreenId="activeScreenId"
         :key="peer._peerID"
-        :id="peer.id"
+        :id="peer._peerID"
         :peer="peer"
       />
-    </div>
-
-    <!-- Expanded View -->
-    <div class="flex flex-row" v-if="activeScreenId">
-      <Card
-        :hide-expand="true"
-        @closed="cardClose"
-        class="screen-grid-item-lg"
-        :id="expandedScreen.id"
-      />
-
-      <!-- Side Menu -->
-      <div class="flex flex-col pl-6">
-        <Card
-          :hide-close="true"
-          @expanded="cardExpand"
-          class="screen-grid-item mb-2"
-          v-for="peer in peers"
-          :key="peer.id"
-          :id="peer.id"
-          :peer="peer"
-        />
-      </div>
     </div>
   </div>
 </template>
@@ -48,10 +26,7 @@ export default {
     Card,
   },
   computed: {
-    ...mapState('peer', ['peers']),
-    expandedScreen() {
-      return this.peers.find((s) => s.id == this.activeScreenId);
-    },
+    ...mapState('peer', ['peers'])
   },
   data() {
     return {

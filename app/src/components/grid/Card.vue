@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div :class="{ 'card': true, 'screen-grid-item-lg': peer._peerID === activeScreenId }">
     <div class="card-header">
       <div class="text-white mb-1 mt-1 ml-4">{{ peer._peerID }}</div>
 
@@ -18,11 +18,20 @@
           @click="$emit('expanded', id)"
           class="green-circle-btn"
         ></div>
+
+        <!-- Mute Button -->
+        <div
+          @click="toggleMute"
+          class="circle-btn"
+        >
+          <font-awesome-icon icon="volume-mute" v-if="muted"/>
+          <font-awesome-icon icon="volume-up" v-else/>
+        </div>
       </div>
     </div>
 
     <div class="card-video">
-      <video :id="peer._peerID"></video>
+      <video :id="peer._peerID" :muted="muted ? 'muted': ''"></video>
     </div>
   </div>
 </template>
@@ -31,7 +40,7 @@
 // import { mapState } from "vuex";
 
 export default {
-  props: ["id", "peer", "hideClose", "hideExpand"],
+  props: ["id", "peer", "hideClose", "hideExpand", "activeScreenId"],
   components: {},
   watch: {},
   computed: {},
@@ -59,6 +68,7 @@ export default {
   data() {
     return {
       renderingStream: false,
+      muted: false
     };
   },
   methods: {
@@ -71,6 +81,9 @@ export default {
         console.log("Tried rendering stream", video , stream, this.peer);
       }
     },
+    toggleMute() {
+      this.muted = !this.muted
+    }
   },
 };
 </script>

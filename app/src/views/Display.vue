@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-row justify-center mt-10">
+    <div class="flex flex-row justify-center mt-5">
       <RoomControl />
     </div>
 
