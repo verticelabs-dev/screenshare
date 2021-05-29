@@ -18,8 +18,6 @@
 </template>
 
 <script>
-// import Peer from "simple-peer";
-// import io from "socket.io-client";
 import { mapState } from "vuex";
 
 import { getCaptureScreen } from "../services/StreamCaptureService";
@@ -81,20 +79,14 @@ export default {
         video.play();
       }
 
+      this.$store.dispatch("peer/setVideoStream", { videoStream: captureStream });
+
       this.addStream(captureStream);
     },
     addStream(stream) {
       this.peers.forEach((peer) => {
         if (peer._peerID !== "You")
           peer.addStream(stream);
-      });
-    },
-    addTrack(audioStream, stream) {
-      this.peers.forEach((peer) => {
-        if (peer._peerID !== "You")
-          audioStream
-            .getTracks()
-            .forEach((track) => peer.addTrack(track, stream));
       });
     },
   },

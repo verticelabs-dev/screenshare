@@ -8,7 +8,8 @@ export default {
   state: {
     peers: [{ id: 'You', _peerID: 'You' }],
     roomCode: undefined,
-    audioStream: undefined
+    audioStream: undefined,
+    videoStream: undefined
   },
   mutations: {
     [mutations.ADD_PEER](state, peer) {
@@ -19,9 +20,15 @@ export default {
     },
     [mutations.SET_AUDIO_STREAM](state, { audioStream }) {
       state.audioStream = audioStream;
+    },
+    [mutations.SET_VIDEO_STREAM](state, { videoStream }) {
+      state.videoStream = videoStream;
     }
   },
   actions: {
+    setVideoStream(context, params) {
+      context.commit(mutations.SET_VIDEO_STREAM, params);
+    },
     setRoomCode(context, params) {
       context.commit(mutations.SET_ROOM_CODE, params);
     },
@@ -40,6 +47,7 @@ export default {
       peer._joinRequest = userInfo.joinRequest;
 
       if (userInfo.signal) peer.signal(userInfo.signal);
+      if (context.state.videoStream) peer.addStream(context.state.videoStream);
 
       peer.on("signal", async (data) => {
         if (data.type === "offer" && peer._joinRequest) {
