@@ -11,6 +11,7 @@
 import ScreenGrid from "../components/grid/ScreenGrid";
 
 export default {
+  props: [],
   components: {
     ScreenGrid
   }

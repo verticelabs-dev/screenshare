@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <div class="text-white mb-1 mt-1 ml-4">Travier's Stream</div>
+      <div class="text-white mb-1 mt-1 ml-4">{{ peer._peerID }}</div>
 
       <!-- Top Right Control Buttons -->
       <div>
@@ -22,18 +22,56 @@
     </div>
 
     <div class="card-video">
-      <h1>Travier's Stream</h1>
+      <video :id="peer._peerID"></video>
     </div>
   </div>
 </template>
 
 <script>
+// import { mapState } from "vuex";
+
 export default {
-  props: ["id", "hideClose", "hideExpand"],
+  props: ["id", "peer", "hideClose", "hideExpand"],
   components: {},
+  watch: {},
+  computed: {},
+  mounted() {
+    const self = this;
+
+    if (!self.peer || self.peer._peerID === "You") return
+
+    const stream = self.peer.streams[0];
+
+    self.peer.on("stream", (stream) => {
+      self.renderStream(stream);
+    });
+
+    self.peer.on("track", (track) => {
+      if (track.kind === "video" && stream) {
+        self.renderStream(stream);
+      }
+    });
+
+    if (stream) {
+      self.renderStream(stream);
+    }
+  },
   data() {
-    return {};
-  }
+    return {
+      renderingStream: false,
+    };
+  },
+  methods: {
+    renderStream(stream) {
+      const video = document.getElementById(this.peer._peerID);
+      if (video && stream) {
+        video.srcObject = stream;
+        video.play();
+      } else {
+        console.log("Tried rendering stream", video , stream, this.peer);
+      }
+    },
+  },
 };
 </script>
 

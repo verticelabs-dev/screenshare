@@ -1,0 +1,21 @@
+
+version: '3'
+services:
+  relay-server:
+    build:
+      context: ./relay-server
+      dockerfile: Dockerfile-dev
+    ports:
+      - "8989:8989"
+    container_name: relay-server
+    volumes:
+       - ./relay-server
+  frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile-dev
+    ports:
+      - "8080:8080"
+    container_name: frontend
+    volumes:
+       - ./app
