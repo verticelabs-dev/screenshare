@@ -28,6 +28,25 @@ export default {
   actions: {
     setVideoStream(context, params) {
       context.commit(mutations.SET_VIDEO_STREAM, params);
+
+      if (context.state.audioStream) {
+        context.state.peers.forEach((peer) => {
+          if (peer._peerID !== "You") {
+            params.videoStream
+              .getTracks()
+              .forEach((track) => {
+                peer.addTrack(track, context.state.audioStream)
+              });
+          }
+        });
+      }
+      else {
+        context.state.peers.forEach((peer) => {
+          if (peer._peerID !== "You") {
+            peer.addStream(params.videoStream);
+          }
+        });
+      }
     },
     setRoomCode(context, params) {
       context.commit(mutations.SET_ROOM_CODE, params);

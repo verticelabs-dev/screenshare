@@ -49,21 +49,17 @@ export default {
 
     if (!self.peer || self.peer._peerID === "You") return
 
-    const stream = self.peer.streams[0];
-
     self.peer.on("stream", (stream) => {
       self.renderStream(stream);
     });
 
-    self.peer.on("track", (track) => {
-      if (track.kind === "video" && stream) {
-        self.renderStream(stream);
-      }
-    });
-
-    if (stream) {
-      self.renderStream(stream);
-    }
+    // const stream = self.peer.streams[0];
+    // self.peer.on("track", (track) => {
+      // console.log('HIT', track)
+      // if (track.kind === "video" && stream) {
+      //   self.renderStream(stream);
+      // }
+    // });
   },
   data() {
     return {
