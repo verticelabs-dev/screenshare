@@ -2,11 +2,11 @@ FROM node:10
 
 WORKDIR /relay-server
 
-COPY package*.json ./
+COPY ./relay-server/package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY ./relay-server .
 
 EXPOSE 8989
 
