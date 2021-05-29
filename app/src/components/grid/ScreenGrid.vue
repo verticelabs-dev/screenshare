@@ -38,7 +38,7 @@ export default {
       this.activeScreenId = false;
     },
     cardExpand(screemId) {
-      this.activeScreenId = screemId;
+      this.activeScreenId = this.activeScreenId === screemId ? false : screemId;
     },
   },
 };
