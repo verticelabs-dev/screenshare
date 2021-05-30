@@ -4,6 +4,7 @@
     <div @click="toggleDeafen" class="circle-btn has-tooltip">
       <span v-if="deafen" class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>Deafened</span>
       <font-awesome-icon icon="volume-mute" v-if="deafen"/>
+
       <span v-if="!deafen" class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>Deafen</span>
       <font-awesome-icon icon="volume-up" v-if="!deafen"/>
     </div>
@@ -12,6 +13,7 @@
     <div @click="toggleMicMute" class="circle-btn has-tooltip">
       <span v-if="micMute" class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>Muted</span>
       <font-awesome-icon icon="microphone-alt-slash" v-if="micMute"/>
+
       <span v-if="!micMute" class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>Mute Mic</span>
       <font-awesome-icon icon="microphone-alt" v-if="!micMute"/>
     </div>
