@@ -37,8 +37,8 @@ $waveBorderRadius: 120px;
   .sidebar-wave-content {
     display: flex;
     align-items: center;
-    top: -115px;
-    left: 33px;
+    top: -130px;
+    left: 30px;
     height: 200px;
     width: 200px;
     transform: rotate(280deg);
@@ -48,10 +48,10 @@ $waveBorderRadius: 120px;
 
   .sidebar-wave-icon {
     position: absolute;
-    top: -20px;
-    left: 47px;
-    height: 10px;
-    width: 10px;
+    top: -18px;
+    left: 43px;
+    height: 6px;
+    width: 6px;
     z-index: 200;
   }
 }

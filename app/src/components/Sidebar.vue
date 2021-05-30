@@ -27,10 +27,10 @@
             />
             <svg class="sidebar-wave-content">
               <path
-                d="M 95 0 C 80 0 64 32 40 32 S 0 0 -15 0 z"
+                d="M 12 0 C 7.5 0 8 4 5 4 S 2.5 0 -2 0 z"
                 stroke="#636378"
                 fill="#636378"
-                transform="rotate(-10 100 -80) scale(1 0.9)"
+                transform="rotate(-10 100 -80) scale(5)"
               />
             </svg>
             <!-- <div class="sidebar-wave-content">
