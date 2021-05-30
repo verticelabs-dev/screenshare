@@ -2,7 +2,7 @@
   <div class="transition ease-in-out duration-300">
     <!-- Grid View -->
     <div class="grid grid-cols-3 gap-4">
-      <!-- <GridControlBar /> -->
+
       <Card
         :hide-close="true"
         @expanded="cardExpand"
@@ -14,16 +14,19 @@
         :peer="peer"
       />
     </div>
+    <streamControlBar />
   </div>
 </template>
 
 <script>
 import Card from "./Card";
+import streamControlBar from "./streamControlBar";
 import { mapState } from 'vuex';
 
 export default {
   components: {
     Card,
+    streamControlBar
   },
   computed: {
     ...mapState('peer', ['peers'])

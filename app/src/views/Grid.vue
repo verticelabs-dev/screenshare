@@ -19,5 +19,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../assets/scss/grid.scss";
+@import "../assets/scss/grid/main.scss";
 </style>

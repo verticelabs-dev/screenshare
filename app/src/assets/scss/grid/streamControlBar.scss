@@ -1,0 +1,17 @@
+.streamControlBar {
+  height: 2.5rem;
+}
+
+.circle-btn {
+  @apply rounded-full shadow-lg cursor-pointer justify-center;
+
+  position: relative;
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  background-color: rgba(255, 255, 255, 0.45);
+
+  svg {
+    height: 100%;
+  }
+}
