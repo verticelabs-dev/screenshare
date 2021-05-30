@@ -2,19 +2,47 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import socket from './services/SocketService'
+import socket from "./services/SocketService";
 import "./assets/scss/main.scss";
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faVolumeMute, faVolumeUp, faMicrophoneAlt, faMicrophoneAltSlash, faVideo, faVideoSlash, faTv, faCircle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faVolumeMute,
+  faVolumeUp,
+  faMicrophoneAlt,
+  faMicrophoneAltSlash,
+  faVideo,
+  faVideoSlash,
+  faTv,
+  faCircle,
+  faHome,
+  faCalendar,
+  faUserFriends,
+  faCogs,
+  faQuestionCircle
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add([faVolumeMute, faVolumeUp, faMicrophoneAlt, faMicrophoneAltSlash, faVideo, faVideoSlash, faTv, faCircle])
+library.add([
+  faVolumeMute,
+  faVolumeUp,
+  faMicrophoneAlt,
+  faMicrophoneAltSlash,
+  faVideo,
+  faVideoSlash,
+  faTv,
+  faCircle,
+  faHome,
+  faCalendar,
+  faUserFriends,
+  faCogs,
+  faQuestionCircle
+]);
 
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
-Vue.prototype.$socket = socket
+Vue.prototype.$socket = socket;
 
 new Vue({
   router,

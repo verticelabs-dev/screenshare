@@ -1,0 +1,30 @@
+$sidebarPrimaryColor: #636378;
+$sidebarSecondaryColor: #414155;
+
+.sidebar {
+  background-color: $sidebarPrimaryColor;
+  border-left: 5px solid $sidebarPrimaryColor;
+  border-top-left-radius: 25px;
+}
+
+.sidebar-icons {
+  min-width: 50px;
+}
+
+.sidebar-content {
+  width: 100%;
+  background-color: $sidebarSecondaryColor;
+  border-left: 5px solid $sidebarSecondaryColor;
+  border-top-left-radius: 25px;
+}
+
+.sidebar-icon {
+  @apply mr-4 mt-10 cursor-pointer;
+  min-height: 24px;
+  min-width: 24px;
+  color: $sidebarSecondaryColor;
+
+  &.active {
+    color: white;
+  }
+}
