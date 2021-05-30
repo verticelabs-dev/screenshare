@@ -12,6 +12,7 @@ $sidebarSecondaryColor: #414155;
 }
 
 .sidebar-content {
+  @apply pl-6 pt-14;
   width: 100%;
   background-color: $sidebarSecondaryColor;
   border-left: 5px solid $sidebarSecondaryColor;

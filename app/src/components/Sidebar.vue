@@ -22,13 +22,15 @@
       </div>
 
       <div class="sidebar-content float-right">
-        <h1>Team Meetings</h1>
+        <MeetingAgenda />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import MeetingAgenda from "./sideapps/MeetingAgenda";
+
 const sidebarIcons = [
   {
     name: "home"
@@ -51,6 +53,9 @@ const sidebarIcons = [
 ];
 
 export default {
+  components: {
+    MeetingAgenda
+  },
   data() {
     return {
       sidebarIcons,

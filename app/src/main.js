@@ -18,8 +18,11 @@ import {
   faCalendar,
   faUserFriends,
   faCogs,
-  faQuestionCircle
+  faQuestionCircle,
+  faCheckCircle
 } from "@fortawesome/free-solid-svg-icons";
+
+import {} from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 library.add([
@@ -35,7 +38,8 @@ library.add([
   faCalendar,
   faUserFriends,
   faCogs,
-  faQuestionCircle
+  faQuestionCircle,
+  faCheckCircle
 ]);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
