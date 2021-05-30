@@ -9,3 +9,12 @@
 // Page Specfic
 @import "display";
 @import "card";
+
+
+.tooltip {
+  @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-50 w-max;
+}

@@ -1,31 +1,36 @@
 <template>
   <div class="streamControlBar">
     <!-- Mute Button -->
-    <div @click="toggleDeafen" class="circle-btn">
+    <div @click="toggleDeafen" class="circle-btn has-tooltip">
+      <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>Deafen</span>
       <font-awesome-icon icon="volume-mute" v-if="deafen"/>
       <font-awesome-icon icon="volume-up" v-else/>
     </div>
 
     <!-- Mic Button -->
-    <div @click="toggleMicMute" class="circle-btn">
+    <div @click="toggleMicMute" class="circle-btn has-tooltip">
+      <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>Mute Mic</span>
       <font-awesome-icon icon="microphone-alt-slash" v-if="micMute"/>
       <font-awesome-icon icon="microphone-alt" v-else/>
     </div>
 
     <!-- Video Button -->
-    <div @click="toggleVideo" class="circle-btn">
+    <div @click="toggleVideo" class="circle-btn has-tooltip" style="margin-left: 1rem;">
+       <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>Video</span>
       <font-awesome-icon icon="video-slash" v-if="video"/>
       <font-awesome-icon icon="video" v-else/>
     </div>
 
     <!-- Screen Share Button -->
-    <div @click="toggleScreenShare" class="circle-btn">
+    <div @click="toggleScreenShare" class="circle-btn has-tooltip">
+      <div class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>Screen Share</div>
       <font-awesome-icon icon="tv" v-if="screenShare" style="color: rgb(0 208 0);"/>
       <font-awesome-icon icon="tv" v-else/>
     </div>
 
     <!-- Record Button -->
-    <div @click="toggleRecord" class="circle-btn">
+    <div @click="toggleRecord" class="circle-btn has-tooltip">
+      <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>Record</span>
       <font-awesome-icon icon="circle" v-if="record" style="color: rgb(208 0 0);"/>
       <font-awesome-icon icon="circle" v-else/>
     </div>

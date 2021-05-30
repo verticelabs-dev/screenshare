@@ -1,5 +1,5 @@
 <template>
-  <div class="transition ease-in-out duration-300">
+  <div class="transition ease-in-out duration-300" style="height: calc(100vh - 196px);">
     <!-- Grid View -->
     <div class="grid grid-cols-3 gap-4">
 
