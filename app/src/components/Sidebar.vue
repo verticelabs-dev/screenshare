@@ -30,7 +30,7 @@
                 d="M 12 0 C 7.5 0 8 4 5 4 S 2.5 0 -2 0 z"
                 stroke="#636378"
                 fill="#636378"
-                transform="rotate(-10 100 -80) scale(5)"
+                transform="rotate(-10 100 -80) scale(6)"
               />
             </svg>
             <!-- <div class="sidebar-wave-content">

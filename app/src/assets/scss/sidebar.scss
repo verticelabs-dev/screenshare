@@ -37,19 +37,23 @@ $waveBorderRadius: 120px;
   .sidebar-wave-content {
     display: flex;
     align-items: center;
-    top: -130px;
-    left: 30px;
+    top: -126px;
+    left: 31px;
     height: 200px;
     width: 200px;
     transform: rotate(280deg);
     padding-left: 30px;
     position: absolute;
+
+    path {
+      @apply shadow-lg;
+    }
   }
 
   .sidebar-wave-icon {
     position: absolute;
-    top: -18px;
-    left: 43px;
+    top: -19px;
+    left: 48px;
     height: 6px;
     width: 6px;
     z-index: 200;
