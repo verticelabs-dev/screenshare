@@ -21,12 +21,21 @@
             @click="setActiveIcon(icon.name)"
           />
           <div v-if="isActiveIcon(icon.name)" class="sidebar-wave">
-            <div class="sidebar-wave-content">
-              <font-awesome-icon
-                class="text-green-500 sidebar-wave-icon"
-                icon="circle"
+            <font-awesome-icon
+              class="text-green-500 sidebar-wave-icon"
+              icon="circle"
+            />
+            <svg class="sidebar-wave-content">
+              <path
+                d="M 95 0 C 80 0 64 32 40 32 S 0 0 -15 0 z"
+                stroke="#636378"
+                fill="#636378"
+                transform="rotate(-10 100 -80) scale(1 0.9)"
               />
-            </div>
+            </svg>
+            <!-- <div class="sidebar-wave-content">
+              
+            </div> -->
           </div>
         </div>
       </div>
