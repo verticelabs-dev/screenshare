@@ -8,5 +8,14 @@
 
 // Page Specfic
 @import "display";
-@import "grid";
 @import "card";
+
+
+.tooltip {
+  @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-50 w-max;
+  user-select: none;
+}
