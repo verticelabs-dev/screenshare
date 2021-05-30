@@ -13,8 +13,17 @@
       @apply mr-2
     }
 
+    & .red {
+      color: rgb(208 0 0);
+    }
+
+    & .green {
+      color: rgb(0 208 0);
+    }
+
     svg {
       @apply h-full
+
     }
   }
 }
