@@ -1,6 +1,7 @@
 <template>
   <div class="flex">
     <div class="sidebar flex flex-row">
+      <!-- Icon List -->
       <div
         class="
           sidebar-icons
@@ -11,16 +12,26 @@
           pt-4
         "
       >
-        <font-awesome-icon
-          v-for="icon in sidebarIcons"
-          :icon="icon.name"
-          class="sidebar-icon"
-          :class="{ active: isActiveIcon(icon.name) }"
-          :key="icon.name"
-          @click="setActiveIcon(icon.name)"
-        />
+        <!-- Icon Item -->
+        <div class="" v-for="icon in sidebarIcons" :key="icon.name">
+          <font-awesome-icon
+            :icon="icon.name"
+            class="sidebar-icon"
+            :class="{ active: isActiveIcon(icon.name) }"
+            @click="setActiveIcon(icon.name)"
+          />
+          <div v-if="isActiveIcon(icon.name)" class="sidebar-wave">
+            <div class="sidebar-wave-content">
+              <font-awesome-icon
+                class="text-green-500 sidebar-wave-icon"
+                icon="circle"
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
+      <!-- Sidebar App -->
       <div class="sidebar-content float-right">
         <MeetingAgenda />
       </div>
