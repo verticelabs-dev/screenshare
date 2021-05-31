@@ -41,7 +41,7 @@
       </div>
 
       <!-- Sidebar App -->
-      <div class="sidebar-content float-right">
+      <div class="sidebar-content float-right" v-if="canShowSideapp">
         <MeetingAgenda />
       </div>
     </div>
@@ -75,6 +75,11 @@ const sidebarIcons = [
 export default {
   components: {
     MeetingAgenda
+  },
+  computed: {
+    canShowSideapp() {
+      return this.$route.meta.sideapp;
+    }
   },
   data() {
     return {

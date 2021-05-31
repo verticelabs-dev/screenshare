@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Grid Display -->
-    <div class="flex flex-row justify-center">
+    <div class="flex flex-row justify-start">
       <ScreenGrid />
     </div>
   </div>

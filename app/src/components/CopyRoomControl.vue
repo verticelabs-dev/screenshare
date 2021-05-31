@@ -1,0 +1,30 @@
+<template>
+  <div class="flex flex-row">
+    <div class="room-code-box">
+      <span class="text-center align-middle pt-1">Code: {{ roomCode }}</span>
+      <input type="hidden" id="roomCode" :value="roomCode" />
+    </div>
+    <button
+      class="btn btn-sm btn-primary ml-1"
+      @click="copyRoomCode"
+      :disabled="!roomCode"
+    >
+      Copy
+    </button>
+  </div>
+</template>
+
+<script>
+import { mapState } from "vuex";
+
+export default {
+  computed: {
+    ...mapState("peer", ["roomCode", "peers"])
+  },
+  data() {
+    return {};
+  }
+};
+</script>
+
+<style></style>

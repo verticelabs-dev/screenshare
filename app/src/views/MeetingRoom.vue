@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="flex flex-row mt-5 ml-4">
-      <RoomControl />
+    <div class="flex mt-5 ml-4">
+      <CopyRoomControl />
     </div>
 
     <!-- Render out the Grid -->
@@ -12,15 +12,15 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
-import RoomControl from "../components/RoomControl";
+import CopyRoomControl from "../components/CopyRoomControl";
 import GridContainer from "../components/grid/GridContainer";
 
 export default {
   components: {
-    RoomControl,
-    GridContainer
+    GridContainer,
+    CopyRoomControl
   },
   props: {},
   created() {
@@ -47,8 +47,9 @@ export default {
     });
   },
   computed: {
+    ...mapState(["roomCode"]),
     ...mapState("peer", ["peers"]),
-    ...mapState(["roomCode"])
+    ...mapGetters(["peer/userInMeeting"])
   },
   data() {
     return {
@@ -63,5 +64,4 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss"></style>

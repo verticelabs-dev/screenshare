@@ -2,7 +2,7 @@
   <div class="flex flex-row" style="height: 100vh">
     <Sidebar />
 
-    <div>
+    <div class="w-full">
       <router-view />
     </div>
   </div>
