@@ -48,11 +48,11 @@ export default {
   components: {},
   props: [],
   computed: {
-    ...mapState('peer', ['roomCode', 'peers'])
+    ...mapState("peer", ["roomCode", "peers"])
   },
   data() {
     return {
-      localRoomCode: "",
+      localRoomCode: ""
     };
   },
   methods: {
@@ -61,15 +61,17 @@ export default {
       const socket = self.$socket;
 
       // Get room info
-      socket.once("room:newID", (roomInfo) => {
-        self.$store.dispatch("peer/setRoomCode", { roomCode: roomInfo.roomCode });
+      socket.once("room:newID", roomInfo => {
+        self.$store.dispatch("peer/setRoomCode", {
+          roomCode: roomInfo.roomCode
+        });
       });
 
       //- Triggers socket room to start - could pass auth here
       socket.emit("room:create", {});
 
       // Another user is trying to join the room - auto accept
-      socket.on("room:join:request", (userInfo) => {
+      socket.on("room:join:request", userInfo => {
         userInfo.joinRequest = true;
         self.initPeer(true, userInfo);
       });
@@ -81,9 +83,9 @@ export default {
       this.$store.dispatch("peer/setRoomCode", { roomCode });
 
       // you have been accepted into the room so start connecting to all the users
-      socket.on("room:join:request:answer", (roomInfo) => {
+      socket.on("room:join:request:answer", roomInfo => {
         self.initPeer(false, roomInfo); //-room owner
-        roomInfo.connectedUsers.forEach((d) => {
+        roomInfo.connectedUsers.forEach(d => {
           self.initPeer(true, { id: d }); // any connected users
         });
       });
@@ -108,8 +110,8 @@ export default {
 
       copyRoomCode.setAttribute("type", "hidden");
       window.getSelection().removeAllRanges();
-    },
-  },
+    }
+  }
 };
 </script>
 
