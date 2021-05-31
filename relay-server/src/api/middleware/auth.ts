@@ -1,32 +1,27 @@
-import config from '../../config';
-import { authHelper } from '../services/auth';
-import { Request, Response } from 'express';
+import config from "../../config";
+import { authHelper } from "../services/auth";
+import { Request, Response } from "express";
 
 export class auth {
   static expressHook(req: Request, res: Response, next) {
     var token = req.cookies[config.auth.cookie];
 
     if (!token) {
-      return res.send('NOT LOGGED IN')
+      // If they don't have a token assume they are a guest
+      token = authHelper.generateJwt({});
+      res.cookie(config.auth.cookie, token, { maxAge: 900000, httpOnly: true });
+      res.locals.auth = {};
+      return next();
     }
 
     const auth = authHelper.verifyJwt(token);
-
-    if (!auth) {
-      return res.send('NOT LOGGED IN')
-    }
-
     res.locals.auth = auth;
 
-    next()
-  }
+    if (!auth) {
+      // If they have a token but it has been altered decline them
+      return res.send("Not Today");
+    }
 
-  static logout() {
-
-  }
-
-  static login() {
-    // res.cookie(config.auth.cookie, 'BIG OL TEST', { maxAge: 900000, httpOnly: true });
+    next();
   }
 }
-
