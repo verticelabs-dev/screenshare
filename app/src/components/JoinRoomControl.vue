@@ -31,6 +31,9 @@ export default {
     };
   },
   methods: {
+    initPeer(initiator, userInfo) {
+      this.$store.dispatch("peer/initPeer", { initiator, userInfo });
+    },
     joinRoom(roomCode) {
       const self = this;
       const socket = self.$socket;
@@ -39,11 +42,7 @@ export default {
 
       // you have been accepted into the room so start connecting to all the users
       socket.on("room:join:request:answer", roomInfo => {
-        const initiator = false;
-        this.$store.dispatch("peer/initPeer", {
-          initiator,
-          userInfo: roomInfo
-        });
+        self.initPeer(false, roomInfo);
 
         roomInfo.connectedUsers.forEach(d => {
           self.initPeer(true, { id: d }); // any connected users

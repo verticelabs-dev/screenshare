@@ -23,7 +23,6 @@ export default {
       const roomCode = vm.$store.state.peer.roomCode;
 
       if (!roomCode) {
-        console.log("trig");
         return next("/join");
       }
 
@@ -33,30 +32,6 @@ export default {
   components: {
     GridContainer,
     CopyRoomControl
-  },
-  props: {},
-  created() {
-    const self = this;
-    const socket = self.$socket;
-
-    socket.on("token", token => {
-      this.token = token;
-    });
-
-    socket.on("error", err => {
-      console.error(err);
-    });
-
-    // A peer is sending a singal ( We may or may not know about them already )
-    socket.on("room:signal", signalData => {
-      const matchingPeer = self.peers.find(d => d._peerID === signalData.id);
-
-      if (matchingPeer) {
-        matchingPeer.signal(signalData.signal);
-      } else {
-        self.initPeer(false, { id: signalData.id, signal: signalData.signal });
-      }
-    });
   },
   computed: {
     ...mapState("peer", ["peers", "roomCode"]),
