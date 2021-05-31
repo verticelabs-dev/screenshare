@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 
 export class auth {
   static expressHook(req: Request, res: Response, next) {
-    var token = req.cookies[config.auth.cookie];
+    let token = req.cookies[config.auth.cookie];
 
     if (!token) {
       // If they don't have a token assume they are a guest

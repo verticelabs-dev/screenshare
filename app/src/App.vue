@@ -14,12 +14,19 @@ import Sidebar from "./components/Sidebar";
 
 export default {
   components: {
-    Sidebar
+    Sidebar,
     // StreamControlBar
+  },
+  async mounted() {
+    try {
+      console.log("YEET", await this.$axios.get("/ping"));
+    } catch (error) {
+      console.error(error);
+    }
   },
   data() {
     return {};
-  }
+  },
 };
 </script>
 
