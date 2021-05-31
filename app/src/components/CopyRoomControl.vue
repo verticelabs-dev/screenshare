@@ -32,7 +32,6 @@ export default {
 
       try {
         document.execCommand("copy");
-        console.log("Copied room code");
       } catch (err) {
         console.error("Failed to copy room code");
       }
