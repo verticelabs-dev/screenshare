@@ -14,8 +14,8 @@
 <script>
 import { mapState } from "vuex";
 
-import GridContainer from "../components/grid/GridContainer";
 import RoomControl from "../components/RoomControl";
+import GridContainer from "../components/grid/GridContainer";
 
 export default {
   components: {
