@@ -35,7 +35,7 @@ export default {
     client: "postgresql",
     connection: {
       host: String(process.env.DB_HOST),
-      port: 5438,
+      port: Number(process.env.DB_PORT) || 5432,
       database: String(process.env.DB_DATABASE),
       user: String(process.env.DB_USERNAME),
       password: String(process.env.DB_PASSWORD),
