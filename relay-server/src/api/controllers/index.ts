@@ -4,7 +4,7 @@ import sample from './sample';
 
 // guaranteed to get dependencies due to the loader
 export default () => {
-  const app = Router();
+	const app = Router();
 
 	sample(app);
 

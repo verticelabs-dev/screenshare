@@ -5,7 +5,7 @@ import controllers from '../api/controllers';
 import helmet from 'helmet';
 import config from '../config';
 
-export default ({ app }: { app: express.Application, db }) => {
+export default ({ app }: { app: express.Application }) => {
   /**
    * Health Check endpoints
    */

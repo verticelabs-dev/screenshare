@@ -4,14 +4,13 @@ import socketio from './socketio'
 import db from './database'
 
 export default async ({ expressApp, httpServer }) => {
-
-  const DB = await db();
+  await db();
   console.log('💾 Knex      Initialized 💾');
 
   await logger({ app: expressApp });
   console.log('🌲 Logger    Initialized 🌲');
 
-  await express({ app: expressApp, db: DB });
+  await express({ app: expressApp });
   console.log('🚀 Express   Initialized 🚀');
 
   await socketio({ httpServer })
