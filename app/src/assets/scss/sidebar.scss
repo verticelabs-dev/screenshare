@@ -1,0 +1,57 @@
+.sidebar {
+  background-color: $sidebarPrimaryColor;
+  border-left: 5px solid $sidebarPrimaryColor;
+  border-top-left-radius: 25px;
+  height: 100%;
+}
+
+.sidebar-icons {
+  min-width: 50px;
+}
+
+.sidebar-content {
+  @apply pl-10 pt-14 placeholder-indigo-100;
+  width: 100%;
+  background-color: $sidebarSecondaryColor;
+}
+
+.sidebar-icon {
+  @apply mr-4 mt-10 cursor-pointer;
+  min-height: 24px;
+  min-width: 24px;
+  color: $sidebarSecondaryColor;
+
+  &.active {
+    color: white;
+  }
+}
+
+$waveBorderRadius: 120px;
+.sidebar-wave {
+  position: relative;
+
+  .sidebar-wave-content {
+    display: flex;
+    align-items: center;
+    top: -126px;
+    left: 31px;
+    height: 200px;
+    width: 200px;
+    transform: rotate(280deg);
+    padding-left: 30px;
+    position: absolute;
+
+    path {
+      @apply shadow-lg;
+    }
+  }
+
+  .sidebar-wave-icon {
+    position: absolute;
+    top: -19px;
+    left: 48px;
+    height: 6px;
+    width: 6px;
+    z-index: 200;
+  }
+}

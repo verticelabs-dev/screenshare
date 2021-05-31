@@ -1,6 +1,16 @@
 .streamControlBar {
-  height: 2.5rem;
+  height: 3.5rem;
   display: flex;
+  position: absolute;
+  bottom: 0px;
+  background-color: #414155;
+  width: 90%;
+
+  @apply items-center;
+
+  :first-child {
+    margin-left: 10px;
+  }
 
   .circle-btn {
     @apply rounded-full shadow-lg cursor-pointer justify-center h-10 w-10;
@@ -10,7 +20,7 @@
     background-color: rgba(255, 255, 255, 0.45);
 
     &:not(:nth-child(0)) {
-      @apply mr-2
+      @apply mr-2;
     }
 
     & .red {
@@ -22,8 +32,7 @@
     }
 
     svg {
-      @apply h-full
-
+      @apply h-full;
     }
   }
 }

@@ -1,14 +1,27 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Display from "../views/Display";
+
+import JoinRoom from "../views/JoinRoom";
+import MeetingRoom from "../views/MeetingRoom";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Display",
-    component: Display
+    name: "MeetingRoom",
+    component: MeetingRoom,
+    meta: {
+      sideapp: true
+    }
+  },
+  {
+    path: "/join",
+    name: "JoinRoom",
+    component: JoinRoom,
+    meta: {
+      sideapp: false
+    }
   }
 ];
 
