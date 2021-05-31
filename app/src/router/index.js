@@ -1,14 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Display from "../views/Display";
+import MeetingRoom from "../views/MeetingRoom";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Display",
-    component: Display
+    name: "MeetingRoom",
+    component: MeetingRoom
   }
 ];
 

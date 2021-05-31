@@ -6,7 +6,7 @@
 
     <!-- Render out the Grid -->
     <div class="mt-4 ml-4">
-      <Grid />
+      <GridContainer />
     </div>
   </div>
 </template>
@@ -14,13 +14,13 @@
 <script>
 import { mapState } from "vuex";
 
-import Grid from "./Grid";
+import GridContainer from "../components/grid/GridContainer";
 import RoomControl from "../components/RoomControl";
 
 export default {
   components: {
-    Grid,
-    RoomControl
+    RoomControl,
+    GridContainer
   },
   props: {},
   created() {
