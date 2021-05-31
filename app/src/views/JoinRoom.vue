@@ -4,7 +4,7 @@
     <div class="text-lg mb-6">Create or Join a room to get started</div>
 
     <JoinRoomControl />
-    <div class="text-2xl my-6">Or</div>
+    <div class="text-2xl my-6">OR</div>
     <CreateRoomControl />
   </div>
 </template>

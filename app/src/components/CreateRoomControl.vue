@@ -45,6 +45,28 @@ export default {
         userInfo.joinRequest = true;
         self.initPeer(true, userInfo);
       });
+
+      socket.on("token", token => {
+        this.token = token;
+      });
+
+      socket.on("error", err => {
+        console.error(err);
+      });
+
+      // A peer is sending a singal ( We may or may not know about them already )
+      socket.on("room:signal", signalData => {
+        const matchingPeer = self.peers.find(d => d._peerID === signalData.id);
+
+        if (matchingPeer) {
+          matchingPeer.signal(signalData.signal);
+        } else {
+          self.initPeer(false, {
+            id: signalData.id,
+            signal: signalData.signal
+          });
+        }
+      });
     }
   }
 };
