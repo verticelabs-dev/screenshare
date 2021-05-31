@@ -31,6 +31,16 @@ export default {
     jwtSecret: String(process.env.JWT_SECRET)
   },
 
+  /**
+   * Auth configs
+   */
+  auth: {
+    cookie: 'sessionToken'
+  },
+
+  /**
+   * Database configs
+   */
   db: {
     client: "postgresql",
     connection: {
