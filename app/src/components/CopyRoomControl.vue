@@ -23,6 +23,23 @@ export default {
   },
   data() {
     return {};
+  },
+  methods: {
+    copyRoomCode() {
+      let copyRoomCode = document.querySelector("#roomCode");
+      copyRoomCode.setAttribute("type", "text");
+      copyRoomCode.select();
+
+      try {
+        document.execCommand("copy");
+        console.log("Copied room code");
+      } catch (err) {
+        console.error("Failed to copy room code");
+      }
+
+      copyRoomCode.setAttribute("type", "hidden");
+      window.getSelection().removeAllRanges();
+    }
   }
 };
 </script>

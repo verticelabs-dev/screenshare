@@ -24,21 +24,6 @@ export default {
     initPeer(initiator, userInfo) {
       this.$store.dispatch("peer/initPeer", { initiator, userInfo });
     },
-    copyRoomCode() {
-      let copyRoomCode = document.querySelector("#roomCode");
-      copyRoomCode.setAttribute("type", "text");
-      copyRoomCode.select();
-
-      try {
-        document.execCommand("copy");
-        console.log("Copied room code");
-      } catch (err) {
-        console.error("Failed to copy room code");
-      }
-
-      copyRoomCode.setAttribute("type", "hidden");
-      window.getSelection().removeAllRanges();
-    },
     createRoom() {
       const self = this;
       const socket = self.$socket;
@@ -48,6 +33,8 @@ export default {
         self.$store.dispatch("peer/setRoomCode", {
           roomCode: roomInfo.roomCode
         });
+
+        this.$router.push("/");
       });
 
       //- Triggers socket room to start - could pass auth here
@@ -58,8 +45,6 @@ export default {
         userInfo.joinRequest = true;
         self.initPeer(true, userInfo);
       });
-
-      this.$route.push("/");
     }
   }
 };

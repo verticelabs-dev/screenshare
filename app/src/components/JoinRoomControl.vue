@@ -39,7 +39,12 @@ export default {
 
       // you have been accepted into the room so start connecting to all the users
       socket.on("room:join:request:answer", roomInfo => {
-        self.initPeer(false, roomInfo); //-room owner
+        const initiator = false;
+        this.$store.dispatch("peer/initPeer", {
+          initiator,
+          userInfo: roomInfo
+        });
+
         roomInfo.connectedUsers.forEach(d => {
           self.initPeer(true, { id: d }); // any connected users
         });
@@ -47,6 +52,9 @@ export default {
 
       // triggers when initially joining a room
       socket.emit("room:join", { roomCode: roomCode });
+
+      // TODO: Add some error handling in case we can't connect
+      this.$router.push("/");
     }
   }
 };

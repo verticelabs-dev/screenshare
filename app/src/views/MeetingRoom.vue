@@ -18,6 +18,18 @@ import CopyRoomControl from "../components/CopyRoomControl";
 import GridContainer from "../components/grid/GridContainer";
 
 export default {
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      const roomCode = vm.$store.state.peer.roomCode;
+
+      if (!roomCode) {
+        console.log("trig");
+        return next("/join");
+      }
+
+      return next();
+    });
+  },
   components: {
     GridContainer,
     CopyRoomControl
@@ -47,8 +59,7 @@ export default {
     });
   },
   computed: {
-    ...mapState(["roomCode"]),
-    ...mapState("peer", ["peers"]),
+    ...mapState("peer", ["peers", "roomCode"]),
     ...mapGetters(["peer/userInMeeting"])
   },
   data() {
