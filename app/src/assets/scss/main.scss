@@ -12,6 +12,12 @@
 @import "card";
 @import "sidebar";
 
+body {
+  height: 100vh;
+  color: #ffffff;
+  background-color: #636378;
+}
+
 .tooltip {
   @apply invisible absolute;
 }

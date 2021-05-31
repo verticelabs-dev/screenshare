@@ -1,7 +1,25 @@
 <template>
-  <div class="flex flex-col align-middle" style="max-width: 1200px">
+  <div class="flex flex-row align-middle items-center">
+    <!-- Join Room -->
+    <div>
+      <input
+        placeholder="Enter Room Code"
+        class="input"
+        type="text"
+        v-model="localRoomCode"
+        @keyup.enter="joinRoom(localRoomCode)"
+      />
+      <button
+        class="btn btn-sm btn-primary"
+        @click="joinRoom(localRoomCode)"
+        :disabled="roomCode"
+      >
+        Join Room
+      </button>
+    </div>
+
     <!-- Create Room -->
-    <div class="flex flex-row">
+    <div class="flex flex-row ml-4">
       <button
         class="btn btn-sm btn-primary pr-4"
         @click="createRoom"
@@ -19,23 +37,6 @@
         :disabled="!roomCode"
       >
         Copy
-      </button>
-    </div>
-    <!-- Join Room -->
-    <div class="mt-4">
-      <input
-        placeholder="Enter Room Code"
-        class="input"
-        type="text"
-        v-model="localRoomCode"
-        @keyup.enter="joinRoom(localRoomCode)"
-      />
-      <button
-        class="btn btn-sm btn-primary"
-        @click="joinRoom(localRoomCode)"
-        :disabled="roomCode"
-      >
-        Join Room
       </button>
     </div>
   </div>

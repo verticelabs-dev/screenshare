@@ -1,26 +1,18 @@
 <template>
   <div>
-    <div class="flex flex-row justify-center mt-5">
+    <div class="flex flex-row mt-5 ml-4">
       <RoomControl />
     </div>
 
-    <div class="flex flex-row justify-center mt-5">
-      <button class="btn btn-sm btn-primary" @click="handleStartStreaming">
-        Start Streaming
-      </button>
-    </div>
-
     <!-- Render out the Grid -->
-    <template>
+    <div class="mt-4 ml-4">
       <Grid />
-    </template>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-
-import { getCaptureScreen } from "../services/StreamCaptureService";
 
 import Grid from "./Grid";
 import RoomControl from "../components/RoomControl";
@@ -28,24 +20,24 @@ import RoomControl from "../components/RoomControl";
 export default {
   components: {
     Grid,
-    RoomControl,
+    RoomControl
   },
   props: {},
   created() {
     const self = this;
     const socket = self.$socket;
 
-    socket.on("token", (token) => {
+    socket.on("token", token => {
       this.token = token;
     });
 
-    socket.on("error", (err) => {
+    socket.on("error", err => {
       console.error(err);
     });
 
     // A peer is sending a singal ( We may or may not know about them already )
-    socket.on("room:signal", (signalData) => {
-      const matchingPeer = self.peers.find((d) => d._peerID === signalData.id);
+    socket.on("room:signal", signalData => {
+      const matchingPeer = self.peers.find(d => d._peerID === signalData.id);
 
       if (matchingPeer) {
         matchingPeer.signal(signalData.signal);
@@ -55,34 +47,19 @@ export default {
     });
   },
   computed: {
-    ...mapState('peer', ['peers']),
-    ...mapState(['roomCode'])
+    ...mapState("peer", ["peers"]),
+    ...mapState(["roomCode"])
   },
   data() {
     return {
-      token: "",
+      token: ""
     };
   },
   methods: {
     initPeer(initiator, userInfo) {
       this.$store.dispatch("peer/initPeer", { initiator, userInfo });
-    },
-    async handleStartStreaming() {
-      const captureStream = await getCaptureScreen({
-        video: true,
-        audio: true,
-      });
-
-      const video = document.getElementById("You");
-      if (video && captureStream) {
-        video.srcObject = captureStream;
-        video.play();
-      }
-
-      this.$store.dispatch("peer/setVideoStream", { videoStream: captureStream });
-
-    },
-  },
+    }
+  }
 };
 </script>
 

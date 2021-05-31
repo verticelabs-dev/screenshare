@@ -1,16 +1,22 @@
 <template>
-  <div class="flex flex-row">
+  <div class="flex flex-row" style="height: 100%">
     <Sidebar />
-    <router-view />
+
+    <div>
+      <router-view />
+      <StreamControlBar />
+    </div>
   </div>
 </template>
 
 <script>
 import Sidebar from "./components/Sidebar";
+import StreamControlBar from "./components/grid/streamControlBar";
 
 export default {
   components: {
-    Sidebar
+    Sidebar,
+    StreamControlBar
   },
   data() {
     return {};

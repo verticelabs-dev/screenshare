@@ -1,8 +1,10 @@
 <template>
-  <div class="transition ease-in-out duration-300" style="height: calc(100vh - 196px);">
+  <div
+    class="transition ease-in-out duration-300"
+    style="height: calc(100vh - 196px)"
+  >
     <!-- Grid View -->
     <div class="grid grid-cols-3 gap-4">
-
       <Card
         :hide-close="true"
         @expanded="cardExpand"
@@ -14,26 +16,23 @@
         :peer="peer"
       />
     </div>
-    <streamControlBar />
   </div>
 </template>
 
 <script>
 import Card from "./Card";
-import streamControlBar from "./streamControlBar";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   components: {
-    Card,
-    streamControlBar
+    Card
   },
   computed: {
-    ...mapState('peer', ['peers'])
+    ...mapState("peer", ["peers"])
   },
   data() {
     return {
-      activeScreenId: false,
+      activeScreenId: false
     };
   },
   methods: {
@@ -42,8 +41,8 @@ export default {
     },
     cardExpand(screemId) {
       this.activeScreenId = this.activeScreenId === screemId ? false : screemId;
-    },
-  },
+    }
+  }
 };
 </script>
 
