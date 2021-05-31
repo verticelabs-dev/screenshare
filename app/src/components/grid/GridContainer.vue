@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- Grid Display -->
-    <div class="flex flex-row justify-center">
+    <div class="flex flex-row justify-start">
       <ScreenGrid />
     </div>
   </div>
 </template>
 
 <script>
-import ScreenGrid from "../components/grid/ScreenGrid";
+import ScreenGrid from "./ScreenGrid";
 
 export default {
   props: [],
@@ -19,5 +19,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../assets/scss/grid/main.scss";
+// @import "../../../assets/scss/grid/main.scss";
+@import "../../assets/scss/grid/main.scss";
 </style>

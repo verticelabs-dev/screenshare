@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "lib/colors.scss";
 @import "lib/input.scss";
 @import "lib/button.scss";
 @import "lib/borders.scss";
@@ -9,7 +10,13 @@
 // Page Specfic
 @import "display";
 @import "card";
+@import "sidebar";
 
+body {
+  height: 100vh;
+  color: #ffffff;
+  background-color: #1e1e24;
+}
 
 .tooltip {
   @apply invisible absolute;
