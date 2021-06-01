@@ -9,7 +9,7 @@ export class auth {
     if (!token) {
       // If they don't have a token assume they are a guest
       token = authHelper.generateJwt({});
-      res.cookie(config.auth.cookie, token, { maxAge: 900000, httpOnly: true });
+      res.cookie(config.auth.cookie, token, { maxAge: 900000 });
       res.locals.auth = {};
       return next();
     }
