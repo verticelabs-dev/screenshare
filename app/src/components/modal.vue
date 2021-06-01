@@ -2,7 +2,7 @@
   <transition name="modal">
     <div class="modal-mask" v-on:click="$emit('close')">
       <div class="modal-wrapper">
-        <div :class="`modal-container ${getModalSizeClass}`">
+        <div :class="`modal-container ${getModalSizeClass}`" v-on:click.stop>
           <button type="button" class="close-btn" @click="$emit('close')">
             X
           </button>
@@ -15,10 +15,12 @@
             <slot name="body"> This is the default body! </slot>
           </section>
 
-          <footer class="modal-footer" slot="footer">
-            <button type="button" class="btn" @click="$emit('close')">
-              Close
-            </button>
+          <footer class="modal-footer">
+            <slot name="footer">
+              <button class="btn btn-sm btn-primary" @click="$emit('close')">
+                Close
+              </button>
+            </slot>
           </footer>
         </div>
       </div>
