@@ -15,10 +15,9 @@
             <slot name="body"> This is the default body! </slot>
           </section>
 
-          <footer class="modal-footer">
-            <slot name="footer"></slot>
-            <button type="button" class="btn-green" @click="$emit('close')">
-              Close Modal
+          <footer class="modal-footer" slot="footer">
+            <button type="button" class="btn" @click="$emit('close')">
+              Close
             </button>
           </footer>
         </div>

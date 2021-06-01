@@ -26,13 +26,36 @@
 }
 .modal-container {
   margin: 0px auto;
-  padding: 20px 30px;
+  padding: 20px 8px 8px;
   min-height: 35px;
   background-color: #636378;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.2s ease;
   position: relative;
+
+  .modal-header {
+    color: #1e1e24;
+    font-weight: 700;
+    font-size: 1.25em;
+    padding-bottom: 0.5em;
+  }
+
+  .modal-body {
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+  }
+
+  .modal-footer {
+    padding-top: 0.5em;
+    text-align: end;
+
+    button {
+      border: solid #fff 1px;
+      padding: 0.2em;
+      border-radius: 10px;
+    }
+  }
 }
 
 .modal-enter {
