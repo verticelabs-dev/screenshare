@@ -5,7 +5,7 @@ import { db } from '@loaders/database'
 
 export class sampleService {
   public async ping() {
-    logger.info('We made it to the service')
-    return await db('users').select()
+    // await db('users').select()
+    return {}
   }
 }

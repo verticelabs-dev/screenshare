@@ -1,7 +1,9 @@
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
+// import { logger } from '@loaders/logger'
+import { db } from '@loaders/database'
 
-export class authHelper {
+export class authService {
   static hashPassword(pwd) {
     return argon2.hash(pwd, { type: argon2.argon2i });
   }
@@ -26,11 +28,23 @@ export class authHelper {
   }
 
   static logout() {
-
   }
 
-  static login() {
-    // res.cookie(config.auth.cookie, 'BIG OL TEST', { maxAge: 900000, httpOnly: true });
+  static async login(email: string, password: string) {
+    const user: user = await db('users').select().where('email', email).first()
+
+    if (!user) {
+      throw new Error('Not today')
+    }
+
+    const isValid = await authService.verifyPassword(user.password, password)
+
+    if (!isValid) {
+      throw new Error('Not today')
+    }
+
+    user.password = undefined;
+
+    return user
   }
 }
-
