@@ -4,18 +4,20 @@
 
     <div class="w-full">
       <router-view />
+
+      <StreamControlBar />
     </div>
   </div>
 </template>
 
 <script>
 import Sidebar from "./components/Sidebar";
-// import StreamControlBar from "./components/grid/streamControlBar";
+import StreamControlBar from "./components/grid/StreamControlBar";
 
 export default {
   components: {
-    Sidebar
-    // StreamControlBar
+    Sidebar,
+    StreamControlBar
   },
   data() {
     return {};
