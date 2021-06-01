@@ -17,9 +17,6 @@ export default {
   components: {
     JoinRoomControl,
     CreateRoomControl
-  },
-  data() {
-    return {};
   }
 };
 </script>

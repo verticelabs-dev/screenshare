@@ -1,11 +1,18 @@
 <template>
-  <div class="flex flex-row">
-    <div class="room-code-box">
-      <span class="text-center align-middle pt-1">Code: {{ roomCode }}</span>
+  <div class="flex flex-row justify-center">
+    <div
+      class="room-code-box flex flex-row align-middle items-center"
+      :class="{
+        'border-gray-400': !showGreenBorder,
+        'border-green-400': showGreenBorder
+      }"
+    >
+      <span class="text-center ml-3 mr-3">Code: {{ roomCode }}</span>
+      <!-- Hidden input for copying text from -->
       <input type="hidden" id="roomCode" :value="roomCode" />
     </div>
     <button
-      class="btn btn-sm btn-primary ml-1"
+      class="btn copy-btn btn-primary ml-1"
       @click="copyRoomCode"
       :disabled="!roomCode"
     >
@@ -22,10 +29,21 @@ export default {
     ...mapState("peer", ["roomCode", "peers"])
   },
   data() {
-    return {};
+    return {
+      showGreenBorder: false
+    };
   },
   methods: {
+    toggleGreenBorder() {
+      this.showGreenBorder = true;
+
+      setTimeout(() => {
+        this.showGreenBorder = false;
+      }, 1000);
+    },
     copyRoomCode() {
+      this.toggleGreenBorder();
+
       let copyRoomCode = document.querySelector("#roomCode");
       copyRoomCode.setAttribute("type", "text");
       copyRoomCode.select();
@@ -43,4 +61,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.room-code-box {
+  max-width: 330px;
+  @apply rounded border-2 border-dashed;
+}
+
+.copy-btn {
+  @apply font-bold text-xs;
+  @apply px-5 py-3 mr-1;
+}
+</style>

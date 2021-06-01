@@ -40,15 +40,6 @@ export default {
 
       this.$store.dispatch("peer/setRoomCode", { roomCode });
 
-      // you have been accepted into the room so start connecting to all the users
-      socket.on("room:join:request:answer", roomInfo => {
-        self.initPeer(false, roomInfo);
-
-        roomInfo.connectedUsers.forEach(d => {
-          self.initPeer(true, { id: d }); // any connected users
-        });
-      });
-
       // triggers when initially joining a room
       socket.emit("room:join", { roomCode: roomCode });
 
