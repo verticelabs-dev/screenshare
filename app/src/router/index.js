@@ -12,7 +12,8 @@ const routes = [
     name: "MeetingRoom",
     component: MeetingRoom,
     meta: {
-      sideapp: true
+      sideapp: true,
+      sidebar: true
     }
   },
   {
@@ -20,7 +21,7 @@ const routes = [
     name: "JoinRoom",
     component: JoinRoom,
     meta: {
-      sideapp: false
+      sidebar: false
     }
   }
 ];

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row justify-center">
+  <div class="copy-room-container flex flex-row justify-center">
     <div
       class="room-code-box flex flex-row align-middle items-center"
       :class="{
@@ -64,7 +64,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+.copy-room-container {
+  @apply h-10;
+}
+
 .room-code-box {
   max-width: 330px;
   @apply rounded border-2 border-dashed;
