@@ -47,46 +47,53 @@
         <MeetingAgenda />
       </div>
     </div>
+    <Modal v-if="showUser" v-on:close="showUser = false" />
   </div>
 </template>
 
 <script>
 import MeetingAgenda from "./sideapps/MeetingAgenda";
+import Modal from "./modal";
 
 const sidebarIcons = [
   {
-    name: "home"
+    name: "user-circle",
   },
   {
-    name: "calendar"
+    name: "home",
   },
   {
-    name: "video"
+    name: "calendar",
   },
   {
-    name: "user-friends"
+    name: "video",
   },
   {
-    name: "cogs"
+    name: "user-friends",
   },
   {
-    name: "question-circle"
-  }
+    name: "cogs",
+  },
+  {
+    name: "question-circle",
+  },
 ];
 
 export default {
   components: {
-    MeetingAgenda
+    MeetingAgenda,
+    Modal,
   },
   computed: {
     canShowSideapp() {
       return this.$route.meta.sideapp;
-    }
+    },
   },
   data() {
     return {
       sidebarIcons,
-      activeIconName: "video"
+      activeIconName: "video",
+      showUser: false,
     };
   },
   methods: {
@@ -94,9 +101,14 @@ export default {
       return this.activeIconName === iconName;
     },
     setActiveIcon(iconName) {
+      if (iconName === "user-circle") {
+        this.showUser = true;
+        return;
+      }
+
       this.activeIconName = iconName;
-    }
-  }
+    },
+  },
 };
 </script>
 
