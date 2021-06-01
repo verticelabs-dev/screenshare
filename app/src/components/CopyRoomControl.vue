@@ -12,11 +12,11 @@
       <input type="hidden" id="roomCode" :value="roomCode" />
     </div>
     <button
-      class="btn copy-btn btn-primary ml-1"
+      class="btn btn-primary copy-btn ml-2"
       @click="copyRoomCode"
       :disabled="!roomCode"
     >
-      Copy
+      {{ copyButtonText }}
     </button>
   </div>
 </template>
@@ -26,7 +26,10 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState("peer", ["roomCode", "peers"])
+    ...mapState("peer", ["roomCode", "peers"]),
+    copyButtonText() {
+      return this.showGreenBorder ? "Copied!" : "Copy";
+    }
   },
   data() {
     return {
