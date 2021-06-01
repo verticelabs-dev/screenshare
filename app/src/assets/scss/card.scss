@@ -1,6 +1,5 @@
 .card {
-  border-color: $sidebarSecondaryColor;
-  @apply justify-self-auto flex content-start flex-col shadow rounded-lg border overflow-hidden;
+  @apply justify-self-auto flex content-start flex-col shadow rounded-lg border-2 overflow-hidden;
 
   .card-header {
     background-color: $sidebarSecondaryColor;

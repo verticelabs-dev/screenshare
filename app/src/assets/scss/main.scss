@@ -26,3 +26,7 @@ body {
   @apply visible z-50 w-max rounded shadow-lg p-1 bg-gray-100 text-black -mt-8;
   user-select: none;
 }
+
+.border-secondary {
+  border-color: $sidebarSecondaryColor;
+}
