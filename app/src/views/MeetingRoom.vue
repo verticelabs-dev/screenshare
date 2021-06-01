@@ -18,7 +18,7 @@ import CopyRoomControl from "../components/CopyRoomControl";
 import GridContainer from "../components/grid/GridContainer";
 
 export default {
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(_to, _from, next) {
     next(vm => {
       const roomCode = vm.$store.state.peer.roomCode;
 
@@ -36,16 +36,6 @@ export default {
   computed: {
     ...mapState("peer", ["peers", "roomCode"]),
     ...mapGetters(["peer/userInMeeting"])
-  },
-  data() {
-    return {
-      token: ""
-    };
-  },
-  methods: {
-    initPeer(initiator, userInfo) {
-      this.$store.dispatch("peer/initPeer", { initiator, userInfo });
-    }
   }
 };
 </script>

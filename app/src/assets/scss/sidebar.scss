@@ -1,18 +1,22 @@
+$waveBorderRadius: 120px;
+
 .sidebar {
+  @apply rounded;
   background-color: $sidebarPrimaryColor;
-  border-left: 5px solid $sidebarPrimaryColor;
-  border-top-left-radius: 25px;
   height: 100%;
 }
 
-.sidebar-icons {
-  min-width: 50px;
+.sidebar-icon-container {
+  max-width: 58px;
 }
 
 .sidebar-content {
+  @apply rounded;
   @apply pl-10 pt-14 placeholder-indigo-100;
   width: 100%;
+  min-width: 200px;
   background-color: $sidebarSecondaryColor;
+  border-top-left-radius: 0px;
 }
 
 .sidebar-icon {
@@ -26,11 +30,10 @@
   }
 }
 
-$waveBorderRadius: 120px;
 .sidebar-wave {
   position: relative;
 
-  .sidebar-wave-content {
+  .sidebar-wave-svg {
     display: flex;
     align-items: center;
     top: -126px;

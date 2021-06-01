@@ -4,7 +4,7 @@
       <!-- Icon List -->
       <div
         class="
-          sidebar-icons
+          sidebar-icon-container
           flex flex-col
           justify-start
           content-center
@@ -13,19 +13,24 @@
         "
       >
         <!-- Icon Item -->
-        <div class="" v-for="icon in sidebarIcons" :key="icon.name">
+        <div v-for="icon in sidebarIcons" :key="icon.name">
           <font-awesome-icon
             :icon="icon.name"
             class="sidebar-icon"
             :class="{ active: isActiveIcon(icon.name) }"
             @click="setActiveIcon(icon.name)"
           />
+
+          <!-- Sidarbar Wave on active icons -->
           <div v-if="isActiveIcon(icon.name)" class="sidebar-wave">
+            <!-- Green Button next to wave -->
             <font-awesome-icon
               class="text-green-500 sidebar-wave-icon"
               icon="circle"
             />
-            <svg class="sidebar-wave-content">
+
+            <!-- Wave Shape -->
+            <svg class="sidebar-wave-svg">
               <path
                 d="M 12 0 C 7.5 0 8 4 5 4 S 2.5 0 -2 0 z"
                 stroke="#636378"
@@ -33,9 +38,6 @@
                 transform="rotate(-10 100 -80) scale(6)"
               />
             </svg>
-            <!-- <div class="sidebar-wave-content">
-              
-            </div> -->
           </div>
         </div>
       </div>
