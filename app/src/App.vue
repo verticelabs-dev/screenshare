@@ -22,6 +22,13 @@ export default {
       return this.$route.meta.sidebar;
     }
   },
+  async mounted() {
+    try {
+      console.log("YEET", await this.$axios.get("/ping"));
+    } catch (error) {
+      console.error(error);
+    }
+  },
   data() {
     return {};
   }

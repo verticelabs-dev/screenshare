@@ -1,15 +1,15 @@
 import { Socket } from "socket.io";
 import { nanoid } from 'nanoid';
-import {verify, sign} from 'jsonwebtoken';
-import config from '../../config';
+// import { verify, sign } from 'jsonwebtoken';
+// import config from '../../config';
 
 const cache = {}
 const basicErrorMessage = "you have not been accepted to the room";
 // { [roomCode]: { ownerSocketID: "", connectedUsers: []}}
 
 export default (socket: Socket) => {
-  const authToken = sign({ firstName: 'Test', id: 'test' }, config.api.jwtSecret);// - sign user data
-  socket.emit('token', authToken);
+  // const authToken = sign({ firstName: 'Test', id: 'test' }, config.api.jwtSecret);// - sign user data
+  // socket.emit('token', authToken);
 
   // comes from room owner
   socket.on("room:create", (data: any) => {
@@ -20,13 +20,13 @@ export default (socket: Socket) => {
   });
 
   // comes from another peer
-  socket.on("room:join", function(data: any) {
+  socket.on("room:join", function (data: any) {
     const cacheData = cache[data.roomCode]
 
     if (cacheData) {
       cacheData.connectingUsers.push(socket.id)
       // const token = sign({ firstName: 'Test', id: socket.id }, config.api.jwtSecret);// - sign user data
-      socket.to(cacheData.ownerSocketID).emit('room:join:request', {id: socket.id})
+      socket.to(cacheData.ownerSocketID).emit('room:join:request', { id: socket.id })
     }
   });
 
@@ -51,11 +51,11 @@ export default (socket: Socket) => {
 
     // filter out own socket.id and the room owners id
     const connectedUsers = cacheData.connectedUsers.filter(d => d !== socket.id && d !== connectTrue)
-    socket.to(connectTrue).emit('room:join:request:answer', {id: socket.id, signal: data.signal, connectedUsers})
+    socket.to(connectTrue).emit('room:join:request:answer', { id: socket.id, signal: data.signal, connectedUsers })
   })
 
   // comes from anyone
-  socket.on("room:stream:create", function(data: any) {
+  socket.on("room:stream:create", function (data: any) {
     // console.log('GOT STREAM', data)
     const cacheData = cache[data.roomCode];
 
@@ -75,11 +75,11 @@ export default (socket: Socket) => {
 
     socket.join(data.roomCode);
 
-    socket.broadcast.to(sendTo).emit('room:signal', {signal: data.signal, id: socket.id})
+    socket.broadcast.to(sendTo).emit('room:signal', { signal: data.signal, id: socket.id })
   });
 
   // comes from another peer
-  socket.on("room:join:answer", function(data: any) {
+  socket.on("room:join:answer", function (data: any) {
     const cacheData = cache[data.roomCode];
 
     if (!cacheData) {

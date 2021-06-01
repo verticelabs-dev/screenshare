@@ -11,11 +11,13 @@
 @import "display";
 @import "card";
 @import "sidebar";
+@import "modal";
 
 body {
   height: 100vh;
   color: #ffffff;
   background-color: #1e1e24;
+  font-family: sans-serif;
 }
 
 .tooltip {

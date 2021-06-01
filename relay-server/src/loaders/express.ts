@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import cookieParser from 'cookie-parser'
 import controllers from '../api/controllers';
 import helmet from 'helmet';
 import config from '../config';
@@ -29,6 +30,9 @@ export default ({ app }: { app: express.Application }) => {
 
   // Middleware that transforms the raw body to req.body into json
   app.use(bodyParser.json());
+
+  // Middleware that transforms the cookies into json
+  app.use(cookieParser());
 
   // Load API routes
   app.use(config.api.prefix, controllers());

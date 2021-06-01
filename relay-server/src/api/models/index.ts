@@ -1,1 +1,0 @@
-// export * as sample from './sampleTable'
