@@ -6,7 +6,7 @@
 
     <!-- Render out the Grid -->
     <div class="mt-4 ml-4">
-      <GridContainer />
+      <ScreenGrid />
     </div>
   </div>
 </template>
@@ -14,8 +14,8 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 
+import ScreenGrid from "../components/grid/ScreenGrid";
 import CopyRoomControl from "../components/CopyRoomControl";
-import GridContainer from "../components/grid/GridContainer";
 
 export default {
   beforeRouteEnter(_to, _from, next) {
@@ -30,7 +30,7 @@ export default {
     });
   },
   components: {
-    GridContainer,
+    ScreenGrid,
     CopyRoomControl
   },
   computed: {
