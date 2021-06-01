@@ -1,4 +1,5 @@
 import Vue from "vue";
+import "./plugins/axios";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -19,7 +20,7 @@ import {
   faUserFriends,
   faCogs,
   faQuestionCircle,
-  faCheckCircle
+  faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {} from "@fortawesome/fontawesome-svg-core";
@@ -39,7 +40,7 @@ library.add([
   faUserFriends,
   faCogs,
   faQuestionCircle,
-  faCheckCircle
+  faCheckCircle,
 ]);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
@@ -51,5 +52,5 @@ Vue.prototype.$socket = socket;
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");
