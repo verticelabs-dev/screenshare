@@ -25,6 +25,9 @@ export class auth {
   static socketHook(socket: ExtSocket) {
     socket.prependAny((event, ...args) => {
       const isValid: any = authService.verifyJwt(args[0].sessionToken);
+
+      args[0].sessionToken = undefined;
+
       if (isValid) {
         socket.auth = isValid.data;
       }
