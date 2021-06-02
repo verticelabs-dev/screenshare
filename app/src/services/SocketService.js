@@ -17,7 +17,7 @@ const wrapperFunction = (fn) => {
         return;
       }
 
-      arguments[1].token = getCookie("sessionToken");
+      arguments[1].sessionToken = getCookie("sessionToken");
 
       console.log(arguments[1]);
       fn.apply(this, arguments);

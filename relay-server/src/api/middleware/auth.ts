@@ -10,14 +10,6 @@ export class auth {
       return next();
     }
 
-    if (!token) {
-      // If they don't have a token assume they are a guest
-      token = authService.generateJwt({});
-      res.cookie(config.auth.cookie, token, { maxAge: 900000 });
-      res.locals.auth = {};
-      return next();
-    }
-
     const auth = authService.verifyJwt(token);
     res.locals.auth = auth;
 

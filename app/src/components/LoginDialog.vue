@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Modal v-on:close="close" v-if="!user">
+    <Modal v-on:close="close" v-if="!user.id">
       <template v-slot:header> Login </template>
       <template v-slot:body>
         <div>
