@@ -1,18 +1,14 @@
-import { Socket } from "socket.io";
 import { nanoid } from 'nanoid';
-// import { verify, sign } from 'jsonwebtoken';
-// import config from '../../config';
+import { ExtSocket } from "src/models/socket";
 
 const cache = {}
 const basicErrorMessage = "you have not been accepted to the room";
 // { [roomCode]: { ownerSocketID: "", connectedUsers: []}}
 
-export default (socket: Socket) => {
-  // const authToken = sign({ firstName: 'Test', id: 'test' }, config.api.jwtSecret);// - sign user data
-  // socket.emit('token', authToken);
-
+export default (socket: ExtSocket) => {
   // comes from room owner
   socket.on("room:create", (data: any) => {
+    console.log(socket.auth)
     const responseData = { roomCode: nanoid() }
     cache[responseData.roomCode] = { ownerSocketID: socket.id, connectedUsers: [socket.id], connectingUsers: [] }
     socket.join(responseData.roomCode);

@@ -1,6 +1,7 @@
 import config from "../../config";
 import { authService } from "../services/auth";
 import { Request, Response } from "express";
+import { ExtSocket } from "src/models/socket";
 
 export class auth {
   static expressHook(req: Request, res: Response, next) {
@@ -19,5 +20,14 @@ export class auth {
     }
 
     next();
+  }
+
+  static socketHook(socket: ExtSocket) {
+    socket.prependAny((event, ...args) => {
+      const isValid: any = authService.verifyJwt(args[0].sessionToken);
+      if (isValid) {
+        socket.auth = isValid.data;
+      }
+    });
   }
 }
