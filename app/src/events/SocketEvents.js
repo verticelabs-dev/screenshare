@@ -14,7 +14,6 @@ socket.once("room:newID", (roomInfo) => {
 // you have been accepted into the room so start connecting to all the users
 socket.on("room:join:request:answer", (roomInfo) => {
   initPeer(false, roomInfo);
-  console.log("NEW STREAM USER INFO: ", roomInfo.userInfo);
 
   roomInfo.connectedUsers.forEach((d) => {
     initPeer(true, { id: d }); // any connected users
@@ -28,10 +27,6 @@ socket.on("room:join:request", (userInfo) => {
   initPeer(true, userInfo);
 });
 
-socket.on("token", (token) => {
-  console.log("got token", token);
-});
-
 socket.on("error", (err) => {
   console.error(err);
 });
@@ -42,13 +37,14 @@ socket.on("room:signal", (signalData) => {
     (d) => d._peerID === signalData.id
   );
 
-  console.log("NEW STREAM USER INFO: ", signalData.userInfo);
   if (matchingPeer) {
+    if (signalData.user) matchingPeer._user = signalData.user;
     matchingPeer.signal(signalData.signal);
   } else {
     initPeer(false, {
       id: signalData.id,
       signal: signalData.signal,
+      user: signalData.user,
     });
   }
 });

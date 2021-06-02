@@ -1,7 +1,18 @@
 <template>
-  <div :class="{ 'card': true, 'screen-grid-item-lg': peer._peerID === activeScreenId }">
+  <div
+    :class="{
+      card: true,
+      'screen-grid-item-lg': peer._peerID === activeScreenId,
+    }"
+  >
     <div class="card-header">
-      <div class="text-white mb-1 mt-1 ml-4">{{ peer._peerID }}</div>
+      <div class="text-white mb-1 mt-1 ml-4">
+        {{
+          peer._user && peer._user.full_name
+            ? peer._user.full_name
+            : peer._peerID
+        }}
+      </div>
 
       <!-- Top Right Control Buttons -->
       <div>
@@ -20,18 +31,15 @@
         ></div>
 
         <!-- Mute Button -->
-        <div
-          @click="toggleMute"
-          class="circle-btn"
-        >
-          <font-awesome-icon icon="volume-mute" v-if="muted"/>
-          <font-awesome-icon icon="volume-up" v-else/>
+        <div @click="toggleMute" class="circle-btn">
+          <font-awesome-icon icon="volume-mute" v-if="muted" />
+          <font-awesome-icon icon="volume-up" v-else />
         </div>
       </div>
     </div>
 
     <div class="card-video">
-      <video :id="peer._peerID" :muted="muted ? 'muted': ''"></video>
+      <video :id="peer._peerID" :muted="muted ? 'muted' : ''"></video>
     </div>
   </div>
 </template>
@@ -47,7 +55,7 @@ export default {
   mounted() {
     const self = this;
 
-    if (!self.peer || self.peer._peerID === "You") return
+    if (!self.peer || self.peer._peerID === "You") return;
 
     self.peer.on("stream", (stream) => {
       self.renderStream(stream);
@@ -55,16 +63,16 @@ export default {
 
     // const stream = self.peer.streams[0];
     // self.peer.on("track", (track) => {
-      // console.log('HIT', track)
-      // if (track.kind === "video" && stream) {
-      //   self.renderStream(stream);
-      // }
+    // console.log('HIT', track)
+    // if (track.kind === "video" && stream) {
+    //   self.renderStream(stream);
+    // }
     // });
   },
   data() {
     return {
       renderingStream: false,
-      muted: false
+      muted: false,
     };
   },
   methods: {
@@ -74,12 +82,12 @@ export default {
         video.srcObject = stream;
         video.play();
       } else {
-        console.log("Tried rendering stream", video , stream, this.peer);
+        console.log("Tried rendering stream", video, stream, this.peer);
       }
     },
     toggleMute() {
-      this.muted = !this.muted
-    }
+      this.muted = !this.muted;
+    },
   },
 };
 </script>

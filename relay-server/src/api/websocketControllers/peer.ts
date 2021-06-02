@@ -31,7 +31,6 @@ export default (socket: ExtSocket) => {
   // comes from room owner - sends offer signal
   socket.on("room:join:request:answer", async (data: any) => {
     const cacheData = cache[data.roomCode]
-    // const token: any = verify(data.token, config.api.jwtSecret)
 
     if (!cacheData) {
       return socket.emit('error', basicErrorMessage)
@@ -50,24 +49,24 @@ export default (socket: ExtSocket) => {
     // filter out own socket.id and the room owners id
     const connectedUsers = [...(await socket.in(data.roomCode).allSockets()).values()].filter(d => d !== socket.id && d !== connectTrue);
 
-    const userInfo = {
+    const user = {
+      id: socket.id,
       full_name: '',
       first_name: '',
       last_name: '',
     }
 
     if (socket.auth && socket.auth.id) {
-      userInfo.full_name = socket.auth.full_name;
-      userInfo.first_name = socket.auth.first_name;
-      userInfo.last_name = socket.auth.last_name;
+      user.full_name = socket.auth.full_name;
+      user.first_name = socket.auth.first_name;
+      user.last_name = socket.auth.last_name;
     }
 
-    socket.to(connectTrue).emit('room:join:request:answer', { id: socket.id, signal: data.signal, connectedUsers, userInfo })
+    socket.to(connectTrue).emit('room:join:request:answer', { id: socket.id, signal: data.signal, connectedUsers, user })
   })
 
   // comes from anyone
   socket.on("room:stream:create", function (data: any) {
-    // console.log('GOT STREAM', data)
     const cacheData = cache[data.roomCode];
 
     if (!cacheData) {
@@ -82,24 +81,22 @@ export default (socket: ExtSocket) => {
 
     const sendTo = cacheData.connectedUsers.find(d => d === data.token.id)
 
-    // const token: any = verify(data.token, config.api.jwtSecret)
-
     socket.join(data.roomCode);
 
-
-    const userInfo = {
+    const user = {
+      id: socket.id,
       full_name: '',
       first_name: '',
       last_name: '',
     }
 
     if (socket.auth && socket.auth.id) {
-      userInfo.full_name = socket.auth.full_name;
-      userInfo.first_name = socket.auth.first_name;
-      userInfo.last_name = socket.auth.last_name;
+      user.full_name = socket.auth.full_name;
+      user.first_name = socket.auth.first_name;
+      user.last_name = socket.auth.last_name;
     }
 
-    socket.broadcast.to(sendTo).emit('room:signal', { signal: data.signal, id: socket.id, userInfo })
+    socket.broadcast.to(sendTo).emit('room:signal', { signal: data.signal, id: socket.id, user })
   });
 
   // comes from another peer
