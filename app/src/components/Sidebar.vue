@@ -47,45 +47,14 @@
         <MeetingAgenda />
       </div>
     </div>
-    <Modal v-if="showUser" v-on:close="showUser = false">
-      <template v-slot:header> Login </template>
-      <template v-slot:body>
-        <div>
-          <label for="email" class="block font-medium">Email</label>
-          <input
-            type="text"
-            name="email"
-            id="email"
-            autocomplete="email"
-            class="mt-1 block w-full shadow-md rounded-md text-gray-700"
-          />
 
-          <br />
-
-          <label for="password" class="block font-medium">Password</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            class="mt-1 block w-full shadow-md rounded-md text-gray-700"
-          />
-        </div>
-      </template>
-      <template v-slot:footer>
-        <button
-          class="mt-4 btn btn-sm w-full btn-primary"
-          @click="showUser = false"
-        >
-          Login
-        </button>
-      </template>
-    </Modal>
+    <LoginDialog v-if="showUser" v-on:close="showUser = false" />
   </div>
 </template>
 
 <script>
+import LoginDialog from "./LoginDialog.vue";
 import MeetingAgenda from "./sideapps/MeetingAgenda";
-import Modal from "./modal";
 
 const sidebarIcons = [
   {
@@ -114,7 +83,7 @@ const sidebarIcons = [
 export default {
   components: {
     MeetingAgenda,
-    Modal,
+    LoginDialog,
   },
   computed: {
     canShowSideapp() {
