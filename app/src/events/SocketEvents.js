@@ -5,47 +5,50 @@ function initPeer(initiator, userInfo) {
   store.dispatch("peer/initPeer", { initiator, userInfo });
 }
 
-socket.once("room:newID", roomInfo => {
+socket.once("room:newID", (roomInfo) => {
   store.dispatch("peer/setRoomCode", {
-    roomCode: roomInfo.roomCode
+    roomCode: roomInfo.roomCode,
   });
 });
 
 // you have been accepted into the room so start connecting to all the users
-socket.on("room:join:request:answer", roomInfo => {
+socket.on("room:join:request:answer", (roomInfo) => {
   initPeer(false, roomInfo);
+  console.log("NEW STREAM USER INFO: ", roomInfo.userInfo);
 
-  roomInfo.connectedUsers.forEach(d => {
+  roomInfo.connectedUsers.forEach((d) => {
     initPeer(true, { id: d }); // any connected users
   });
 });
 
 // Another user is trying to join the room - auto accept
-socket.on("room:join:request", userInfo => {
+socket.on("room:join:request", (userInfo) => {
   userInfo.joinRequest = true;
+
   initPeer(true, userInfo);
 });
 
-socket.on("token", token => {
+socket.on("token", (token) => {
   console.log("got token", token);
 });
 
-socket.on("error", err => {
+socket.on("error", (err) => {
   console.error(err);
 });
 
 // A peer is sending a singal ( We may or may not know about them already )
-socket.on("room:signal", signalData => {
+socket.on("room:signal", (signalData) => {
   const matchingPeer = store.state.peer.peers.find(
-    d => d._peerID === signalData.id
+    (d) => d._peerID === signalData.id
   );
 
+  console.log("NEW STREAM USER INFO: ", signalData.userInfo);
   if (matchingPeer) {
     matchingPeer.signal(signalData.signal);
   } else {
     initPeer(false, {
       id: signalData.id,
-      signal: signalData.signal
+      signal: signalData.signal,
     });
   }
 });
