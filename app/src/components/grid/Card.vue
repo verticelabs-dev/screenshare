@@ -7,11 +7,7 @@
   >
     <div class="card-header">
       <div class="text-white mb-1 mt-1 ml-4">
-        {{
-          peer._user && peer._user.full_name
-            ? peer._user.full_name
-            : peer._peerID
-        }}
+        {{ getStreamName }}
       </div>
 
       <!-- Top Right Control Buttons -->
@@ -50,8 +46,22 @@
 export default {
   props: ["id", "peer", "hideClose", "hideExpand", "activeScreenId"],
   components: {},
-  watch: {},
-  computed: {},
+  watch: {
+    peer: {
+      handler: function (peer) {
+        this.streamName =
+          peer._user && peer._user.full_name
+            ? peer._user.full_name
+            : peer._peerID;
+      },
+      deep: true,
+    },
+  },
+  computed: {
+    getStreamName() {
+      return this.streamName || this.peer._peerID;
+    },
+  },
   mounted() {
     const self = this;
 
@@ -73,6 +83,7 @@ export default {
     return {
       renderingStream: false,
       muted: false,
+      streamName: "",
     };
   },
   methods: {
