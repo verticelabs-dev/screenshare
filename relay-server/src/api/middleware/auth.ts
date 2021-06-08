@@ -1,20 +1,13 @@
 import config from "../../config";
 import { authService } from "../services/auth";
 import { Request, Response } from "express";
+import { ExtSocket } from "src/models/socket";
 
 export class auth {
   static expressHook(req: Request, res: Response, next) {
     let token = req.cookies[config.auth.cookie];
 
     if (req.url === '/login') {
-      return next();
-    }
-
-    if (!token) {
-      // If they don't have a token assume they are a guest
-      token = authService.generateJwt({});
-      res.cookie(config.auth.cookie, token, { maxAge: 900000 });
-      res.locals.auth = {};
       return next();
     }
 
@@ -27,5 +20,17 @@ export class auth {
     }
 
     next();
+  }
+
+  static socketHook(socket: ExtSocket) {
+    socket.prependAny((event, ...args) => {
+      const isValid: any = authService.verifyJwt(args[0].sessionToken);
+
+      args[0].sessionToken = undefined;
+
+      if (isValid) {
+        socket.auth = isValid.data;
+      }
+    });
   }
 }

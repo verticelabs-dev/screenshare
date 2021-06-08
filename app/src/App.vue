@@ -24,9 +24,12 @@ export default {
   },
   async mounted() {
     try {
-      console.log("YEET", await this.$axios.get("/ping"));
+      // If user already has a session it will send back the user info
+      // or if they don't have a session it will return guest account
+      const result = await this.$axios.post("/login", {});
+      this.$store.dispatch("user/setUser", result.data);
     } catch (error) {
-      console.error(error);
+      // if it fails assume that the API is down
     }
   },
   data() {

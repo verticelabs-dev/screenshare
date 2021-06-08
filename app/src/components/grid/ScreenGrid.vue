@@ -27,14 +27,14 @@ import { mapState } from "vuex";
 
 export default {
   components: {
-    Card
+    Card,
   },
   computed: {
-    ...mapState("peer", ["peers"])
+    ...mapState("peer", ["peers"]),
   },
   data() {
     return {
-      activeScreenId: false
+      activeScreenId: false,
     };
   },
   methods: {
@@ -43,8 +43,8 @@ export default {
     },
     cardExpand(screemId) {
       this.activeScreenId = this.activeScreenId === screemId ? false : screemId;
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -2,6 +2,7 @@ import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 // import { logger } from '@loaders/logger'
 import { db } from '@loaders/database'
+import { User } from 'src/models/user';
 
 export class authService {
   static hashPassword(pwd) {
@@ -31,7 +32,7 @@ export class authService {
   }
 
   static async login(email: string, password: string) {
-    const user: user = await db('users').select().where('email', email).first()
+    const user: User = await db('users').select().where('email', email).first()
 
     if (!user) {
       throw new Error('Not today')

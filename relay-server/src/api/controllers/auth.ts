@@ -12,6 +12,15 @@ export default (app: Router) => {
   route.post('/login', async (req: Request, res: Response) => {
     const body = req.body;
 
+    if (req.cookies.sessionToken && !body.email && !body.password) {
+      const user: any = authService.verifyJwt(req.cookies.sessionToken);
+
+      if (user && typeof user === 'object') {
+        // they already have a valid session
+        return res.status(200).send(user.data);
+      }
+    }
+
     try {
       if (!body.email || typeof body.email !== 'string') throw new Error('Email required')
       if (!body.password || typeof body.password !== 'string') throw new Error('Password required')
@@ -26,7 +35,11 @@ export default (app: Router) => {
 
       return res.status(200).send(user);
     } catch (error) {
-      return res.status(403).send({ message: error.message });
+      // If they don't have a token assume they are a guest
+      const token = authService.generateJwt({});
+      res.cookie(config.auth.cookie, token, { maxAge: 900000 });
+
+      return res.status(200).send({});
     }
   });
 

@@ -1,13 +1,14 @@
 <template>
   <div
-    class="card border"
     :class="{
-      'screen-grid-item-lg': peer._peerID === activeScreenId,
-      [borderByAudioLevel]: true
+      card: true,
+      'screen-grid-item-lg': peer._peerID === activeScreenId
     }"
   >
     <div class="card-header">
-      <div class="text-white mb-1 mt-1 ml-4">{{ peer._peerID }}</div>
+      <div class="text-white mb-1 mt-1 ml-4">
+        {{ getStreamName }}
+      </div>
 
       <!-- Top Right Control Buttons -->
       <div>
@@ -33,11 +34,8 @@
       </div>
     </div>
 
-    <div class="card-video" v-if="false">
+    <div class="card-video">
       <video :id="peer._peerID" :muted="muted ? 'muted' : ''"></video>
-    </div>
-    <div class="flex items-center align-middle justify-center h-full" v-else>
-      <h1>You</h1>
     </div>
   </div>
 </template>
@@ -50,44 +48,45 @@
 export default {
   props: ["id", "peer", "hideClose", "hideExpand", "activeScreenId"],
   components: {},
-  watch: {},
-  computed: {
-    borderByAudioLevel() {
-      if (this.audioLevel == 0.0) {
-        return "border-secondary";
-      }
-
-      if (this.audioLevel >= 0.02) {
-        return "border-green-500";
-      }
-
-      return "border-secondary";
+  watch: {
+    peer: {
+      handler: function (peer) {
+        this.streamName =
+          peer._user && peer._user.full_name
+            ? peer._user.full_name
+            : peer._peerID;
+      },
+      deep: true
     }
   },
-  async mounted() {
+  computed: {
+    getStreamName() {
+      return this.streamName || this.peer._peerID;
+    }
+  },
+  mounted() {
     const self = this;
 
-    if (!self.peer || self.peer._peerID === "You") {
-      return;
-    }
+    if (!self.peer || self.peer._peerID === "You") return;
 
     self.peer.on("stream", stream => {
       self.renderStream(stream);
     });
 
     // const stream = self.peer.streams[0];
-    // self.peer.on("track", track => {
+    // self.peer.on("track", (track) => {
     // console.log('HIT', track)
     // if (track.kind === "video" && stream) {
     //   self.renderStream(stream);
     // }
-    //});
+    // });
   },
   data() {
     return {
       audioLevel: 0,
       renderingStream: false,
-      muted: false
+      muted: false,
+      streamName: ""
     };
   },
   methods: {
