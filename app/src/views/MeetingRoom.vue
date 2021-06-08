@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div class="flex mt-5 ml-4">
+    <div class="flex flex-row items-center ml-4">
       <CopyRoomControl />
+      <StreamControlBar class="ml-6" />
     </div>
 
     <!-- Render out the Grid -->
     <div class="mt-4 ml-4">
-      <GridContainer />
+      <ScreenGrid />
     </div>
   </div>
 </template>
@@ -14,8 +15,9 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 
+import ScreenGrid from "../components/grid/ScreenGrid";
 import CopyRoomControl from "../components/CopyRoomControl";
-import GridContainer from "../components/grid/GridContainer";
+import StreamControlBar from "../components/grid/StreamControlBar";
 
 export default {
   beforeRouteEnter(_to, _from, next) {
@@ -30,8 +32,9 @@ export default {
     });
   },
   components: {
-    GridContainer,
-    CopyRoomControl
+    ScreenGrid,
+    CopyRoomControl,
+    StreamControlBar
   },
   computed: {
     ...mapState("peer", ["peers", "roomCode"]),

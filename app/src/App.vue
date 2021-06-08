@@ -1,6 +1,8 @@
 <template>
   <div class="flex flex-row" style="height: 100vh">
-    <Sidebar />
+    <transition name="slide-fade">
+      <Sidebar v-if="canShowSideBar" />
+    </transition>
 
     <div class="w-full">
       <router-view />
@@ -10,12 +12,15 @@
 
 <script>
 import Sidebar from "./components/Sidebar";
-// import StreamControlBar from "./components/grid/streamControlBar";
 
 export default {
   components: {
-    Sidebar,
-    // StreamControlBar
+    Sidebar
+  },
+  computed: {
+    canShowSideBar() {
+      return this.$route.meta.sidebar;
+    }
   },
   async mounted() {
     try {
@@ -29,8 +34,22 @@ export default {
   },
   data() {
     return {};
-  },
+  }
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+</style>

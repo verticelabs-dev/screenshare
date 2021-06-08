@@ -101,4 +101,34 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.streamControlBar {
+  height: 3.5rem;
+  display: flex;
+
+  @apply items-center;
+
+  .circle-btn {
+    @apply rounded-full shadow-lg cursor-pointer justify-center h-10 w-10;
+    position: relative;
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.45);
+
+    &:not(:nth-child(0)) {
+      @apply mr-2;
+    }
+
+    & .red {
+      color: rgb(208 0 0);
+    }
+
+    & .green {
+      color: rgb(0 208 0);
+    }
+
+    svg {
+      @apply h-full;
+    }
+  }
+}
+</style>

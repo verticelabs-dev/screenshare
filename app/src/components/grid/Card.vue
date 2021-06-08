@@ -2,7 +2,7 @@
   <div
     :class="{
       card: true,
-      'screen-grid-item-lg': peer._peerID === activeScreenId,
+      'screen-grid-item-lg': peer._peerID === activeScreenId
     }"
   >
     <div class="card-header">
@@ -42,6 +42,8 @@
 
 <script>
 // import { mapState } from "vuex";
+// import { getAudioLevels } from "../../services/SoundMeter";
+// import { getAudioInput } from "../../services/StreamCaptureService";
 
 export default {
   props: ["id", "peer", "hideClose", "hideExpand", "activeScreenId"],
@@ -54,20 +56,20 @@ export default {
             ? peer._user.full_name
             : peer._peerID;
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   computed: {
     getStreamName() {
       return this.streamName || this.peer._peerID;
-    },
+    }
   },
   mounted() {
     const self = this;
 
     if (!self.peer || self.peer._peerID === "You") return;
 
-    self.peer.on("stream", (stream) => {
+    self.peer.on("stream", stream => {
       self.renderStream(stream);
     });
 
@@ -81,9 +83,10 @@ export default {
   },
   data() {
     return {
+      audioLevel: 0,
       renderingStream: false,
       muted: false,
-      streamName: "",
+      streamName: ""
     };
   },
   methods: {
@@ -98,9 +101,12 @@ export default {
     },
     toggleMute() {
       this.muted = !this.muted;
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style></style>
+<style>
+.card {
+}
+</style>

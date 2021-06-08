@@ -1,20 +1,22 @@
 <template>
-  <div
-    class="transition ease-in-out duration-300"
-    style="height: calc(100vh - 196px)"
-  >
-    <!-- Grid View -->
-    <div class="grid grid-cols-3 gap-4">
-      <Card
-        :hide-close="true"
-        @expanded="cardExpand"
-        class="screen-grid-item"
-        v-for="peer in peers"
-        :activeScreenId="activeScreenId"
-        :key="peer._peerID"
-        :id="peer._peerID"
-        :peer="peer"
-      />
+  <div class="flex flex-row justify-start">
+    <div
+      class="transition ease-in-out duration-300 mr-6"
+      style="height: calc(100vh - 196px); flex-basis: 100%"
+    >
+      <!-- Grid View -->
+      <div class="grid grid-cols-4 gap-8">
+        <Card
+          :hide-close="true"
+          @expanded="cardExpand"
+          class="screen-grid-item"
+          v-for="peer in peers"
+          :activeScreenId="activeScreenId"
+          :key="peer._peerID"
+          :id="peer._peerID"
+          :peer="peer"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -47,6 +49,8 @@ export default {
 </script>
 
 <style>
+@import "../../assets/scss/grid/main.scss";
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
