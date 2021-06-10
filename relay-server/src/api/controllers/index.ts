@@ -1,8 +1,9 @@
 import { Router } from 'express';
+import { auth } from '../middleware'
 
 import sample from './sample';
 import authRouter from './auth';
-import { auth } from '../middleware'
+import userRouter from './user';
 
 // guaranteed to get dependencies due to the loader
 export default () => {
@@ -13,6 +14,8 @@ export default () => {
 	sample(app);
 
 	authRouter(app);
+
+	userRouter(app)
 
 	return app
 }
