@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-row" style="height: 100vh">
+  <div class="flex flex-row" style="height: 100vh" v-if="user">
     <transition name="slide-fade">
-      <Sidebar v-if="canShowSideBar" />
+      <Sidebar v-if="canShowSideBar && (roomCode || user.id)" />
     </transition>
 
     <div class="w-full">
@@ -12,29 +12,43 @@
 
 <script>
 import Sidebar from "./components/Sidebar";
+import { mapState } from "vuex";
 
 export default {
   components: {
-    Sidebar
+    Sidebar,
   },
   computed: {
     canShowSideBar() {
       return this.$route.meta.sidebar;
-    }
+    },
+    ...mapState("user", ["user"]),
+    ...mapState("peer", ["roomCode"]),
   },
-  async mounted() {
+  async beforeMount() {
     try {
       // If user already has a session it will send back the user info
       // or if they don't have a session it will return guest account
       const result = await this.$axios.post("/login", {});
       this.$store.dispatch("user/setUser", result.data);
+      console.log("USER: ", result.data);
     } catch (error) {
       // if it fails assume that the API is down
     }
   },
+  // async mounted() {
+  //   try {
+  //     // If user already has a session it will send back the user info
+  //     // or if they don't have a session it will return guest account
+  //     const result = await this.$axios.post("/login", {});
+  //     this.$store.dispatch("user/setUser", result.data);
+  //   } catch (error) {
+  //     // if it fails assume that the API is down
+  //   }
+  // },
   data() {
     return {};
-  }
+  },
 };
 </script>
 

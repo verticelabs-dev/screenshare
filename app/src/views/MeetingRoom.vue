@@ -21,10 +21,11 @@ import StreamControlBar from "../components/grid/StreamControlBar";
 
 export default {
   beforeRouteEnter(_to, _from, next) {
-    next(vm => {
+    next((vm) => {
       const roomCode = vm.$store.state.peer.roomCode;
+      const user = vm.$store.state.user.user;
 
-      if (!roomCode) {
+      if (!roomCode && !user.id) {
         return next("/join");
       }
 
@@ -34,12 +35,12 @@ export default {
   components: {
     ScreenGrid,
     CopyRoomControl,
-    StreamControlBar
+    StreamControlBar,
   },
   computed: {
     ...mapState("peer", ["peers", "roomCode"]),
-    ...mapGetters(["peer/userInMeeting"])
-  }
+    ...mapGetters(["peer/userInMeeting"]),
+  },
 };
 </script>
 
