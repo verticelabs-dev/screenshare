@@ -83,8 +83,10 @@ export default {
         const loggedIn = await this.$axios.post("/login", data);
         this.$store.dispatch("user/setUser", loggedIn.data);
 
+        this.$emit("loggedIn", true);
         this.close();
       } catch (error) {
+        this.$emit("loggedIn", false);
         console.error(error);
       }
     },
