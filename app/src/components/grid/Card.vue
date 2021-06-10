@@ -2,7 +2,7 @@
   <div
     :class="{
       card: true,
-      'screen-grid-item-lg': peer._peerID === activeScreenId
+      'screen-grid-item-lg': peer._peerID === activeScreenId,
     }"
   >
     <div class="card-header">
@@ -56,20 +56,20 @@ export default {
             ? peer._user.full_name
             : peer._peerID;
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   computed: {
     getStreamName() {
       return this.streamName || this.peer._peerID;
-    }
+    },
   },
   mounted() {
     const self = this;
 
     if (!self.peer || self.peer._peerID === "You") return;
 
-    self.peer.on("stream", stream => {
+    self.peer.on("stream", (stream) => {
       self.renderStream(stream);
     });
 
@@ -86,7 +86,7 @@ export default {
       audioLevel: 0,
       renderingStream: false,
       muted: false,
-      streamName: ""
+      streamName: "",
     };
   },
   methods: {
@@ -96,13 +96,13 @@ export default {
         video.srcObject = stream;
         video.play();
       } else {
-        console.log("Tried rendering stream", video, stream, this.peer);
+        console.error("Failed to render stream");
       }
     },
     toggleMute() {
       this.muted = !this.muted;
-    }
-  }
+    },
+  },
 };
 </script>
 

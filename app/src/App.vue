@@ -31,21 +31,10 @@ export default {
       // or if they don't have a session it will return guest account
       const result = await this.$axios.post("/login", {});
       this.$store.dispatch("user/setUser", result.data);
-      console.log("USER: ", result.data);
     } catch (error) {
       // if it fails assume that the API is down
     }
   },
-  // async mounted() {
-  //   try {
-  //     // If user already has a session it will send back the user info
-  //     // or if they don't have a session it will return guest account
-  //     const result = await this.$axios.post("/login", {});
-  //     this.$store.dispatch("user/setUser", result.data);
-  //   } catch (error) {
-  //     // if it fails assume that the API is down
-  //   }
-  // },
   data() {
     return {};
   },
