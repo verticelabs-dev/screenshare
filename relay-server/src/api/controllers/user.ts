@@ -17,7 +17,7 @@ export default (app: Router) => {
 
       const userID = parseInt(query.userID)
 
-      const relationships = await userService.getRelationships(userID);
+      const relationships = await userService.getFriends(userID);
 
       return res.status(200).send(relationships);
     } catch (error) {
