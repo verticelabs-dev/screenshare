@@ -14,10 +14,22 @@ import JoinRoomControl from "../components/JoinRoomControl";
 import CreateRoomControl from "../components/CreateRoomControl";
 
 export default {
+  beforeRouteEnter(_to, _from, next) {
+    next((vm) => {
+      const roomCode = vm.$store.state.peer.roomCode;
+      const user = vm.$store.state.user.user;
+
+      if (roomCode || user.id) {
+        return next("/");
+      }
+
+      return next();
+    });
+  },
   components: {
     JoinRoomControl,
-    CreateRoomControl
-  }
+    CreateRoomControl,
+  },
 };
 </script>
 
