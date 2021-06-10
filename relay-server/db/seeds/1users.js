@@ -22,5 +22,14 @@ exports.seed = async function (knex) {
       last_name: "Moorlag",
       full_name: "Travier Moorlag",
     },
+    {
+      id: 3,
+      password,
+      username: "codyJay",
+      email: "test2@test.com",
+      first_name: "Cody",
+      last_name: "Jay",
+      full_name: "Cody Jay",
+    },
   ]);
 };
