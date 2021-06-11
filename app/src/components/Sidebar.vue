@@ -44,7 +44,8 @@
 
       <!-- Sidebar App -->
       <div class="sidebar-content float-right" v-if="canShowSideapp">
-        <MeetingAgenda />
+        <MeetingAgenda v-if="activeIconName === 'video'" />
+        <Friends v-if="activeIconName === 'user-friends'" />
       </div>
     </div>
 
@@ -55,6 +56,7 @@
 <script>
 import LoginDialog from "./LoginDialog.vue";
 import MeetingAgenda from "./sideapps/MeetingAgenda";
+import Friends from "./sideapps/Friends";
 import { mapState } from "vuex";
 
 const sidebarIcons = [
@@ -83,8 +85,9 @@ const sidebarIcons = [
 
 export default {
   components: {
-    MeetingAgenda,
     LoginDialog,
+    MeetingAgenda,
+    Friends,
   },
   computed: {
     canShowSideapp() {
