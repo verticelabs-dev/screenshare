@@ -12,23 +12,11 @@
 @import "card";
 @import "sidebar";
 @import "modal";
+@import "tooltip";
 
 body {
   height: 100vh;
   color: #ffffff;
   background-color: #1e1e24;
   font-family: sans-serif;
-}
-
-.tooltip {
-  @apply invisible absolute;
-}
-
-.has-tooltip:hover .tooltip {
-  @apply visible z-50 w-max rounded shadow-lg p-1 bg-gray-100 text-black -mt-8;
-  user-select: none;
-}
-
-.border-secondary {
-  border-color: $sidebarSecondaryColor;
 }

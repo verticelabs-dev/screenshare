@@ -2,46 +2,46 @@
   <div class="streamControlBar">
     <!-- Mute Button -->
     <div @click="toggleDeafen" class="circle-btn has-tooltip">
-      <span v-if="deafen" class="tooltip">Deafened</span>
+      <span v-if="deafen" class="tooltip bottom">Deafened</span>
       <font-awesome-icon icon="volume-mute" v-if="deafen" />
 
-      <span v-if="!deafen" class="tooltip">Deafen</span>
+      <span v-if="!deafen" class="tooltip bottom">Deafen</span>
       <font-awesome-icon icon="volume-up" v-if="!deafen" />
     </div>
 
     <!-- Mic Button -->
     <div @click="toggleMicMute" class="circle-btn has-tooltip">
-      <span v-if="micMute" class="tooltip">Muted</span>
+      <span v-if="micMute" class="tooltip bottom">Muted</span>
       <font-awesome-icon icon="microphone-alt-slash" v-if="micMute" />
 
-      <span v-if="!micMute" class="tooltip">Mute Mic</span>
+      <span v-if="!micMute" class="tooltip bottom">Mute Mic</span>
       <font-awesome-icon icon="microphone-alt" v-if="!micMute" />
     </div>
 
     <!-- Video Button -->
     <div @click="toggleVideo" class="circle-btn has-tooltip ml-4">
-      <span v-if="video" class="tooltip">Video On</span>
+      <span v-if="video" class="tooltip bottom">Video On</span>
       <font-awesome-icon icon="video" v-if="video" />
 
-      <span v-if="!video" class="tooltip">Video Off</span>
+      <span v-if="!video" class="tooltip bottom">Video Off</span>
       <font-awesome-icon icon="video-slash" v-if="!video" />
     </div>
 
     <!-- Screen Share Button -->
     <div @click="toggleScreenShare" class="circle-btn has-tooltip">
-      <div v-if="screenShare" class="tooltip">Sharing Screen</div>
+      <div v-if="screenShare" class="tooltip bottom">Sharing Screen</div>
       <font-awesome-icon icon="tv" v-if="screenShare" class="green" />
 
-      <div v-if="!screenShare" class="tooltip">Screen Share</div>
+      <div v-if="!screenShare" class="tooltip bottom">Screen Share</div>
       <font-awesome-icon icon="tv" v-if="!screenShare" />
     </div>
 
     <!-- Record Button -->
     <div @click="toggleRecord" class="circle-btn has-tooltip">
-      <span v-if="record" class="tooltip">Recording</span>
+      <span v-if="record" class="tooltip bottom">Recording</span>
       <font-awesome-icon icon="circle" v-if="record" class="red" />
 
-      <span v-if="!record" class="tooltip">Record</span>
+      <span v-if="!record" class="tooltip bottom">Record</span>
       <font-awesome-icon icon="circle" v-if="!record" />
     </div>
   </div>
@@ -58,7 +58,7 @@ export default {
       micMute: false,
       video: false,
       screenShare: false,
-      record: false
+      record: false,
     };
   },
   methods: {
@@ -84,7 +84,7 @@ export default {
     async handleStartStreaming() {
       const captureStream = await getCaptureScreen({
         video: true,
-        audio: true
+        audio: true,
       });
 
       const video = document.getElementById("You");
@@ -94,10 +94,10 @@ export default {
       }
 
       this.$store.dispatch("peer/setVideoStream", {
-        videoStream: captureStream
+        videoStream: captureStream,
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
