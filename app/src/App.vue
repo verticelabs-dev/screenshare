@@ -32,6 +32,7 @@ export default {
       const result = await this.$axios.post("/login", {});
       this.$store.dispatch("user/setUser", result.data);
     } catch (error) {
+      console.error("No user set!");
       // if it fails assume that the API is down
     }
   },
