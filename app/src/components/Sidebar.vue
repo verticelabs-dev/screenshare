@@ -55,6 +55,7 @@
 <script>
 import LoginDialog from "./LoginDialog.vue";
 import MeetingAgenda from "./sideapps/MeetingAgenda";
+import { mapState } from "vuex";
 
 const sidebarIcons = [
   {
@@ -89,6 +90,7 @@ export default {
     canShowSideapp() {
       return this.$route.meta.sideapp;
     },
+    ...mapState("user", ["user"]),
   },
   data() {
     return {
@@ -102,7 +104,11 @@ export default {
       return this.activeIconName === iconName;
     },
     setActiveIcon(iconName) {
-      if (iconName === "user-circle") {
+      if (
+        (iconName === "user-circle" || !this.user.id) &&
+        iconName !== "question-circle" &&
+        iconName !== "video"
+      ) {
         this.showUser = true;
         return;
       }
