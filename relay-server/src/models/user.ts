@@ -12,11 +12,10 @@ export interface User {
   updated_at: string | undefined;
 }
 
-export interface UserFriends {
+export interface Friend {
   status: number | undefined;
   user_id: number | undefined;
   friend_id: number | undefined;
   status_name: string | undefined;
-  user_full_name: string | undefined;
   friend_full_name: string | undefined;
 }

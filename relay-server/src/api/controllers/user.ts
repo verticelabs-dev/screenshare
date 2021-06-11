@@ -13,7 +13,7 @@ export default (app: Router) => {
     const user = res.locals.auth.data;
 
     try {
-      if (!user || !user.id) throw new Error('User must be loggedin')
+      if (!user || !user.id) throw new Error('User must be logged in')
 
       const userID = parseInt(user.id)
 
