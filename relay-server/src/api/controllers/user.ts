@@ -10,12 +10,12 @@ export default (app: Router) => {
   app.use('/user', route);
 
   route.get('/friends', async (req, res) => {
-    const query = req.query;
+    const user = res.locals.auth.data;
 
     try {
-      if (!query.userID || typeof query.userID !== 'string') throw new Error('userID in the query is required')
+      if (!user || !user.id) throw new Error('User must be loggedin')
 
-      const userID = parseInt(query.userID)
+      const userID = parseInt(user.id)
 
       const relationships = await userService.getFriends(userID);
 

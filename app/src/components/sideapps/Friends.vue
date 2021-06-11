@@ -24,16 +24,24 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   components: {},
+  async mounted() {
+    try {
+      const results = await this.$axios.get("/user/friends");
+
+      this.$store.dispatch("user/setFriends", results.data);
+    } catch (err) {
+      console.error(err);
+    }
+  },
+  computed: {
+    ...mapState("user", ["friends"]),
+  },
   data() {
-    return {
-      friends: [
-        { friend_id: 1, friend_full_name: "Grey Delamar" },
-        { friend_id: 2, friend_full_name: "Travier" },
-        { friend_id: 1, friend_full_name: "Cody Jay" },
-      ],
-    };
+    return {};
   },
 };
 </script>

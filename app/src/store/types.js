@@ -6,6 +6,7 @@ const mutations = {
   SET_AUDIO_STREAM: "SET_AUDIO_STREAM",
   SET_VIDEO_STREAM: "SET_VIDEO_STREAM",
   SET_USER: "SET_USER",
+  SET_FRIENDS: "SET_FRIENDS",
 };
 
 export { mutations };
