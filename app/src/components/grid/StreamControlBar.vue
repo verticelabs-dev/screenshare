@@ -82,20 +82,25 @@ export default {
       this.record = !this.record;
     },
     async handleStartStreaming() {
-      const captureStream = await getCaptureScreen({
-        video: true,
-        audio: true,
-      });
+      try {
+        const captureStream = await getCaptureScreen({
+          video: true,
+          audio: true,
+        });
 
-      const video = document.getElementById("You");
-      if (video && captureStream) {
-        video.srcObject = captureStream;
-        video.play();
+        const video = document.getElementById("You");
+        if (video && captureStream) {
+          video.srcObject = captureStream;
+          video.play();
+        }
+
+        this.$store.dispatch("peer/setVideoStream", {
+          videoStream: captureStream,
+        });
+      } catch (error) {
+        this.screenShare = false;
+        console.error(error);
       }
-
-      this.$store.dispatch("peer/setVideoStream", {
-        videoStream: captureStream,
-      });
     },
   },
 };

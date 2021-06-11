@@ -1,15 +1,5 @@
 export async function getCaptureScreen(displayMediaOptions) {
-  let captureStream = null;
-
-  try {
-    captureStream = await navigator.mediaDevices.getDisplayMedia(
-      displayMediaOptions
-    );
-  } catch (err) {
-    console.error("Error: " + err);
-  }
-
-  return captureStream;
+  return navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
 }
 
 export async function getAudioInput() {
