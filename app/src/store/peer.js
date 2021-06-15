@@ -59,7 +59,7 @@ export default {
     addPeer(context, params) {
       context.commit(mutations.ADD_PEER, params);
     },
-    async initPeer(context, { initiator = true, userInfo = {} }) {
+    async createPeer(context, { initiator = true, userInfo = {} }) {
       let audioStream = context.state.audioStream;
       if (!audioStream) {
         audioStream = await getAudioInput();
@@ -69,7 +69,7 @@ export default {
       const peer = new Peer({ initiator, trickle: false, stream: audioStream });
       peer._peerID = userInfo.id;
       peer._joinRequest = userInfo.joinRequest;
-      if (userInfo.user) peer._user = userInfo.user;
+      peer._user = userInfo.user || {};
 
       if (userInfo.signal) peer.signal(userInfo.signal);
       if (context.state.videoStream) peer.addStream(context.state.videoStream);

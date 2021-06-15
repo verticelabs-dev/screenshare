@@ -115,4 +115,34 @@ export default (socket: ExtSocket) => {
 
     socket.to(cacheData.ownerSocketID).emit('room:signal', data.signal)
   });
+
+  // comes from anyone
+  socket.on("room:log:in", function (data: any) {
+    const cacheData = cache[data.roomCode];
+
+    if (!cacheData) {
+      return socket.emit('error', basicErrorMessage)
+    }
+
+    const connectTrue = cacheData.connectedUsers.find(d => d === socket.id);
+
+    if (!connectTrue) {
+      return socket.emit('error', basicErrorMessage)
+    }
+
+    const user = {
+      id: socket.id,
+      full_name: '',
+      first_name: '',
+      last_name: '',
+    }
+
+    if (socket.auth && socket.auth.id) {
+      user.full_name = socket.auth.full_name;
+      user.first_name = socket.auth.first_name;
+      user.last_name = socket.auth.last_name;
+    }
+
+    socket.broadcast.to(data.roomCode).emit('room:logged:in', { signal: data.signal, id: socket.id, user })
+  });
 };

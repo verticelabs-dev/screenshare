@@ -2,7 +2,7 @@ import store from "../store/index";
 import socket from "../services/SocketService";
 
 function initPeer(initiator, userInfo) {
-  store.dispatch("peer/initPeer", { initiator, userInfo });
+  store.dispatch("peer/createPeer", { initiator, userInfo });
 }
 
 socket.once("room:newID", (roomInfo) => {
@@ -46,5 +46,17 @@ socket.on("room:signal", (signalData) => {
       signal: signalData.signal,
       user: signalData.user,
     });
+  }
+});
+
+socket.once("room:logged:in", (data) => {
+  const matchingPeer = store.state.peer.peers.find(
+    (d) => d._peerID === data.id
+  );
+
+  if (matchingPeer) {
+    if (data.user) {
+      matchingPeer._user = data.user;
+    }
   }
 });

@@ -23,17 +23,14 @@ import { mapState } from "vuex";
 export default {
   components: {},
   computed: {
-    ...mapState("peer", ["roomCode", "peers"])
+    ...mapState("peer", ["roomCode", "peers"]),
   },
   data() {
     return {
-      localRoomCode: ""
+      localRoomCode: "",
     };
   },
   methods: {
-    initPeer(initiator, userInfo) {
-      this.$store.dispatch("peer/initPeer", { initiator, userInfo });
-    },
     joinRoom(roomCode) {
       const self = this;
       const socket = self.$socket;
@@ -45,8 +42,8 @@ export default {
 
       // TODO: Add some error handling in case we can't connect
       this.$router.push("/");
-    }
-  }
+    },
+  },
 };
 </script>
 

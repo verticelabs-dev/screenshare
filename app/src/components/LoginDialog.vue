@@ -59,6 +59,7 @@ export default {
   },
   computed: {
     ...mapState("user", ["user"]),
+    ...mapState("peer", ["roomCode"]),
   },
   data() {
     return {
@@ -84,6 +85,11 @@ export default {
         this.$store.dispatch("user/setUser", loggedIn.data);
 
         this.$emit("loggedIn", true);
+
+        if (this.roomCode) {
+          this.$socket.emit("room:log:in", { roomCode: this.roomCode });
+        }
+
         this.close();
       } catch (error) {
         this.$emit("loggedIn", false);
