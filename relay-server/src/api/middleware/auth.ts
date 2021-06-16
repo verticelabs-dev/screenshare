@@ -16,7 +16,7 @@ export class auth {
 
     if (!auth) {
       // If they have a token but it has been altered decline them
-      return res.send("Not Today");
+      return res.status(403).send("Not Today");
     }
 
     next();

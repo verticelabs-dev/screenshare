@@ -34,6 +34,7 @@ export default {
 
       this.$store.dispatch("user/setFriends", results.data);
     } catch (err) {
+      this.$store.dispatch("user/setFriends", []);
       console.error(err);
     }
   },
