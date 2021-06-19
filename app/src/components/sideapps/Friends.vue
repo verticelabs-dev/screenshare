@@ -6,7 +6,7 @@
       placeholder="Search friends"
       class="my-1 mr-2 text-sm text-gray-900 rounded h-8 p-2"
     />
-    <div class="w-full">
+    <div class="w-full pr-2">
       <div
         v-for="friend in friends"
         :key="friend.friend_id"
