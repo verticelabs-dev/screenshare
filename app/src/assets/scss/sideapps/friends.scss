@@ -1,0 +1,13 @@
+.freinds-list-icon-container {
+  width: 2rem;
+  height: 2.1rem;
+  > p {
+    box-shadow: 0px 0px 6px rgb(16, 185, 129);
+    background-color: rgb(99, 99, 120);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+  }
+}
