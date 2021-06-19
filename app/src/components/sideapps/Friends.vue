@@ -1,33 +1,32 @@
 <template>
-  <div class="flex-grow">
-    <h3 class="font-normal px-2 py-3">Friends</h3>
+  <div class="flex-grow friends">
+    <!-- Title -->
+    <h3 class="freinds-list-title">Friends</h3>
+    <hr class="freinds-list-title-line" />
+
+    <!-- Search -->
     <input
       type="text"
       placeholder="Search friends"
       class="my-1 mr-2 text-sm text-gray-900 rounded h-8 p-2"
     />
-    <div class="w-full pr-2">
+
+    <!-- Friends List -->
+    <div class="friends-list">
       <div
         v-for="friend in friends"
         :key="friend.friend_id"
-        class="flex cursor-pointer justify-center items-end py-0.5"
+        class="friends-list-item"
       >
-        <div class="mr-1 text-center freinds-list-icon-container">
+        <!-- Friend Initals -->
+        <div class="freinds-list-icon-container">
           <p class="p-0">
-            {{
-              friend.friend_full_name
-                .split(" ")
-                .map(function (item) {
-                  return item[0];
-                })
-                .join("")
-            }}
+            {{ getInitals(friend.friend_full_name) }}
           </p>
         </div>
-        <div
-          class="w-4/5 h-10 py-3 px-1"
-          style="border-bottom: 1px #636378 solid"
-        >
+
+        <!-- Friend Info -->
+        <div class="freinds-list-info-container">
           <p>{{ friend.friend_full_name }}</p>
         </div>
       </div>
@@ -55,6 +54,16 @@ export default {
   },
   data() {
     return {};
+  },
+  methods: {
+    getInitals(name) {
+      return name
+        .split(" ")
+        .map(function (item) {
+          return item[0];
+        })
+        .join("");
+    },
   },
 };
 </script>

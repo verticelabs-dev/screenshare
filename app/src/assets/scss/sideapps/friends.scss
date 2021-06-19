@@ -1,13 +1,43 @@
-.freinds-list-icon-container {
-  width: 2rem;
-  height: 2.1rem;
-  > p {
-    box-shadow: 0px 0px 6px rgb(16, 185, 129);
-    background-color: rgb(99, 99, 120);
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 6px;
+.friends {
+  .friends-list {
+    @apply w-full pr-2;
+
+    .friends-list-item {
+      @apply flex cursor-pointer justify-center items-end my-2;
+
+      &:first-child {
+        @apply mt-1 mb-2;
+      }
+
+      .freinds-list-icon-container {
+        @apply mr-1 text-center;
+        width: 2rem;
+        height: 2.1rem;
+
+        > p {
+          box-shadow: 0px 0px 6px rgb(16, 185, 129);
+          background-color: rgb(99, 99, 120);
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 6px;
+        }
+      }
+
+      .freinds-list-info-container {
+        @apply w-4/5 h-10 py-3 px-1;
+
+        border-bottom: 1px #636378 solid;
+      }
+    }
+  }
+
+  .freinds-list-title {
+    @apply font-normal px-2 pt-3 pb-1;
+  }
+
+  .freinds-list-title-line {
+    @apply pb-2 mr-2;
   }
 }
