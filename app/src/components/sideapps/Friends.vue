@@ -9,12 +9,13 @@
       type="text"
       placeholder="Search friends"
       class="my-1 mr-2 text-sm text-gray-900 rounded h-8 p-2"
+      v-model="search"
     />
 
     <!-- Friends List -->
     <div class="friends-list">
       <div
-        v-for="friend in friends"
+        v-for="friend in filteredList"
         :key="friend.friend_id"
         class="friends-list-item"
       >
@@ -51,9 +52,18 @@ export default {
   },
   computed: {
     ...mapState("user", ["friends"]),
+    filteredList() {
+      return (this.friends || []).filter((friend) => {
+        return friend.friend_full_name
+          .toLowerCase()
+          .includes(this.search.toLowerCase());
+      });
+    },
   },
   data() {
-    return {};
+    return {
+      search: "",
+    };
   },
   methods: {
     getInitals(name) {
