@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { getCaptureScreen } from "../../services/StreamCaptureService";
 
 export default {
@@ -61,27 +62,29 @@ export default {
       record: false,
     };
   },
+  computed: {
+    ...mapState("peer", ["audioStream", "videoStream"]),
+  },
   methods: {
     toggleDeafen() {
       this.deafen = !this.deafen;
     },
     toggleMicMute() {
-      this.micMute = !this.micMute;
+      const stream = this.videoStream || this.audioStream;
+      const audioTrack = stream.getAudioTracks();
+
+      if (audioTrack.length > 0) {
+        this.micMute = !this.micMute;
+        audioTrack[0].enabled = !this.micMute;
+      }
     },
     toggleVideo() {
       this.video = !this.video;
     },
-    toggleScreenShare() {
-      this.screenShare = !this.screenShare;
-
-      if (this.screenShare) {
-        this.handleStartStreaming();
-      }
-    },
     toggleRecord() {
       this.record = !this.record;
     },
-    async handleStartStreaming() {
+    async toggleScreenShare() {
       try {
         const captureStream = await getCaptureScreen({
           video: true,
@@ -97,6 +100,8 @@ export default {
         this.$store.dispatch("peer/setVideoStream", {
           videoStream: captureStream,
         });
+
+        this.screenShare = true;
       } catch (error) {
         this.screenShare = false;
         console.error(error);
