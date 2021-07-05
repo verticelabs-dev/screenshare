@@ -7,12 +7,13 @@
 @import "lib/button.scss";
 @import "lib/borders.scss";
 
-// Page Specfic
+// Non-Page Specfic
 @import "display";
 @import "card";
 @import "sidebar";
 @import "modal";
 @import "tooltip";
+@import "toast";
 
 body {
   height: 100vh;

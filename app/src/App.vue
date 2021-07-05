@@ -1,5 +1,7 @@
 <template>
   <div class="flex flex-row" style="height: 100vh" v-if="user">
+    <TopToast />
+
     <transition name="slide-fade">
       <Sidebar v-if="canShowSideBar && (roomCode || user.id)" />
     </transition>
@@ -12,11 +14,13 @@
 
 <script>
 import Sidebar from "./components/Sidebar";
+import TopToast from "./components/TopToast.vue";
 import { mapState } from "vuex";
 
 export default {
   components: {
     Sidebar,
+    TopToast,
   },
   computed: {
     canShowSideBar() {
