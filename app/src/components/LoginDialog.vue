@@ -57,6 +57,20 @@ export default {
   components: {
     Modal,
   },
+  created() {
+    document.body.addEventListener("keyup", (e) => {
+      if (e.key === "Escape") {
+        this.close();
+      }
+    });
+  },
+  beforeDestroy() {
+    document.body.removeEventListener("keyup", (e) => {
+      if (e.key === "Escape") {
+        this.close();
+      }
+    });
+  },
   computed: {
     ...mapState("user", ["user"]),
     ...mapState("peer", ["roomCode"]),

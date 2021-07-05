@@ -1,8 +1,10 @@
 <template>
   <div class="flex-grow friends">
     <!-- Title -->
-    <h3 class="freinds-list-title">Friends</h3>
-    <hr class="freinds-list-title-line" />
+    <div>
+      <h3 class="freinds-list-title">Friends</h3>
+      <hr class="freinds-list-title-line" />
+    </div>
 
     <!-- Search -->
     <input
