@@ -6,6 +6,7 @@ import store from "./store";
 import socket from "./services/SocketService";
 import "./assets/scss/main.scss";
 import Notifications from "vt-notifications";
+import vuetify from "./plugins/vuetify";
 
 // Load Font Awesome Icons
 require("./utils/icons");
@@ -23,5 +24,6 @@ Vue.prototype.$socket = socket;
 new Vue({
   router,
   store,
+  vuetify,
   render: (h) => h(App),
 }).$mount("#app");

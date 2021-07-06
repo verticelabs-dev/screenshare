@@ -1,15 +1,17 @@
 <template>
-  <div class="flex flex-row" style="height: 100vh" v-if="user">
-    <TopToast />
+  <v-app dark>
+    <div class="flex flex-row" style="height: 100vh" v-if="user">
+      <TopToast />
 
-    <transition name="slide-fade">
-      <Sidebar v-if="canShowSideBar && (roomCode || user.id)" />
-    </transition>
+      <transition name="slide-fade">
+        <Sidebar v-if="canShowSideBar && (roomCode || user.id)" />
+      </transition>
 
-    <div class="w-full">
-      <router-view />
+      <div class="w-full">
+        <router-view />
+      </div>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>

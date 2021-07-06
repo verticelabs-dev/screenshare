@@ -46,6 +46,7 @@
       <div class="sidebar-content float-right" v-if="canShowSideapp">
         <MeetingAgenda v-if="activeIconName === 'video'" />
         <Friends v-if="activeIconName === 'user-friends'" />
+        <Settings v-if="activeIconName === 'cogs'" />
       </div>
     </div>
 
@@ -57,6 +58,7 @@
 import LoginDialog from "./LoginDialog.vue";
 import MeetingAgenda from "./sideapps/MeetingAgenda";
 import Friends from "./sideapps/Friends";
+import Settings from "./sideapps/Settings";
 import { mapState } from "vuex";
 
 const sidebarIcons = [
@@ -88,6 +90,7 @@ export default {
     LoginDialog,
     MeetingAgenda,
     Friends,
+    Settings,
   },
   computed: {
     canShowSideapp() {
@@ -109,8 +112,7 @@ export default {
     setActiveIcon(iconName) {
       if (
         (iconName === "user-circle" || !this.user.id) &&
-        iconName !== "question-circle" &&
-        iconName !== "video"
+        ["question-circle", "video", "cogs"].indexOf(iconName) === -1
       ) {
         this.showUser = true;
         return;
