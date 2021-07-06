@@ -25,7 +25,6 @@ export default {
       state.peers = peers;
     },
     [mutations.DEAFEN_PEERS](state, { deafen }) {
-      console.log("HIT HERE", deafen);
       state.deafen = deafen;
     },
     [mutations.SET_ROOM_CODE](state, { roomCode }) {

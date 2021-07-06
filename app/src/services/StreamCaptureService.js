@@ -1,5 +1,24 @@
+import { groupBy } from "../utils/string";
+
 export async function getCaptureScreen(displayMediaOptions) {
   return navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+}
+
+export async function getDevices() {
+  let devices = await navigator.mediaDevices.enumerateDevices();
+
+  // Remove this --- Can't see why this would be useful
+  devices = devices.filter((device) => {
+    return device.deviceId !== "communications";
+  });
+
+  const grouped = groupBy(devices, "kind");
+
+  return {
+    audioinput: grouped.audioinput,
+    audiooutput: grouped.audiooutput,
+    videoinput: grouped.videoinput,
+  };
 }
 
 export async function getAudioInput() {
