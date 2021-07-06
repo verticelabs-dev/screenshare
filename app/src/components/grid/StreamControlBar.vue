@@ -68,6 +68,10 @@ export default {
   methods: {
     toggleDeafen() {
       this.deafen = !this.deafen;
+
+      this.$store.dispatch("peer/deafenPeers", {
+        deafen: this.deafen,
+      });
     },
     toggleMicMute() {
       const stream = this.videoStream || this.audioStream;

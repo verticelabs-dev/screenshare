@@ -46,7 +46,7 @@
 // import { getAudioInput } from "../../services/StreamCaptureService";
 
 export default {
-  props: ["id", "peer", "hideClose", "hideExpand", "activeScreenId"],
+  props: ["id", "peer", "hideClose", "hideExpand", "activeScreenId", "deafen"],
   components: {},
   watch: {
     peer: {
@@ -57,6 +57,9 @@ export default {
             : peer._peerID;
       },
       deep: true,
+    },
+    deafen(val) {
+      this.muted = val;
     },
   },
   computed: {

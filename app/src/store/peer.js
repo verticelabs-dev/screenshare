@@ -10,6 +10,7 @@ export default {
     roomCode: undefined,
     audioStream: undefined,
     videoStream: undefined,
+    deafen: false,
   },
   getters: {
     userInMeeting(state) {
@@ -22,6 +23,10 @@ export default {
     },
     [mutations.SET_PEERS](state, peers) {
       state.peers = peers;
+    },
+    [mutations.DEAFEN_PEERS](state, { deafen }) {
+      console.log("HIT HERE", deafen);
+      state.deafen = deafen;
     },
     [mutations.SET_ROOM_CODE](state, { roomCode }) {
       state.roomCode = roomCode;
@@ -77,6 +82,9 @@ export default {
     },
     addPeer(context, params) {
       context.commit(mutations.ADD_PEER, params);
+    },
+    deafenPeers(context, params) {
+      context.commit(mutations.DEAFEN_PEERS, params);
     },
     async createPeer(context, { initiator = true, userInfo = {} }) {
       let audioStream = context.state.audioStream;
