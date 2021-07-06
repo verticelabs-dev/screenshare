@@ -38,6 +38,23 @@ export default {
     },
   },
   actions: {
+    async changeAudioInput(context, { device }) {
+      if (context.state.audioStream) {
+        const newAudioStream = await getAudioInput(device.deviceId, true);
+        const oldAudioStream = context.state.audioStream;
+
+        const newTrack = newAudioStream.getAudioTracks()[0];
+        const oldTrack = oldAudioStream.getAudioTracks()[0];
+
+        context.state.peers.forEach((peer) => {
+          if (peer._peerID === "You") return false;
+
+          oldTrack.stop();
+
+          peer.replaceTrack(oldTrack, newTrack, oldAudioStream);
+        });
+      }
+    },
     setVideoStream(context, params) {
       const ogVideoStream = context.state.videoStream;
       context.commit(mutations.SET_VIDEO_STREAM, params);
@@ -47,25 +64,20 @@ export default {
         context.state.peers.forEach((peer) => {
           if (peer._peerID === "You") return false;
 
-          const tracks = params.videoStream.getTracks();
+          const track = params.videoStream.getVideoTracks()[0];
 
-          tracks.forEach((track) => {
-            peer.addTrack(track, context.state.audioStream);
-          });
+          peer.addTrack(track, context.state.audioStream);
         });
       } else if (ogVideoStream) {
         // A video stream has been added before so we will replace it
         context.state.peers.forEach((peer) => {
           if (peer._peerID === "You") return false;
 
-          const oldTrack = ogVideoStream.getTracks()[0];
-          const newTracks = params.videoStream.getTracks();
+          const oldTrack = ogVideoStream.getVideoTracks()[0];
+          const newTrack = params.videoStream.getVideoTracks()[0];
 
           oldTrack.stop();
-
-          newTracks.forEach((track) => {
-            peer.replaceTrack(oldTrack, track, context.state.audioStream);
-          });
+          peer.replaceTrack(oldTrack, newTrack, context.state.audioStream);
         });
       } else {
         // Stream hasn't been created on the peer before

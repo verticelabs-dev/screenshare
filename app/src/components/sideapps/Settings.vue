@@ -49,13 +49,31 @@ export default {
     });
   },
   watch: {
-    selectedAudioInput(newVal, Oldval) {
-      localStorage.setItem("audioInput", newVal);
-      console.log(newVal, Oldval);
+    selectedAudioInput(deviceId, oldDeviceId) {
+      localStorage.setItem("audioInput", deviceId);
+
+      const device = this.audioInputs.find(
+        (device) => device.deviceId === deviceId
+      );
+
+      const oldDevice = this.audioInputs.find(
+        (device) => device.deviceId === oldDeviceId
+      );
+
+      this.$store.dispatch("peer/changeAudioInput", { device, oldDevice });
     },
-    selectedAudioOutput(newVal, Oldval) {
-      localStorage.setItem("audioOutput", newVal);
-      console.log(newVal, Oldval);
+    selectedAudioOutput(deviceId, oldDeviceId) {
+      localStorage.setItem("audioOutput", deviceId);
+
+      const device = this.audioOutputs.find(
+        (device) => device.deviceId === deviceId
+      );
+      const oldDevice = this.audioOutputs.find(
+        (device) => device.deviceId === oldDeviceId
+      );
+
+      console.log("output device: ", device, oldDevice);
+      // TODO - make output changeable
     },
   },
 };

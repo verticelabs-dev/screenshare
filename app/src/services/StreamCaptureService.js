@@ -21,11 +21,15 @@ export async function getDevices() {
   };
 }
 
-export async function getAudioInput() {
+export async function getAudioInput(deviceId, exact) {
   let audioStream = null;
+  let options = { audio: true };
+
+  if (deviceId) options = { audio: { deviceId } };
+  else if (deviceId && exact) options = { audio: { exact: { deviceId } } };
 
   try {
-    audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    audioStream = await navigator.mediaDevices.getUserMedia(options);
   } catch (err) {
     console.error("Error: " + err);
   }

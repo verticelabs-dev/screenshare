@@ -132,11 +132,15 @@ export default {
       @apply mr-2;
     }
 
-    & .red {
+    & svg.red {
+      // this is clashing with vuetify css
+      background-color: initial !important;
       color: rgb(208 0 0);
     }
 
-    & .green {
+    & svg.green {
+      // this is clashing with vuetify css
+      background-color: initial !important;
       color: rgb(0 208 0);
     }
 
