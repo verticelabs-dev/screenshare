@@ -35,17 +35,36 @@ export default {
   },
   actions: {
     setVideoStream(context, params) {
+      const ogVideoStream = context.state.videoStream;
       context.commit(mutations.SET_VIDEO_STREAM, params);
 
-      if (context.state.audioStream) {
+      if (context.state.audioStream && !ogVideoStream) {
+        // The audioStream has already been created but no video yet
         context.state.peers.forEach((peer) => {
-          if (peer._peerID !== "You") {
-            params.videoStream.getTracks().forEach((track) => {
-              peer.addTrack(track, context.state.audioStream);
-            });
-          }
+          if (peer._peerID === "You") return false;
+
+          const tracks = params.videoStream.getTracks();
+
+          tracks.forEach((track) => {
+            peer.addTrack(track, context.state.audioStream);
+          });
+        });
+      } else if (ogVideoStream) {
+        // A video stream has been added before so we will replace it
+        context.state.peers.forEach((peer) => {
+          if (peer._peerID === "You") return false;
+
+          const oldTrack = ogVideoStream.getTracks()[0];
+          const newTracks = params.videoStream.getTracks();
+
+          oldTrack.stop();
+
+          newTracks.forEach((track) => {
+            peer.replaceTrack(oldTrack, track, context.state.audioStream);
+          });
         });
       } else {
+        // Stream hasn't been created on the peer before
         context.state.peers.forEach((peer) => {
           if (peer._peerID !== "You") {
             peer.addStream(params.videoStream);
