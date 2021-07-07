@@ -9,8 +9,9 @@ RUN npm install
 COPY ./relay-server .
 COPY ./relay-server/.env.example .env
 
-RUN npm run-script db:migrate
+ADD start_prod.sh /
+RUN chmod +x /start_prod.sh
 
 EXPOSE 8989
 
-CMD ["npm", "run", "dev"]
+CMD ["/start_prod.sh"]
