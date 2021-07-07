@@ -37,6 +37,9 @@ export default {
   auth: {
     cookie: 'sessionToken'
   },
+  redis: {
+    host: process.env.REDIS_HOST
+  },
 
   /**
    * Database configs

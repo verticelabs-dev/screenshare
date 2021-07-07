@@ -1,7 +1,10 @@
-import { createClient } from 'redis'
 import { promisify } from 'util';
+import { createClient } from 'redis'
+import config from '../config';
 
-const redis = createClient();
+const redis = createClient({
+  host: config.redis.host
+});
 
 redis.on("error", function () {
   throw new Error('Redis is not answering')
