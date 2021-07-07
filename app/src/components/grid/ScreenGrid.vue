@@ -16,6 +16,7 @@
           :id="peer._peerID"
           :peer="peer"
           :deafen="deafen"
+          :outputDeviceID="outputDeviceID"
         />
       </div>
     </div>
@@ -31,7 +32,7 @@ export default {
     Card,
   },
   computed: {
-    ...mapState("peer", ["peers", "deafen"]),
+    ...mapState("peer", ["peers", "deafen", "outputDeviceID"]),
   },
   data() {
     return {

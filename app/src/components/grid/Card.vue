@@ -35,7 +35,11 @@
     </div>
 
     <div class="card-video">
-      <video :id="peer._peerID" :muted="muted ? 'muted' : ''"></video>
+      <video
+        :ref="peer._peerID"
+        :id="peer._peerID"
+        :muted="muted ? 'muted' : ''"
+      ></video>
     </div>
   </div>
 </template>
@@ -43,10 +47,18 @@
 <script>
 // import { mapState } from "vuex";
 // import { getAudioLevels } from "../../services/SoundMeter";
-// import { getAudioInput } from "../../services/StreamCaptureService";
+import { attachSinkId } from "../../services/StreamCaptureService";
 
 export default {
-  props: ["id", "peer", "hideClose", "hideExpand", "activeScreenId", "deafen"],
+  props: [
+    "id",
+    "peer",
+    "hideClose",
+    "hideExpand",
+    "activeScreenId",
+    "deafen",
+    "outputDeviceID",
+  ],
   components: {},
   watch: {
     peer: {
@@ -60,6 +72,10 @@ export default {
     },
     deafen(val) {
       this.muted = val;
+    },
+    outputDeviceID(deviceId) {
+      const videoEl = this.$refs[this.peer._peerID];
+      attachSinkId(videoEl, deviceId);
     },
   },
   computed: {

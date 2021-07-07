@@ -48,3 +48,17 @@ export function displayVideoStream(elementId, stream) {
 
   video.play();
 }
+
+// Attach audio output device to video element using device/sink ID.
+export function attachSinkId(element, sinkId) {
+  if (typeof element.sinkId !== "undefined") {
+    element.setSinkId(sinkId).catch((error) => {
+      // could throw it back to default in the settings menu if it fails
+      console.error(error);
+    });
+  } else {
+    // Firefox seems to be behind on this :(
+    // TODO - hide the option if it
+    console.warn("Browser does not support output device selection.");
+  }
+}
