@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon",
-    "dev:inspect": "nodemon --inspect src/app.ts"
+    "dev:inspect": "nodemon --inspect src/app.ts",
+    "db:migrate": "node_modules/knex/bin/cli.js  migrate:latest"
   },
   "author": "Grey Delamar",
   "license": "ISC",

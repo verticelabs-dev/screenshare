@@ -7,7 +7,7 @@ module.exports = {
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
-    database: "screen_share",
+    database: process.env.DB_DATABASE,
   },
   pool: {
     min: 2,
