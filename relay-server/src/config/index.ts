@@ -31,12 +31,34 @@ export default {
     jwtSecret: String(process.env.JWT_SECRET)
   },
 
+  /**
+   * Auth configs
+   */
+  auth: {
+    cookie: 'sessionToken'
+  },
+
+  /**
+   * Database configs
+   */
   db: {
-    host: process.env.DB_HOST,
-    type: String(process.env.DB_TYPE),
-    port: Number(process.env.DB_PORT),
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
+    client: "postgresql",
+    connection: {
+      host: String(process.env.DB_HOST),
+      port: Number(process.env.DB_PORT) || 5432,
+      database: String(process.env.DB_DATABASE),
+      user: String(process.env.DB_USERNAME),
+      password: String(process.env.DB_PASSWORD),
+    },
+    pool: {
+      min: 2,
+      max: 10,
+    },
+    migrations: {
+      directory: "./db/migrations",
+    },
+    seeds: {
+      directory: "./db/seeds",
+    },
   }
 };

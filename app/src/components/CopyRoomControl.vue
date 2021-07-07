@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row justify-center">
+  <div class="copy-room-container flex flex-row justify-center">
     <div
       class="room-code-box flex flex-row align-middle items-center"
       :class="{
@@ -12,11 +12,11 @@
       <input type="hidden" id="roomCode" :value="roomCode" />
     </div>
     <button
-      class="btn copy-btn btn-primary ml-1"
+      class="btn btn-primary copy-btn ml-2"
       @click="copyRoomCode"
       :disabled="!roomCode"
     >
-      Copy
+      {{ copyButtonText }}
     </button>
   </div>
 </template>
@@ -26,7 +26,10 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState("peer", ["roomCode", "peers"])
+    ...mapState("peer", ["roomCode", "peers"]),
+    copyButtonText() {
+      return this.showGreenBorder ? "Copied!" : "Copy";
+    }
   },
   data() {
     return {
@@ -61,7 +64,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+.copy-room-container {
+  @apply h-10;
+}
+
 .room-code-box {
   max-width: 330px;
   @apply rounded border-2 border-dashed;

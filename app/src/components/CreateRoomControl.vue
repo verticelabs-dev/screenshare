@@ -15,12 +15,9 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState("peer", ["roomCode", "peers"])
+    ...mapState("peer", ["roomCode", "peers"]),
   },
   methods: {
-    initPeer(initiator, userInfo) {
-      this.$store.dispatch("peer/initPeer", { initiator, userInfo });
-    },
     createRoom() {
       const self = this;
       const socket = self.$socket;
@@ -32,8 +29,8 @@ export default {
 
       //- Triggers socket room to start - could pass auth here
       socket.emit("room:create", {});
-    }
-  }
+    },
+  },
 };
 </script>
 

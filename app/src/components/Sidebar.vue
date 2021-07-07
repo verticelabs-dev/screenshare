@@ -44,49 +44,65 @@
 
       <!-- Sidebar App -->
       <div class="sidebar-content float-right" v-if="canShowSideapp">
-        <MeetingAgenda />
+        <MeetingAgenda v-if="activeIconName === 'video'" />
+        <Friends v-if="activeIconName === 'user-friends'" />
+        <Settings v-if="activeIconName === 'cogs'" />
       </div>
     </div>
+
+    <LoginDialog v-if="showUser" v-on:close="showUser = false" />
   </div>
 </template>
 
 <script>
+import LoginDialog from "./LoginDialog.vue";
 import MeetingAgenda from "./sideapps/MeetingAgenda";
+import Friends from "./sideapps/Friends";
+import Settings from "./sideapps/Settings";
+import { mapState } from "vuex";
 
 const sidebarIcons = [
   {
-    name: "home"
+    name: "user-circle",
   },
   {
-    name: "calendar"
+    name: "home",
   },
   {
-    name: "video"
+    name: "calendar",
   },
   {
-    name: "user-friends"
+    name: "video",
   },
   {
-    name: "cogs"
+    name: "user-friends",
   },
   {
-    name: "question-circle"
-  }
+    name: "cogs",
+  },
+  {
+    name: "question-circle",
+  },
 ];
 
 export default {
   components: {
-    MeetingAgenda
+    LoginDialog,
+    MeetingAgenda,
+    Friends,
+    Settings,
   },
   computed: {
     canShowSideapp() {
       return this.$route.meta.sideapp;
-    }
+    },
+    ...mapState("user", ["user"]),
   },
   data() {
     return {
       sidebarIcons,
-      activeIconName: "video"
+      activeIconName: "video",
+      showUser: false,
     };
   },
   methods: {
@@ -94,9 +110,17 @@ export default {
       return this.activeIconName === iconName;
     },
     setActiveIcon(iconName) {
+      if (
+        (iconName === "user-circle" || !this.user.id) &&
+        ["question-circle", "video", "cogs"].indexOf(iconName) === -1
+      ) {
+        this.showUser = true;
+        return;
+      }
+
       this.activeIconName = iconName;
-    }
-  }
+    },
+  },
 };
 </script>
 
