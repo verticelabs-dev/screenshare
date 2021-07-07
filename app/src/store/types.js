@@ -5,6 +5,9 @@ const mutations = {
   SET_ROOM_CODE: "SET_ROOM_CODE",
   SET_AUDIO_STREAM: "SET_AUDIO_STREAM",
   SET_VIDEO_STREAM: "SET_VIDEO_STREAM",
-}
+  SET_USER: "SET_USER",
+  SET_FRIENDS: "SET_FRIENDS",
+  SET_OUTPUT_DEVICE: "SET_OUTPUT_DEVICE",
+};
 
-export { mutations }
+export { mutations };

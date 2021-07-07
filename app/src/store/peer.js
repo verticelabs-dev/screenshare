@@ -9,12 +9,14 @@ export default {
     peers: [{ id: "You", _peerID: "You" }],
     roomCode: undefined,
     audioStream: undefined,
-    videoStream: undefined
+    videoStream: undefined,
+    outputDeviceID: undefined,
+    deafen: false,
   },
   getters: {
     userInMeeting(state) {
       return state.roomCode;
-    }
+    },
   },
   mutations: {
     [mutations.ADD_PEER](state, peer) {
@@ -31,22 +33,45 @@ export default {
     },
     [mutations.SET_VIDEO_STREAM](state, { videoStream }) {
       state.videoStream = videoStream;
-    }
+    },
+    [mutations.SET_OUTPUT_DEVICE](state, deviceId) {
+      state.outputDeviceID = deviceId;
+    },
   },
   actions: {
+    async setAudioOutput(context, { device }) {
+      context.commit(mutations.SET_OUTPUT_DEVICE, device.deviceId);
+    },
+    async changeAudioInput(context, { device }) {
+      if (context.state.audioStream) {
+        const newAudioStream = await getAudioInput(device.deviceId, true);
+        const oldAudioStream = context.state.audioStream;
+
+        const newTrack = newAudioStream.getAudioTracks()[0];
+        const oldTrack = oldAudioStream.getAudioTracks()[0];
+
+        context.state.peers.forEach((peer) => {
+          if (peer._peerID === "You") return false;
+
+          oldTrack.stop();
+
+          peer.replaceTrack(oldTrack, newTrack, oldAudioStream);
+        });
+      }
+    },
     setVideoStream(context, params) {
       context.commit(mutations.SET_VIDEO_STREAM, params);
 
       if (context.state.audioStream) {
-        context.state.peers.forEach(peer => {
+        context.state.peers.forEach((peer) => {
           if (peer._peerID !== "You") {
-            params.videoStream.getTracks().forEach(track => {
+            params.videoStream.getTracks().forEach((track) => {
               peer.addTrack(track, context.state.audioStream);
             });
           }
         });
       } else {
-        context.state.peers.forEach(peer => {
+        context.state.peers.forEach((peer) => {
           if (peer._peerID !== "You") {
             peer.addStream(params.videoStream);
           }
@@ -73,30 +98,30 @@ export default {
       if (userInfo.signal) peer.signal(userInfo.signal);
       if (context.state.videoStream) peer.addStream(context.state.videoStream);
 
-      peer.on("signal", async data => {
+      peer.on("signal", async (data) => {
         if (data.type === "offer" && peer._joinRequest) {
           peer._joinRequest = false;
           socket.emit("room:join:request:answer", {
             roomCode: context.state.roomCode,
             token: { id: peer._peerID },
-            signal: data
+            signal: data,
           });
         } else {
           // console.log("GOT SIGNAL 2", data);
           socket.emit("room:stream:create", {
             roomCode: context.state.roomCode,
             signal: data,
-            token: { id: peer._peerID }
+            token: { id: peer._peerID },
           });
         }
       });
 
-      peer.on("error", err => {
+      peer.on("error", (err) => {
         console.log("error", err);
       });
 
-      peer.on("close", err => {
-        const newPeers = context.state.peers.filter(p => p._id !== peer._id);
+      peer.on("close", (err) => {
+        const newPeers = context.state.peers.filter((p) => p._id !== peer._id);
 
         context.commit(mutations.SET_PEERS, newPeers);
         console.log("CLOSE", err);
@@ -107,6 +132,6 @@ export default {
       });
 
       context.commit(mutations.ADD_PEER, peer);
-    }
-  }
+    },
+  },
 };
