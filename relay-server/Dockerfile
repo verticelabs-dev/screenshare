@@ -9,7 +9,7 @@ RUN npm install
 COPY ./relay-server .
 COPY ./relay-server/.env.example .env
 
-ADD start_prod.sh /
+ADD ./relay-server/start_prod.sh /
 RUN chmod +x /start_prod.sh
 
 EXPOSE 8989
