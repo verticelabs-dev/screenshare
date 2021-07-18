@@ -7,7 +7,7 @@ export class auth {
   static expressHook(req: Request, res: Response, next) {
     let token = req.cookies[config.auth.cookie];
 
-    if (req.url === '/login') {
+    if (req.url === '/login' || req.url === '/api/login') {
       return next();
     }
 
