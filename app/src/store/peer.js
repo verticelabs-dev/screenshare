@@ -11,6 +11,7 @@ export default {
     audioStream: undefined,
     videoStream: undefined,
     deafen: false,
+    activeScreenId: false,
   },
   getters: {
     userInMeeting(state) {
@@ -36,6 +37,9 @@ export default {
     [mutations.SET_VIDEO_STREAM](state, { videoStream }) {
       state.videoStream = videoStream;
     },
+    [mutations.SET_ACTIVE_SCREEN_ID](state, activeScreenId) {
+      state.activeScreenId = activeScreenId;
+    }
   },
   actions: {
     async changeAudioInput(context, { device }) {

@@ -1,36 +1,30 @@
 <template>
   <div
+    v-show="!activeScreenId || peer._peerID === activeScreenId"
     :class="{
       card: true,
       'screen-grid-item-lg': peer._peerID === activeScreenId,
     }"
   >
-    <div class="card-header">
-      <div class="text-white mb-1 mt-1 ml-4">
+    <div class="card-header pl-2 pr-2">
+      <span class="card-header-title">
         {{ getStreamName }}
-      </div>
+      </span>
 
       <!-- Top Right Control Buttons -->
-      <div>
-        <!-- Close Button -->
-        <div
-          v-if="!hideClose"
-          @click="$emit('closed', id)"
-          class="red-circle-btn"
-        ></div>
-
+      <div class="card-header-buttons">
         <!-- Expand Button -->
-        <div
+        <span
           v-if="!hideExpand"
           @click="$emit('expanded', id)"
           class="green-circle-btn"
-        ></div>
+        ></span>
 
         <!-- Mute Button -->
-        <div @click="toggleMute" class="circle-btn">
+        <span @click="toggleMute" class="circle-btn">
           <font-awesome-icon icon="volume-mute" v-if="muted" />
           <font-awesome-icon icon="volume-up" v-else />
-        </div>
+        </span>
       </div>
     </div>
 
@@ -46,7 +40,7 @@
 // import { getAudioInput } from "../../services/StreamCaptureService";
 
 export default {
-  props: ["id", "peer", "hideClose", "hideExpand", "activeScreenId", "deafen"],
+  props: ["id", "peer", "hideExpand", "activeScreenId", "deafen"],
   components: {},
   watch: {
     peer: {
