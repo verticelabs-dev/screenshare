@@ -4,7 +4,7 @@ import config from 'src/config';
 const route = Router();
 
 // Services
-import { authService } from '../services';
+import { authService } from '@api/services';
 
 export default (app: Router) => {
   app.use('/', route);

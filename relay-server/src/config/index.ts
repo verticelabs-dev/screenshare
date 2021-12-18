@@ -17,10 +17,10 @@ export default {
   port: parseInt(process.env.PORT, 10) || 8989,
 
   /**
-   * Used by winston logger
+   * Used by Pino logger
    */
-  logs: {
-    level: process.env.LOG_LEVEL,
+   logger: {
+    level: process.env.LOG_LEVEL || 'debug',
   },
 
   /**

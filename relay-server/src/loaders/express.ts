@@ -2,9 +2,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import cookieParser from 'cookie-parser'
-import controllers from '../api/controllers';
+import controllers from '@api/controllers';
 import helmet from 'helmet';
-import config from '../config';
+import config from '@/config';
 
 export default ({ app }: { app: express.Application }) => {
   /**
@@ -26,7 +26,10 @@ export default ({ app }: { app: express.Application }) => {
   app.enable('trust proxy');
 
   // Enable Cross Origin Resource Sharing to all origins by default
-  app.use(cors());
+  app.use(cors({
+    credentials: true,
+    origin: true,
+  }));
 
   // Middleware that transforms the raw body to req.body into json
   app.use(bodyParser.json());
