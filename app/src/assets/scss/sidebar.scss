@@ -12,9 +12,9 @@ $waveBorderRadius: 120px;
 
 .sidebar-content {
   @apply rounded;
-  @apply pl-10 pt-14 placeholder-indigo-100;
-  width: 100%;
-  min-width: 200px;
+  @apply pl-8 pt-14 pr-4 placeholder-indigo-100;
+  // width: 100%;
+  width: 240px;
   background-color: $sidebarSecondaryColor;
   border-top-left-radius: 0px;
 }
@@ -32,16 +32,16 @@ $waveBorderRadius: 120px;
 
 .sidebar-wave {
   position: relative;
+  user-select: none;
 
   .sidebar-wave-svg {
     display: flex;
     align-items: center;
-    top: -126px;
-    left: 31px;
-    height: 200px;
-    width: 200px;
+    top: -35px;
+    left: 1px;
+    height: 38px;
+    width: 92px;
     transform: rotate(280deg);
-    padding-left: 30px;
     position: absolute;
 
     path {
