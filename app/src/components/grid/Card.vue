@@ -21,7 +21,11 @@
         ></span>
 
         <!-- Mute Button -->
-        <span @click="toggleMute" class="circle-btn">
+        <span
+          v-if="peer._peerID !== 'You'"
+          @click="toggleMute"
+          class="circle-btn"
+        >
           <font-awesome-icon icon="volume-mute" v-if="muted" />
           <font-awesome-icon icon="volume-up" v-else />
         </span>
@@ -69,14 +73,6 @@ export default {
     self.peer.on("stream", (stream) => {
       self.renderStream(stream);
     });
-
-    // const stream = self.peer.streams[0];
-    // self.peer.on("track", (track) => {
-    // console.log('HIT', track)
-    // if (track.kind === "video" && stream) {
-    //   self.renderStream(stream);
-    // }
-    // });
   },
   data() {
     return {
