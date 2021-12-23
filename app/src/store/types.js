@@ -8,6 +8,7 @@ const mutations = {
   SET_VIDEO_STREAM: "SET_VIDEO_STREAM",
   SET_USER: "SET_USER",
   SET_FRIENDS: "SET_FRIENDS",
+  SET_ACTIVE_SCREEN_ID: "SET_ACTIVE_SCREEN_ID",
 };
 
 export { mutations };

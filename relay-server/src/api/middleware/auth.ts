@@ -1,7 +1,7 @@
-import config from "../../config";
-import { authService } from "../services/auth";
+import config from "@/config";
+import { authService } from "@api/services/auth";
 import { Request, Response } from "express";
-import { ExtSocket } from "src/models/socket";
+import { ExtSocket } from "@/types/socket";
 
 export class auth {
   static expressHook(req: Request, res: Response, next) {

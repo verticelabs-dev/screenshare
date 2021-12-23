@@ -7,7 +7,7 @@
       </div>
 
       <!-- Render out the Grid -->
-      <div class="mt-4 ml-4">
+      <div class="mt-4 ml-4 mr-4">
         <ScreenGrid />
       </div>
     </div>

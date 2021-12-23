@@ -1,6 +1,6 @@
 import { promisify } from 'util';
 import { createClient } from 'redis'
-import config from '../config';
+import config from '@/config';
 
 const redis = createClient({
   host: config.redis.host

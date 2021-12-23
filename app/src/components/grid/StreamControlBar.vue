@@ -49,7 +49,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { getCaptureScreen } from "../../services/StreamCaptureService";
+import { getCaptureScreen, getWebcam, displayVideoStream, stopVideoStream } from "../../services/StreamCaptureService";
 
 export default {
   components: {},
@@ -64,6 +64,9 @@ export default {
   },
   computed: {
     ...mapState("peer", ["audioStream", "videoStream"]),
+    stream() {
+      return this.videoStream || this.audioStream;
+    },
   },
   methods: {
     toggleDeafen() {
@@ -74,16 +77,38 @@ export default {
       });
     },
     toggleMicMute() {
-      const stream = this.videoStream || this.audioStream;
-      const audioTrack = stream.getAudioTracks();
+      const audioTrack = this.stream.getAudioTracks();
 
       if (audioTrack.length > 0) {
         this.micMute = !this.micMute;
         audioTrack[0].enabled = !this.micMute;
       }
     },
-    toggleVideo() {
-      this.video = !this.video;
+    async toggleVideo() {
+      if (this.video === true) {
+        this.video = false;
+        stopVideoStream(this.stream);
+
+        return false;
+      }
+
+      try {
+        this.video = true;
+
+        const webcamStream = await getWebcam({
+          video: true
+        });
+
+        displayVideoStream("You", webcamStream);
+        this.$store.dispatch("peer/setVideoStream", {
+          videoStream: webcamStream,
+        });
+
+        this.video = true;
+      } catch (error) {
+        this.video = false;
+        console.error(error);
+      }
     },
     toggleRecord() {
       this.record = !this.record;
@@ -95,12 +120,7 @@ export default {
           audio: true,
         });
 
-        const video = document.getElementById("You");
-        if (video && captureStream) {
-          video.srcObject = captureStream;
-          video.play();
-        }
-
+        displayVideoStream("You", captureStream);
         this.$store.dispatch("peer/setVideoStream", {
           videoStream: captureStream,
         });
@@ -108,7 +128,7 @@ export default {
         this.screenShare = true;
       } catch (error) {
         this.screenShare = false;
-        console.error(error);
+        console.log(error);
       }
     },
   },

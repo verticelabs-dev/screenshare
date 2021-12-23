@@ -10,14 +10,19 @@
 // Non-Page Specfic
 @import "display";
 @import "card";
+@import "grid";
 @import "sidebar";
 @import "modal";
 @import "tooltip";
 @import "toast";
 
+html {
+  overflow-y: none;
+}
+
 body {
   height: 100vh;
   color: #ffffff;
-  background-color: #1e1e24;
+  background-color: $primaryBlack;
   font-family: sans-serif;
 }

@@ -1,23 +1,21 @@
 <template>
-  <div class="flex flex-row justify-start">
+  <div>
+    <!-- Grid View -->
     <div
-      class="transition ease-in-out duration-300 mr-6"
-      style="height: calc(100vh - 196px); flex-basis: 100%"
+      class="transition ease-in-out duration-300 screen-grid-container"
+      style="max-height: calc(100vh - 86px); overflow-y: auto;"
     >
-      <!-- Grid View -->
-      <div class="grid grid-cols-3 gap-8">
-        <Card
-          :hide-close="true"
-          @expanded="cardExpand"
-          class="screen-grid-item"
-          v-for="peer in peers"
-          :activeScreenId="activeScreenId"
-          :key="peer._peerID"
-          :id="peer._peerID"
-          :peer="peer"
-          :deafen="deafen"
-        />
-      </div>
+      <Card
+        :hide-close="true"
+        @expanded="cardExpand"
+        class="screen-grid-item"
+        v-for="peer in peers"
+        :activeScreenId="activeScreenId"
+        :key="peer._peerID"
+        :id="peer._peerID"
+        :peer="peer"
+        :deafen="deafen"
+      />
     </div>
   </div>
 </template>
@@ -31,26 +29,25 @@ export default {
     Card,
   },
   computed: {
-    ...mapState("peer", ["peers", "deafen"]),
+    ...mapState("peer", ["peers", "deafen", "activeScreenId"]),
   },
   data() {
     return {
-      activeScreenId: false,
     };
   },
   methods: {
     cardClose() {
-      this.activeScreenId = false;
+      this.$store.commit("peer/SET_ACTIVE_SCREEN_ID", false);
     },
-    cardExpand(screemId) {
-      this.activeScreenId = this.activeScreenId === screemId ? false : screemId;
+    cardExpand(screenId) {
+      this.$store.commit("peer/SET_ACTIVE_SCREEN_ID", this.activeScreenId === screenId ? false : screenId);
     },
   },
 };
 </script>
 
 <style>
-@import "../../assets/scss/grid/main.scss";
+/* @import "../../assets/scss/grid/main.scss"; */
 
 .fade-enter-active,
 .fade-leave-active {

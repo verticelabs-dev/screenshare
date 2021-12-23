@@ -1,7 +1,11 @@
 import { groupBy } from "../utils/string";
 
-export async function getCaptureScreen(displayMediaOptions) {
+export function getCaptureScreen(displayMediaOptions) {
   return navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+}
+
+export function getWebcam(displayMediaOptions) {
+  return navigator.mediaDevices.getUserMedia(displayMediaOptions);
 }
 
 export async function getDevices() {
@@ -37,12 +41,39 @@ export async function getAudioInput(deviceId, exact) {
   return audioStream;
 }
 
+export function stopVideoStream(stream) {
+  if (stream)
+    stream.getTracks().forEach((track) => {
+      if (track.readyState == "live" && track.kind === "video") {
+        track.stop();
+      }
+    });
+}
+
+export function checkVideoTrack(stream) {
+  if (!stream) {
+    return false;
+  }
+
+  return stream.getTracks().length > 0;
+}
+
 export function displayVideoStream(elementId, stream) {
-  var video = document.getElementById(elementId);
+  const video = document.getElementById(elementId);
+
+  // Stop previous video
+  if (checkVideoTrack(video.srcObject)) {
+    stopVideoStream(video.srcObject);
+  }
+
+  if (!video) {
+    return false;
+  }
 
   if ("srcObject" in video) {
     video.srcObject = stream;
   } else {
+    console.log("!!! Please consider updating your browser !!!");
     video.src = window.URL.createObjectURL(stream);
   }
 
