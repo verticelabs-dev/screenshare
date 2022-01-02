@@ -74,6 +74,7 @@ export function displayVideoStream(elementId, stream) {
     video.srcObject = stream;
   } else {
     console.log("!!! Please consider updating your browser !!!");
+    video.src = window.URL.createObjectURL(stream);
   }
 
   video.play();

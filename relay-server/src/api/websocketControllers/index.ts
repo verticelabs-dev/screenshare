@@ -1,8 +1,8 @@
 import { Server } from "socket.io";
 import connection from './connection';
-import { auth } from '../middleware'
+import { auth } from '@api/middleware'
 import peer from './peer';
-import { ExtSocket } from "src/models/socket";
+import { ExtSocket } from "@/types/socket";
 
 export default (socketServer: Server) => {
   socketServer.on("connection", (socket: ExtSocket) => {

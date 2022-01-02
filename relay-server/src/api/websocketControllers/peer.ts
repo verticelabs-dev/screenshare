@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { ExtSocket } from "src/models/socket";
+import { ExtSocket } from "@/types/socket";
 
 const cache = {}
 const basicErrorMessage = "you have not been accepted to the room";

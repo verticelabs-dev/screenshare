@@ -75,6 +75,9 @@ export default {
   },
   computed: {
     ...mapState("peer", ["audioStream", "videoStream"]),
+    stream() {
+      return this.videoStream || this.audioStream;
+    },
   },
   methods: {
     toggleDeafen() {
@@ -85,8 +88,7 @@ export default {
       });
     },
     toggleMicMute() {
-      const stream = this.videoStream || this.audioStream;
-      const audioTrack = stream.getAudioTracks();
+      const audioTrack = this.stream.getAudioTracks();
 
       if (audioTrack.length > 0) {
         this.micMute = !this.micMute;
@@ -111,6 +113,7 @@ export default {
 
         // video display with effects
         displayVideoStream("You-output", webcamStream);
+
         this.$store.dispatch("peer/setVideoStream", {
           videoStream: webcamStream,
         });
@@ -149,12 +152,7 @@ export default {
           audio: true,
         });
 
-        const video = document.getElementById("You");
-        if (video && captureStream) {
-          video.srcObject = captureStream;
-          video.play();
-        }
-
+        displayVideoStream("You", captureStream);
         this.$store.dispatch("peer/setVideoStream", {
           videoStream: captureStream,
         });
@@ -162,7 +160,7 @@ export default {
         this.screenShare = true;
       } catch (error) {
         this.screenShare = false;
-        console.error(error);
+        console.log(error);
       }
     },
   },

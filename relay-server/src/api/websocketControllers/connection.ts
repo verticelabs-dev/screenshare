@@ -1,4 +1,4 @@
-import { ExtSocket } from "src/models/socket";
+import { ExtSocket } from "@/types/socket";
 
 export default (socket: ExtSocket) => {
   console.log("a user connected");

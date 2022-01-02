@@ -2,7 +2,7 @@
 import { Router } from 'express';
 
 // Services
-import { userService } from '../services';
+import { userService } from '@api/services';
 
 const route = Router();
 

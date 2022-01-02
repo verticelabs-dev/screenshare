@@ -10,7 +10,7 @@ import axios from "axios";
 let config = {
   baseURL: process.env.VUE_APP_API_URL || "/api",
   // timeout: 60 * 1000, // Timeout
-  withCredentials: false, // Check cross-site Access-Control
+  withCredentials: "include", // Check cross-site Access-Control
 };
 
 const _axios = axios.create(config);
