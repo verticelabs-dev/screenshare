@@ -13,23 +13,23 @@ const routes = [
     component: MeetingRoom,
     meta: {
       sideapp: true,
-      sidebar: true
-    }
+      sidebar: true,
+    },
   },
   {
     path: "/join",
     name: "JoinRoom",
     component: JoinRoom,
     meta: {
-      sidebar: false
-    }
-  }
+      sidebar: false,
+    },
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 export default router;
