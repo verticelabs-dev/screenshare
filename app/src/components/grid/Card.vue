@@ -33,7 +33,33 @@
     </div>
 
     <div class="card-video">
-      <video :id="peer._peerID" :muted="muted ? 'muted' : ''"></video>
+      <!--- Video Input Stream -->
+      <video
+        :id="peer._peerID"
+        :ref="peer._peerID"
+        :muted="muted ? 'muted' : ''"
+        :style="{display: peer._peerID === 'You' ? 'none' : ''}"
+      ></video>
+
+      <!--- Video Output Stream -->
+      <video
+        v-if="peer._peerID === 'You'"
+        :id="peer._peerID + '-output'"
+        :ref="peer._peerID + '-output'"
+        :muted="muted ? 'muted' : ''"
+      ></video>
+
+      <!--- Video Effect Stream -->
+      <canvas
+        v-if="peer._peerID === 'You'"
+        :id="peer._peerID + '-canvas'"
+        :ref="peer._peerID + '-canvas'"
+        width="1920"
+        height="1080"
+        :style="{display: 'none'}"
+      ></canvas>
+      <!-- If we don't set the width and height on the canvas it will become blurry -->
+      <!-- Consider using 1080 as max resolution and make it a setting to go to "HD Mode" -->
     </div>
   </div>
 </template>
@@ -70,6 +96,8 @@ export default {
 
     if (!self.peer || self.peer._peerID === "You") return;
 
+    this.muted = self.deafen;
+
     self.peer.on("stream", (stream) => {
       self.renderStream(stream);
     });
@@ -85,6 +113,7 @@ export default {
   methods: {
     renderStream(stream) {
       const video = document.getElementById(this.peer._peerID);
+
       if (video && stream) {
         video.srcObject = stream;
         video.play();

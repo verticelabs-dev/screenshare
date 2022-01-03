@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faVolumeMute,
   faVolumeUp,
+  faMagic,
   faMicrophoneAlt,
   faMicrophoneAltSlash,
   faVideo,
@@ -22,6 +23,7 @@ import {
 library.add([
   faVolumeMute,
   faVolumeUp,
+  faMagic,
   faMicrophoneAlt,
   faMicrophoneAltSlash,
   faVideo,

@@ -3,14 +3,14 @@
 
   .card-header {
     @apply flex flex-row justify-between items-baseline;
-    position: relative;
+    position: absolute;
     background-color: $sidebarSecondaryColor;
     height: 24px;
     width: 100%;
+    top: 0px;
 
     .card-header-title {
       @apply text-white;
-      position: absolute;
     }
 
     .card-header-buttons{
@@ -47,4 +47,5 @@
     // height: 100%;
     height: calc(100% - 24px);
   }
+
 }

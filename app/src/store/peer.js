@@ -39,7 +39,7 @@ export default {
     },
     [mutations.SET_ACTIVE_SCREEN_ID](state, activeScreenId) {
       state.activeScreenId = activeScreenId;
-    }
+    },
   },
   actions: {
     async changeAudioInput(context, { device }) {

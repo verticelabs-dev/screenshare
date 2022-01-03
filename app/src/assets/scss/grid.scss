@@ -50,16 +50,4 @@
 .screen-grid-item-lg {
   grid-column: span 3;
   max-height: calc(100vh - 86px);
-
-  &.card{
-    .card-header {
-      .card-header-title {
-        top: 36px;
-      }
-
-      .card-header-buttons {
-        top: 40px;
-      }
-    }
-  }
 }

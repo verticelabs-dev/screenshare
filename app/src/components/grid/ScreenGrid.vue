@@ -32,15 +32,17 @@ export default {
     ...mapState("peer", ["peers", "deafen", "activeScreenId"]),
   },
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
     cardClose() {
       this.$store.commit("peer/SET_ACTIVE_SCREEN_ID", false);
     },
     cardExpand(screenId) {
-      this.$store.commit("peer/SET_ACTIVE_SCREEN_ID", this.activeScreenId === screenId ? false : screenId);
+      this.$store.commit(
+        "peer/SET_ACTIVE_SCREEN_ID",
+        this.activeScreenId === screenId ? false : screenId
+      );
     },
   },
 };

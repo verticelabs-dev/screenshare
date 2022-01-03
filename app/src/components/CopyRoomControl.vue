@@ -4,7 +4,7 @@
       class="room-code-box flex flex-row align-middle items-center"
       :class="{
         'border-gray-400': !showGreenBorder,
-        'border-green-400': showGreenBorder
+        'border-green-400': showGreenBorder,
       }"
     >
       <span class="text-center ml-3 mr-3">Code: {{ roomCode }}</span>
@@ -29,11 +29,11 @@ export default {
     ...mapState("peer", ["roomCode", "peers"]),
     copyButtonText() {
       return this.showGreenBorder ? "Copied!" : "Copy";
-    }
+    },
   },
   data() {
     return {
-      showGreenBorder: false
+      showGreenBorder: false,
     };
   },
   methods: {
@@ -59,8 +59,8 @@ export default {
 
       copyRoomCode.setAttribute("type", "hidden");
       window.getSelection().removeAllRanges();
-    }
-  }
+    },
+  },
 };
 </script>
 
