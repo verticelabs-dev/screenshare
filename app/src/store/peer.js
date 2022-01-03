@@ -11,6 +11,7 @@ export default {
     audioStream: undefined,
     videoStream: undefined,
     deafen: false,
+    outputDeviceID: undefined,
     activeScreenId: false,
   },
   getters: {
@@ -37,11 +38,17 @@ export default {
     [mutations.SET_VIDEO_STREAM](state, { videoStream }) {
       state.videoStream = videoStream;
     },
+    [mutations.SET_OUTPUT_DEVICE](state, deviceId) {
+      state.outputDeviceID = deviceId;
+    },
     [mutations.SET_ACTIVE_SCREEN_ID](state, activeScreenId) {
       state.activeScreenId = activeScreenId;
     },
   },
   actions: {
+    async setAudioOutput(context, { device }) {
+      context.commit(mutations.SET_OUTPUT_DEVICE, device.deviceId);
+    },
     async changeAudioInput(context, { device }) {
       if (context.state.audioStream) {
         const newAudioStream = await getAudioInput(device.deviceId, true);

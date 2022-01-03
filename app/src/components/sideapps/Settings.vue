@@ -62,18 +62,14 @@ export default {
 
       this.$store.dispatch("peer/changeAudioInput", { device, oldDevice });
     },
-    selectedAudioOutput(deviceId, oldDeviceId) {
+    selectedAudioOutput(deviceId) {
       localStorage.setItem("audioOutput", deviceId);
 
       const device = this.audioOutputs.find(
         (device) => device.deviceId === deviceId
       );
-      const oldDevice = this.audioOutputs.find(
-        (device) => device.deviceId === oldDeviceId
-      );
 
-      console.log("output device: ", device, oldDevice);
-      // TODO - make output changeable
+      this.$store.dispatch("peer/setAudioOutput", { device });
     },
   },
 };

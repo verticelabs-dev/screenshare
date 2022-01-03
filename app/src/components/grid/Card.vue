@@ -67,10 +67,10 @@
 <script>
 // import { mapState } from "vuex";
 // import { getAudioLevels } from "../../services/SoundMeter";
-// import { getAudioInput } from "../../services/StreamCaptureService";
+import { attachSinkId } from "../../services/StreamCaptureService";
 
 export default {
-  props: ["id", "peer", "hideExpand", "activeScreenId", "deafen"],
+  props: ["id", "peer", "hideExpand", "activeScreenId", "deafen", "outputDeviceID"],
   components: {},
   watch: {
     peer: {
@@ -84,6 +84,10 @@ export default {
     },
     deafen(val) {
       this.muted = val;
+    },
+    outputDeviceID(deviceId) {
+      const videoEl = this.$refs[this.peer._peerID];
+      attachSinkId(videoEl, deviceId);
     },
   },
   computed: {

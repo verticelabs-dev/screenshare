@@ -15,6 +15,7 @@
         :id="peer._peerID"
         :peer="peer"
         :deafen="deafen"
+        :outputDeviceID="outputDeviceID"
       />
     </div>
   </div>
@@ -29,7 +30,7 @@ export default {
     Card,
   },
   computed: {
-    ...mapState("peer", ["peers", "deafen", "activeScreenId"]),
+    ...mapState("peer", ["peers", "deafen", "activeScreenId", "outputDeviceID"]),
   },
   data() {
     return {};
