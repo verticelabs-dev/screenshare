@@ -9,6 +9,7 @@ const mutations = {
   SET_USER: "SET_USER",
   SET_FRIENDS: "SET_FRIENDS",
   SET_OUTPUT_DEVICE: "SET_OUTPUT_DEVICE",
+  SET_ACTIVE_SCREEN_ID: "SET_ACTIVE_SCREEN_ID",
 };
 
 export { mutations };

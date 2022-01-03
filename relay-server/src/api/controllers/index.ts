@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { auth } from '../middleware'
+import { auth } from '@api/middleware'
 
 import sample from './sample';
 import authRouter from './auth';

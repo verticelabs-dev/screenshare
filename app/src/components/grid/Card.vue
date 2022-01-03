@@ -1,45 +1,65 @@
 <template>
   <div
+    v-show="!activeScreenId || peer._peerID === activeScreenId"
     :class="{
       card: true,
       'screen-grid-item-lg': peer._peerID === activeScreenId,
     }"
   >
-    <div class="card-header">
-      <div class="text-white mb-1 mt-1 ml-4">
+    <div class="card-header pl-2 pr-2">
+      <span class="card-header-title">
         {{ getStreamName }}
-      </div>
+      </span>
 
       <!-- Top Right Control Buttons -->
-      <div>
-        <!-- Close Button -->
-        <div
-          v-if="!hideClose"
-          @click="$emit('closed', id)"
-          class="red-circle-btn"
-        ></div>
-
+      <div class="card-header-buttons">
         <!-- Expand Button -->
-        <div
+        <span
           v-if="!hideExpand"
           @click="$emit('expanded', id)"
           class="green-circle-btn"
-        ></div>
+        ></span>
 
         <!-- Mute Button -->
-        <div @click="toggleMute" class="circle-btn">
+        <span
+          v-if="peer._peerID !== 'You'"
+          @click="toggleMute"
+          class="circle-btn"
+        >
           <font-awesome-icon icon="volume-mute" v-if="muted" />
           <font-awesome-icon icon="volume-up" v-else />
-        </div>
+        </span>
       </div>
     </div>
 
     <div class="card-video">
+      <!--- Video Input Stream -->
       <video
-        :ref="peer._peerID"
         :id="peer._peerID"
+        :ref="peer._peerID"
+        :muted="muted ? 'muted' : ''"
+        :style="{display: peer._peerID === 'You' ? 'none' : ''}"
+      ></video>
+
+      <!--- Video Output Stream -->
+      <video
+        v-if="peer._peerID === 'You'"
+        :id="peer._peerID + '-output'"
+        :ref="peer._peerID + '-output'"
         :muted="muted ? 'muted' : ''"
       ></video>
+
+      <!--- Video Effect Stream -->
+      <canvas
+        v-if="peer._peerID === 'You'"
+        :id="peer._peerID + '-canvas'"
+        :ref="peer._peerID + '-canvas'"
+        width="1920"
+        height="1080"
+        :style="{display: 'none'}"
+      ></canvas>
+      <!-- If we don't set the width and height on the canvas it will become blurry -->
+      <!-- Consider using 1080 as max resolution and make it a setting to go to "HD Mode" -->
     </div>
   </div>
 </template>
@@ -50,15 +70,7 @@
 import { attachSinkId } from "../../services/StreamCaptureService";
 
 export default {
-  props: [
-    "id",
-    "peer",
-    "hideClose",
-    "hideExpand",
-    "activeScreenId",
-    "deafen",
-    "outputDeviceID",
-  ],
+  props: ["id", "peer", "hideExpand", "activeScreenId", "deafen", "outputDeviceID"],
   components: {},
   watch: {
     peer: {
@@ -88,17 +100,11 @@ export default {
 
     if (!self.peer || self.peer._peerID === "You") return;
 
+    this.muted = self.deafen;
+
     self.peer.on("stream", (stream) => {
       self.renderStream(stream);
     });
-
-    // const stream = self.peer.streams[0];
-    // self.peer.on("track", (track) => {
-    // console.log('HIT', track)
-    // if (track.kind === "video" && stream) {
-    //   self.renderStream(stream);
-    // }
-    // });
   },
   data() {
     return {
@@ -111,6 +117,7 @@ export default {
   methods: {
     renderStream(stream) {
       const video = document.getElementById(this.peer._peerID);
+
       if (video && stream) {
         video.srcObject = stream;
         video.play();

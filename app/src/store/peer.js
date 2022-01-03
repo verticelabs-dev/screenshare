@@ -12,6 +12,7 @@ export default {
     videoStream: undefined,
     deafen: false,
     outputDeviceID: undefined,
+    activeScreenId: false,
   },
   getters: {
     userInMeeting(state) {
@@ -39,6 +40,9 @@ export default {
     },
     [mutations.SET_OUTPUT_DEVICE](state, deviceId) {
       state.outputDeviceID = deviceId;
+    },
+    [mutations.SET_ACTIVE_SCREEN_ID](state, activeScreenId) {
+      state.activeScreenId = activeScreenId;
     },
   },
   actions: {

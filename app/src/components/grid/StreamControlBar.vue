@@ -27,8 +27,13 @@
       <font-awesome-icon icon="video-slash" v-if="!video" />
     </div>
 
+    <div @click="toggleVideoEffect" class="circle-btn has-tooltip">
+      <span class="tooltip bottom">Video Effects</span>
+      <font-awesome-icon icon="magic" />
+    </div>
+
     <!-- Screen Share Button -->
-    <div @click="toggleScreenShare" class="circle-btn has-tooltip">
+    <div @click="toggleScreenShare" class="circle-btn has-tooltip ml-4">
       <div v-if="screenShare" class="tooltip bottom">Sharing Screen</div>
       <font-awesome-icon icon="tv" v-if="screenShare" class="green" />
 
@@ -49,7 +54,13 @@
 
 <script>
 import { mapState } from "vuex";
-import { getCaptureScreen } from "../../services/StreamCaptureService";
+import {
+  getCaptureScreen,
+  getWebcam,
+  displayVideoStream,
+  stopVideoStream,
+} from "../../services/StreamCaptureService";
+import { blurVideo } from "../../services/VideoBackground";
 
 export default {
   components: {},
@@ -64,6 +75,9 @@ export default {
   },
   computed: {
     ...mapState("peer", ["audioStream", "videoStream"]),
+    stream() {
+      return this.videoStream || this.audioStream;
+    },
   },
   methods: {
     toggleDeafen() {
@@ -74,16 +88,59 @@ export default {
       });
     },
     toggleMicMute() {
-      const stream = this.videoStream || this.audioStream;
-      const audioTrack = stream.getAudioTracks();
+      const audioTrack = this.stream.getAudioTracks();
 
       if (audioTrack.length > 0) {
         this.micMute = !this.micMute;
         audioTrack[0].enabled = !this.micMute;
       }
     },
-    toggleVideo() {
-      this.video = !this.video;
+    async toggleVideo() {
+      if (this.video === true) {
+        this.video = false;
+        stopVideoStream(this.stream);
+
+        return false;
+      }
+
+      try {
+        const webcamStream = await getWebcam({
+          video: true,
+        });
+
+        // original video input before effects are added
+        displayVideoStream("You", webcamStream);
+
+        // video display with effects
+        displayVideoStream("You-output", webcamStream);
+
+        this.$store.dispatch("peer/setVideoStream", {
+          videoStream: webcamStream,
+        });
+
+        this.video = true;
+      } catch (error) {
+        this.video = false;
+        console.error(error);
+      }
+    },
+    toggleVideoEffect(){
+      if (!this.video) {
+        return false;
+      }
+
+      const videoElement = document.getElementById("You");
+      const canvasElement = document.getElementById("You-canvas");
+
+      blurVideo(videoElement, canvasElement);
+
+      // We can cap the frame rate by passing in an integer value
+      const canvasStream = canvasElement.captureStream()
+
+      displayVideoStream("You-output", canvasStream);
+      this.$store.dispatch("peer/setVideoStream", {
+        videoStream: canvasStream,
+      });
     },
     toggleRecord() {
       this.record = !this.record;
@@ -95,12 +152,7 @@ export default {
           audio: true,
         });
 
-        const video = document.getElementById("You");
-        if (video && captureStream) {
-          video.srcObject = captureStream;
-          video.play();
-        }
-
+        displayVideoStream("You", captureStream);
         this.$store.dispatch("peer/setVideoStream", {
           videoStream: captureStream,
         });
@@ -108,7 +160,7 @@ export default {
         this.screenShare = true;
       } catch (error) {
         this.screenShare = false;
-        console.error(error);
+        console.log(error);
       }
     },
   },

@@ -2,34 +2,50 @@
   @apply justify-self-auto flex content-start flex-col shadow rounded-lg border-2 overflow-hidden;
 
   .card-header {
-    background-color: $sidebarSecondaryColor;
     @apply flex flex-row justify-between items-baseline;
+    position: absolute;
+    background-color: $sidebarSecondaryColor;
+    height: 24px;
+    width: 100%;
+    top: 0px;
+
+    .card-header-title {
+      @apply text-white;
+    }
+
+    .card-header-buttons{
+      position: absolute;
+      right: 8px;
+      top: 4px;
+
+      .red-circle-btn {
+        @apply float-right rounded-full h-4 w-4 bg-red-500 shadow-md cursor-pointer;
+      }
+
+      .green-circle-btn {
+        @apply float-right rounded-full h-4 w-4 bg-green-500 shadow-md cursor-pointer;
+      }
+
+      .circle-btn {
+        @apply float-right rounded-full h-4 w-4 mr-2 shadow-md cursor-pointer;
+
+        svg {
+          width: 1em;
+          position: absolute;
+          left: auto;
+          right: auto;
+        }
+      }
+    }
   }
 
   .card-video {
-    @apply flex items-center justify-center bg-gray-900;
+    position: absolute;
+    background-color: $secondaryBlack;
+    // @apply flex items-center justify-center bg-gray-900;
     width: 100%;
-    height: 100%;
-
-    background-color: #414155;
+    // height: 100%;
+    height: calc(100% - 24px);
   }
 
-  .red-circle-btn {
-    @apply float-right rounded-full h-4 w-4 mr-2 bg-red-500 shadow-md cursor-pointer;
-  }
-
-  .green-circle-btn {
-    @apply float-right rounded-full h-4 w-4 mr-2 bg-green-500 shadow-md cursor-pointer;
-  }
-
-  .circle-btn {
-    @apply float-right rounded-full h-4 w-4 mr-2 shadow-md cursor-pointer;
-
-    svg {
-      width: 0.75em;
-      position: absolute;
-      left: auto;
-      right: auto;
-    }
-  }
 }

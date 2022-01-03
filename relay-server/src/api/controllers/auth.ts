@@ -4,7 +4,7 @@ import config from 'src/config';
 const route = Router();
 
 // Services
-import { authService } from '../services';
+import { authService } from '@api/services';
 
 export default (app: Router) => {
   app.use('/', route);
@@ -30,14 +30,14 @@ export default (app: Router) => {
       const userJWT = authService.generateJwt(user)
       // TODO - insert the session in redis so that we have tracking on JWT's created by us
 
-      // (12*60*60) = 43200 - 12 hours (NOTE: JWT's are set to expire in 12 hours)
-      res.cookie(config.auth.cookie, userJWT, { maxAge: 43200 });
+      // (12*60*60*1000) = 43200 = 12 hours (NOTE: JWT's are set to expire in 12 hours)
+      res.cookie(config.auth.cookie, userJWT, { maxAge: 12*60*60*1000 });
 
       return res.status(200).send(user);
     } catch (error) {
       // If they don't have a token assume they are a guest
       const token = authService.generateJwt({});
-      res.cookie(config.auth.cookie, token, { maxAge: 900000 });
+      res.cookie(config.auth.cookie, token, { maxAge: 12*60*60*1000 });
 
       return res.status(200).send({});
     }
