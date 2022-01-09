@@ -37,9 +37,6 @@ export default {
 
       this.$store.dispatch("peer/setRoomCode", { roomCode });
 
-      // triggers when initially joining a room
-      socket.emit("room:join", { roomCode: roomCode });
-
       // TODO: Add some error handling in case we can't connect
       this.$router.push("/");
     },

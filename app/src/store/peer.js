@@ -100,6 +100,9 @@ export default {
       }
     },
     setRoomCode(context, params) {
+      // triggers when initially joining a room
+      socket.emit("room:join", params);
+
       context.commit(mutations.SET_ROOM_CODE, params);
     },
     addPeer(context, params) {
