@@ -35,11 +35,18 @@ import CreateRoomControl from "../components/CreateRoomControl";
 
 export default {
   beforeRouteEnter(_to, _from, next) {
+    // console.log("ROOM ID: ", _to.params.roomCode);
     next((vm) => {
       const roomCode = vm.$store.state.peer.roomCode;
       const user = vm.$store.state.user.user;
 
-      if (!roomCode && !user.id) {
+      if (_to.params.roomCode) {
+        vm.$store.dispatch("peer/setRoomCode", {
+          roomCode: _to.params.roomCode,
+        });
+      }
+
+      if (!roomCode && !user.id && !_to.params.roomCode) {
         return next("/join");
       }
 

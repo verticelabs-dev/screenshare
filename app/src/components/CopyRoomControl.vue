@@ -9,7 +9,7 @@
     >
       <span class="text-center ml-3 mr-3">Code: {{ roomCode }}</span>
       <!-- Hidden input for copying text from -->
-      <input type="hidden" id="roomCode" :value="roomCode" />
+      <input type="hidden" id="roomCode" :value="copyLink" />
     </div>
     <button
       class="btn btn-primary copy-btn ml-2"
@@ -30,6 +30,9 @@ export default {
     copyButtonText() {
       return this.showGreenBorder ? "Copied!" : "Copy";
     },
+    copyLink() {
+      return `${window.location.origin}/join/${this.roomCode}`;
+    },
   },
   data() {
     return {
@@ -45,20 +48,24 @@ export default {
       }, 1000);
     },
     copyRoomCode() {
-      this.toggleGreenBorder();
-
-      let copyRoomCode = document.querySelector("#roomCode");
-      copyRoomCode.setAttribute("type", "text");
-      copyRoomCode.select();
-
       try {
-        document.execCommand("copy");
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(this.copyLink);
+        } else {
+          const copyRoomCode = document.querySelector("#roomCode");
+          copyRoomCode.setAttribute("type", "text");
+          copyRoomCode.select();
+
+          document.execCommand("copy");
+
+          copyRoomCode.setAttribute("type", "hidden");
+          window.getSelection().removeAllRanges();
+        }
       } catch (err) {
         console.error("Failed to copy room code");
       }
 
-      copyRoomCode.setAttribute("type", "hidden");
-      window.getSelection().removeAllRanges();
+      this.toggleGreenBorder();
     },
   },
 };
