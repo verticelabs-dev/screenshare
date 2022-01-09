@@ -32,9 +32,6 @@ export default {
   },
   methods: {
     joinRoom(roomCode) {
-      const self = this;
-      const socket = self.$socket;
-
       this.$store.dispatch("peer/setRoomCode", { roomCode });
 
       // TODO: Add some error handling in case we can't connect
