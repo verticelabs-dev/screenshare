@@ -96,11 +96,17 @@ export default {
       }
     },
     async toggleVideo() {
-      if (this.video === true) {
+      if (this.video) {
         this.video = false;
         stopVideoStream(this.stream);
 
         return false;
+      }
+
+      // since you can only send one stream at a time you must stop one before starting the other
+      if (this.screenShare) {
+        this.screenShare = false;
+        stopVideoStream(this.stream);
       }
 
       try {
@@ -126,6 +132,7 @@ export default {
     },
     toggleVideoEffect(){
       if (!this.video) {
+        console.log("No video stream to apply effects to");
         return false;
       }
 
@@ -146,13 +153,21 @@ export default {
       this.record = !this.record;
     },
     async toggleScreenShare() {
+      // since you can only send one stream at a time you must stop one before starting the other
+      if (this.video) {
+        this.video = false;
+        stopVideoStream(this.stream);
+
+        return false;
+      }
+
       try {
         const captureStream = await getCaptureScreen({
           video: true,
           audio: true,
         });
 
-        displayVideoStream("You", captureStream);
+        displayVideoStream("You-output", captureStream);
         this.$store.dispatch("peer/setVideoStream", {
           videoStream: captureStream,
         });
