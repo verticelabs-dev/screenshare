@@ -24,6 +24,15 @@ const routes = [
       sidebar: false,
     },
   },
+  {
+    path: "/join/:roomCode",
+    name: "JoinMeetinByRoomId",
+    component: MeetingRoom,
+    meta: {
+      sideapp: true,
+      sidebar: true,
+    },
+  },
 ];
 
 const router = new VueRouter({
