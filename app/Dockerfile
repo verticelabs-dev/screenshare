@@ -1,4 +1,4 @@
-FROM FROM node:16-buster-slim as build-stage
+FROM node:16-buster-slim as build-stage
 WORKDIR /app
 
 COPY /app/package.json ./
