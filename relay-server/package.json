@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon",
     "dev:inspect": "nodemon --inspect src/app.ts",
-    "lint:ts": "tsc --noEmit --watch"
+    "lint:ts": "tsc --noEmit --watch",
+    "build": "tsc"
   },
   "license": "ISC",
   "devDependencies": {
