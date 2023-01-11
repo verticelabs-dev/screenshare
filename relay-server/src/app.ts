@@ -1,4 +1,3 @@
-import 'reflect-metadata'; // We need this in order to use @Decorators
 import express from 'express';
 import config from './config';
 import { Server } from 'http'

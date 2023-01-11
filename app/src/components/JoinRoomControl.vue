@@ -35,7 +35,7 @@ export default {
       this.$store.dispatch("peer/setRoomCode", { roomCode });
 
       // TODO: Add some error handling in case we can't connect
-      this.$router.push("/");
+      this.$router.push("/room");
     },
   },
 };

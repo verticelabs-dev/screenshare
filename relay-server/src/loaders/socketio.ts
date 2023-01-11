@@ -1,6 +1,6 @@
 import { Server as socketServer } from "socket.io";
 import { Server as httpServerType } from 'http';
-import websocketControllers from '@api/websocketControllers';
+import websocketControllers from '@/websocketControllers';
 
 export default ({ httpServer }: { httpServer: httpServerType }) => {
 

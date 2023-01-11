@@ -2,9 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import cookieParser from 'cookie-parser'
-import controllers from '@api/controllers';
 import helmet from 'helmet';
-import config from '@/config';
 
 export default ({ app }: { app: express.Application }) => {
   /**
@@ -36,9 +34,6 @@ export default ({ app }: { app: express.Application }) => {
 
   // Middleware that transforms the cookies into json
   app.use(cookieParser());
-
-  // Load API routes
-  app.use(config.api.prefix, controllers());
 
   /// catch 404 and forward to error handler
   app.use((req, res, next) => {

@@ -24,9 +24,6 @@
     "esModuleInterop": true,
     "paths": {
       "@/*": ["src/*"],
-      "@api/*": ["src/api/*"],
-      "@loaders/*": ["src/loaders/*"],
-      "@entities/*": ["src/models/entities/*"],
     }
   },
   "include": [

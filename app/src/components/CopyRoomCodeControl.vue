@@ -31,7 +31,7 @@ export default {
       return this.showGreenBorder ? "Copied!" : "Copy";
     },
     copyLink() {
-      return `${window.location.origin}/join/${this.roomCode}`;
+      return `${window.location.origin}/${this.roomCode}`;
     },
   },
   data() {

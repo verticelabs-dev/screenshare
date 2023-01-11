@@ -38,7 +38,7 @@
         :id="peer._peerID"
         :ref="peer._peerID"
         :muted="muted ? 'muted' : ''"
-        :style="{display: peer._peerID === 'You' ? 'none' : ''}"
+        :style="{ display: peer._peerID === 'You' ? 'none' : '' }"
       ></video>
 
       <!--- Video Output Stream -->
@@ -56,7 +56,7 @@
         :ref="peer._peerID + '-canvas'"
         width="1920"
         height="1080"
-        :style="{display: 'none'}"
+        :style="{ display: 'none' }"
       ></canvas>
       <!-- If we don't set the width and height on the canvas it will become blurry -->
       <!-- Consider using 1080 as max resolution and make it a setting to go to "HD Mode" -->
@@ -70,7 +70,14 @@
 import { attachSinkId } from "../../services/StreamCaptureService";
 
 export default {
-  props: ["id", "peer", "hideExpand", "activeScreenId", "deafen", "outputDeviceID"],
+  props: [
+    "id",
+    "peer",
+    "hideExpand",
+    "activeScreenId",
+    "deafen",
+    "outputDeviceID",
+  ],
   components: {},
   watch: {
     peer: {

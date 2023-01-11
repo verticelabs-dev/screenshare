@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-if="roomCode">
+    <div>
       <div class="flex flex-row items-center ml-4">
-        <CopyRoomControl />
+        <CopyRoomCodeControl />
         <StreamControlBar class="ml-6" />
       </div>
 
@@ -11,16 +11,6 @@
         <ScreenGrid />
       </div>
     </div>
-    <div
-      v-else
-      class="flex flex-col justify-center items-center content-center mt-10"
-    >
-      <div class="text-lg mb-6">Create or Join a room</div>
-
-      <JoinRoomControl />
-      <div class="text-2xl my-6">OR</div>
-      <CreateRoomControl />
-    </div>
   </div>
 </template>
 
@@ -28,26 +18,26 @@
 import { mapGetters, mapState } from "vuex";
 
 import ScreenGrid from "../components/grid/ScreenGrid";
-import CopyRoomControl from "../components/CopyRoomControl";
+import CopyRoomCodeControl from "../components/CopyRoomCodeControl";
 import StreamControlBar from "../components/grid/StreamControlBar";
-import JoinRoomControl from "../components/JoinRoomControl";
-import CreateRoomControl from "../components/CreateRoomControl";
 
 export default {
   beforeRouteEnter(_to, _from, next) {
     // console.log("ROOM ID: ", _to.params.roomCode);
     next((vm) => {
       const roomCode = vm.$store.state.peer.roomCode;
-      const user = vm.$store.state.user.user;
 
       if (_to.params.roomCode) {
+        // todo verify roomcode exists
         vm.$store.dispatch("peer/setRoomCode", {
           roomCode: _to.params.roomCode,
         });
+
+        history.pushState({}, null, "/room");
       }
 
-      if (!roomCode && !user.id && !_to.params.roomCode) {
-        return next("/join");
+      if (!roomCode && !_to.params.roomCode) {
+        return next("/");
       }
 
       return next();
@@ -55,10 +45,8 @@ export default {
   },
   components: {
     ScreenGrid,
-    CopyRoomControl,
+    CopyRoomCodeControl,
     StreamControlBar,
-    JoinRoomControl,
-    CreateRoomControl,
   },
   computed: {
     ...mapState("peer", ["peers", "roomCode"]),

@@ -42,13 +42,12 @@
     </div>
 
     <!-- Record Button -->
-    <div @click="toggleRecord" class="circle-btn has-tooltip">
-      <span v-if="record" class="tooltip bottom">Recording</span>
-      <font-awesome-icon icon="circle" v-if="record" class="red" />
-
-      <span v-if="!record" class="tooltip bottom">Record</span>
-      <font-awesome-icon icon="circle" v-if="!record" />
+    <div @click="toggleSettings" class="circle-btn has-tooltip">
+      <span class="tooltip bottom">Settings</span>
+      <font-awesome-icon icon="cogs" />
     </div>
+
+    <SettingsDialog v-if="settings" v-on:close="settings = false" />
   </div>
 </template>
 
@@ -61,16 +60,19 @@ import {
   stopVideoStream,
 } from "../../services/StreamCaptureService";
 import { blurVideo } from "../../services/VideoBackground";
+import SettingsDialog from "../SettingsDialog";
 
 export default {
-  components: {},
+  components: {
+    SettingsDialog,
+  },
   data() {
     return {
       deafen: false,
       micMute: false,
       video: false,
       screenShare: false,
-      record: false,
+      settings: false,
     };
   },
   computed: {
@@ -130,7 +132,8 @@ export default {
         console.error(error);
       }
     },
-    toggleVideoEffect(){
+
+    toggleVideoEffect() {
       if (!this.video) {
         console.log("No video stream to apply effects to");
         return false;
@@ -142,15 +145,15 @@ export default {
       blurVideo(videoElement, canvasElement);
 
       // We can cap the frame rate by passing in an integer value
-      const canvasStream = canvasElement.captureStream()
+      const canvasStream = canvasElement.captureStream();
 
       displayVideoStream("You-output", canvasStream);
       this.$store.dispatch("peer/setVideoStream", {
         videoStream: canvasStream,
       });
     },
-    toggleRecord() {
-      this.record = !this.record;
+    toggleSettings() {
+      this.settings = !this.settings;
     },
     async toggleScreenShare() {
       // since you can only send one stream at a time you must stop one before starting the other
