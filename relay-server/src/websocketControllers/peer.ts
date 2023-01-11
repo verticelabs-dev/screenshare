@@ -1,31 +1,42 @@
 import { nanoid } from 'nanoid';
-import { ExtSocket } from "@/types/socket";
+import { Socket } from "socket.io";
 
-const cache = {}
+type Cache = {
+ [key: string]: Room
+}
+
+type Room = {
+  ownerSocketID: string,
+  connectedUsers: string[],
+  connectingUsers: string[]
+}
+
+const cache:Cache = {};
 const basicErrorMessage = "you have not been accepted to the room";
-// { [roomCode]: { ownerSocketID: "", connectedUsers: []}}
 
-export default (socket: ExtSocket) => {
+export default (socket: Socket) => {
   // comes from room owner
   socket.on("room:create", (data: any) => {
-    console.log(socket.auth)
-    const responseData = { roomCode: nanoid() }
-    cache[responseData.roomCode] = { ownerSocketID: socket.id, connectedUsers: [socket.id], connectingUsers: [] }
+    const roomCode = nanoid() ;
+    cache[roomCode] = { ownerSocketID: socket.id, connectedUsers: [socket.id], connectingUsers: [] }
 
-    socket.join(responseData.roomCode);
+    socket.join(roomCode);
 
-    socket.emit('room:newID', responseData);
+    socket.emit('room:newID', {roomCode});
   });
 
   // comes from another peer
   socket.on("room:join", function (data: any) {
     const cacheData = cache[data.roomCode]
 
-    if (cacheData) {
-      cacheData.connectingUsers.push(socket.id)
-
-      socket.to(cacheData.ownerSocketID).emit('room:join:request', { id: socket.id })
+    if (!cacheData) {
+      return;
     }
+
+    cacheData.connectingUsers.push(socket.id)
+
+    // Emit the join request to the owner of the room
+    socket.to(cacheData.ownerSocketID).emit('room:join:request', { id: socket.id })
   });
 
   // comes from room owner - sends offer signal
@@ -56,12 +67,6 @@ export default (socket: ExtSocket) => {
       last_name: '',
     }
 
-    if (socket.auth && socket.auth.id) {
-      user.full_name = socket.auth.full_name;
-      user.first_name = socket.auth.first_name;
-      user.last_name = socket.auth.last_name;
-    }
-
     socket.to(connectTrue).emit('room:join:request:answer', { id: socket.id, signal: data.signal, connectedUsers, user })
   })
 
@@ -90,12 +95,6 @@ export default (socket: ExtSocket) => {
       last_name: '',
     }
 
-    if (socket.auth && socket.auth.id) {
-      user.full_name = socket.auth.full_name;
-      user.first_name = socket.auth.first_name;
-      user.last_name = socket.auth.last_name;
-    }
-
     socket.broadcast.to(sendTo).emit('room:signal', { signal: data.signal, id: socket.id, user })
   });
 
@@ -116,33 +115,4 @@ export default (socket: ExtSocket) => {
     socket.to(cacheData.ownerSocketID).emit('room:signal', data.signal)
   });
 
-  // comes from anyone
-  socket.on("room:log:in", function (data: any) {
-    const cacheData = cache[data.roomCode];
-
-    if (!cacheData) {
-      return socket.emit('error', basicErrorMessage)
-    }
-
-    const connectTrue = cacheData.connectedUsers.find(d => d === socket.id);
-
-    if (!connectTrue) {
-      return socket.emit('error', basicErrorMessage)
-    }
-
-    const user = {
-      id: socket.id,
-      full_name: '',
-      first_name: '',
-      last_name: '',
-    }
-
-    if (socket.auth && socket.auth.id) {
-      user.full_name = socket.auth.full_name;
-      user.first_name = socket.auth.first_name;
-      user.last_name = socket.auth.last_name;
-    }
-
-    socket.broadcast.to(data.roomCode).emit('room:logged:in', { signal: data.signal, id: socket.id, user })
-  });
 };

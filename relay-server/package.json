@@ -1,45 +1,33 @@
 {
-  "name": "typescript-express-starter",
+  "name": "relay-server",
   "version": "1.0.0",
-  "description": "Well thought out typescript starter",
   "main": "src/app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon",
     "dev:inspect": "nodemon --inspect src/app.ts",
-    "db:migrate": "node_modules/knex/bin/cli.js migrate:latest",
-    "db:seed": "node_modules/knex/bin/cli.js seed:run"
+    "lint:ts": "tsc --noEmit --watch"
   },
-  "author": "Grey Delamar",
   "license": "ISC",
   "devDependencies": {
-    "@types/express": "^4.17.13",
-    "@types/jsonwebtoken": "^8.5.6",
-    "@types/node": "^14.18.1",
-    "@types/pino": "^6.3.12",
-    "@types/pino-http": "^5.8.1",
-    "@types/redis": "^2.8.32",
-    "nodemon": "^2.0.15",
-    "ts-node": "^9.1.1",
-    "tsconfig-paths": "^3.12.0",
-    "typescript": "^4.5.4"
+    "@types/express": "^4.17.15",
+    "@types/node": "^18.11.18",
+    "nodemon": "^2.0.20",
+    "pino-pretty": "^9.1.1",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.1.2",
+    "typescript": "^4.9.4"
   },
   "dependencies": {
-    "argon2": "^0.27.2",
-    "body-parser": "^1.19.1",
+    "body-parser": "^1.20.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^8.6.0",
-    "express": "^4.17.2",
-    "helmet": "^4.6.0",
-    "jsonwebtoken": "^8.5.1",
-    "knex": "^0.95.14",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^6.0.1",
     "nanoid": "^3.1.30",
-    "pg": "^8.7.1",
-    "pino-http": "^5.8.0",
-    "pino-pretty": "^4.8.0",
-    "redis": "^3.1.2",
-    "reflect-metadata": "^0.1.13",
-    "socket.io": "^4.4.0"
+    "pino": "^8.8.0",
+    "pino-http": "^8.3.1",
+    "socket.io": "^4.5.4"
   }
 }

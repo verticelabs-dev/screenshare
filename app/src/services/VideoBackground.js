@@ -4,7 +4,6 @@
 
 // blur webrtc video
 export function blurVideo(videoInputElement, canvasOutputElement) {
-
   const selfieSegmentation = new window.SelfieSegmentation({
     locateFile: (file) => {
       return `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1/${file}`;

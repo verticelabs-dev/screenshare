@@ -1,4 +1,4 @@
-FROM node:lts-alpine as build-stage
+FROM FROM node:16-buster-slim as build-stage
 WORKDIR /app
 
 COPY /app/package.json ./

@@ -48,15 +48,3 @@ socket.on("room:signal", (signalData) => {
     });
   }
 });
-
-socket.once("room:logged:in", (data) => {
-  const matchingPeer = store.state.peer.peers.find(
-    (d) => d._peerID === data.id
-  );
-
-  if (matchingPeer) {
-    if (data.user) {
-      matchingPeer._user = data.user;
-    }
-  }
-});

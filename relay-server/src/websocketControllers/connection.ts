@@ -1,6 +1,6 @@
-import { ExtSocket } from "@/types/socket";
+import { Socket } from "socket.io";
 
-export default (socket: ExtSocket) => {
+export default (socket: Socket) => {
   console.log("a user connected");
 
   socket.on("disconnect", (reason) => {

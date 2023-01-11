@@ -3,9 +3,16 @@ import pino from 'pino';
 import pinoConnector from 'pino-http';
 import config from '@/config';
 
-export const logger = pino({
-  prettyPrint: process.env.NODE_ENV !== 'production',
-});
+// const loggerOptions = process.env.NODE_ENV === 'production'? {} : {
+//   transport: {
+//     target: 'pino-pretty',
+//     options: {
+//       colorize: true
+//     }
+//   }
+// }
+
+export const logger = pino();
 
 export default ({ app }: { app: express.Application }) => {
   const pinoLogger = pinoConnector({

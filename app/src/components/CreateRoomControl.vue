@@ -24,7 +24,7 @@ export default {
 
       // Get room info
       socket.once("room:newID", () => {
-        this.$router.push("/");
+        this.$router.push("/room");
       });
 
       //- Triggers socket room to start - could pass auth here

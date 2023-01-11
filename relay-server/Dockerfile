@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:16-buster-slim
 
 WORKDIR /relay-server
 
@@ -8,9 +8,6 @@ RUN npm install
 
 COPY ./relay-server .
 COPY ./relay-server/.env.example .env
-
-ADD ./relay-server/start_prod.sh /
-RUN chmod +x /start_prod.sh
 
 EXPOSE 8989
 

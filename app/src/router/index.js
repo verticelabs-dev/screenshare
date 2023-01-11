@@ -9,29 +9,18 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "MeetingRoom",
-    component: MeetingRoom,
-    meta: {
-      sideapp: true,
-      sidebar: true,
-    },
-  },
-  {
-    path: "/join",
     name: "JoinRoom",
     component: JoinRoom,
-    meta: {
-      sidebar: false,
-    },
   },
   {
-    path: "/join/:roomCode",
+    path: "/room",
+    name: "MeetingRoom",
+    component: MeetingRoom,
+  },
+  {
+    path: "/:roomCode",
     name: "JoinMeetinByRoomId",
     component: MeetingRoom,
-    meta: {
-      sideapp: true,
-      sidebar: true,
-    },
   },
 ];
 
