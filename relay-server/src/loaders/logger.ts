@@ -1,7 +1,7 @@
 import express from 'express';
 import pino from 'pino';
 import pinoConnector from 'pino-http';
-import config from '@/config';
+import config from '../config';
 
 // const loggerOptions = process.env.NODE_ENV === 'production'? {} : {
 //   transport: {

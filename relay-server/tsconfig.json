@@ -8,7 +8,6 @@
     ],
     "typeRoots": [
       "./node_modules/@types",
-      "./src/types"
     ],
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
@@ -22,9 +21,6 @@
     "allowJs": true,
     "noEmit": false,
     "esModuleInterop": true,
-    "paths": {
-      "@/*": ["src/*"],
-    }
   },
   "include": [
     "src/**/*"
