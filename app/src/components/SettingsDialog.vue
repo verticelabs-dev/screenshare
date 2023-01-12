@@ -58,8 +58,15 @@ export default {
       this.audioOutputs = audiooutput;
       this.videoinputs = videoinput;
 
-      this.selectedAudioInput = localStorage.getItem("audioInput");
-      this.selectedAudioOutput = localStorage.getItem("audioOutput");
+      const localSelectedAudioInput = localStorage.getItem("audioInput");
+      if (localSelectedAudioInput) {
+        this.selectedAudioInput = localSelectedAudioInput;
+      }
+
+      const localSelectedAudioOutput = localStorage.getItem("audioOutput");
+      if (localSelectedAudioOutput) {
+        this.selectedAudioOutput = localSelectedAudioOutput;
+      }
     });
   },
   data() {
