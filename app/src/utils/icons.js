@@ -1,24 +1,25 @@
-import Vue from "vue";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faVolumeMute,
-  faVolumeUp,
+  faCalendar,
+  faCheckCircle,
+  faCircle,
+  faCogs,
+  faHome,
+  faLink,
   faMagic,
   faMicrophoneAlt,
   faMicrophoneAltSlash,
+  faQuestionCircle,
+  faTv,
+  faUserCircle,
+  faUserFriends,
   faVideo,
   faVideoSlash,
-  faTv,
-  faCircle,
-  faHome,
-  faCalendar,
-  faUserFriends,
-  faCogs,
-  faQuestionCircle,
-  faCheckCircle,
-  faUserCircle,
-} from "@fortawesome/free-solid-svg-icons";
+  faVolumeMute,
+  faVolumeUp,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import Vue from 'vue';
 
 library.add([
   faVolumeMute,
@@ -37,6 +38,7 @@ library.add([
   faQuestionCircle,
   faCheckCircle,
   faUserCircle,
+  faLink
 ]);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

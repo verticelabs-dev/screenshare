@@ -1,22 +1,7 @@
 <template>
   <div class="copy-room-container flex flex-row justify-center">
-    <div
-      class="room-code-box flex flex-row align-middle items-center"
-      :class="{
-        'border-gray-400': !showGreenBorder,
-        'border-green-400': showGreenBorder,
-      }"
-    >
-      <span class="text-center ml-3 mr-3">Code: {{ roomCode }}</span>
-      <!-- Hidden input for copying text from -->
-      <input type="hidden" id="roomCode" :value="copyLink" />
-    </div>
-    <button
-      class="btn btn-primary copy-btn ml-2"
-      @click="copyRoomCode"
-      :disabled="!roomCode"
-    >
-      {{ copyButtonText }}
+    <button class="btn btn-primary copy-btn ml-2 text-md w-40" @click="copyRoomCode" :disabled="!roomCode">
+      <font-awesome-icon class="mr-1" icon="link" /> {{ copyButtonText }}
     </button>
   </div>
 </template>
@@ -28,7 +13,7 @@ export default {
   computed: {
     ...mapState("peer", ["roomCode", "peers"]),
     copyButtonText() {
-      return this.showGreenBorder ? "Copied!" : "Copy";
+      return this.showGreenBorder ? "Copied Link!" : "Copy Room Link";
     },
     copyLink() {
       return `${window.location.origin}/${this.roomCode}`;
