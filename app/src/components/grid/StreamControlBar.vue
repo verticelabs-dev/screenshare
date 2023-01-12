@@ -29,7 +29,7 @@
 
     <div @click="toggleVideoEffect" class="circle-btn has-tooltip">
       <span class="tooltip bottom">Video Effects</span>
-      <font-awesome-icon icon="magic" />
+      <font-awesome-icon icon="magic" :class="{ green: videoEffect }" />
     </div>
 
     <!-- Screen Share Button -->
@@ -73,6 +73,7 @@ export default {
       video: false,
       screenShare: false,
       settings: false,
+      videoEffect: false,
     };
   },
   computed: {
@@ -83,6 +84,10 @@ export default {
   },
   methods: {
     toggleDeafen() {
+      if (!this.stream) {
+        return;
+      }
+
       this.deafen = !this.deafen;
 
       this.$store.dispatch("peer/deafenPeers", {
@@ -90,12 +95,18 @@ export default {
       });
     },
     toggleMicMute() {
-      const audioTrack = this.stream.getAudioTracks();
-
-      if (audioTrack.length > 0) {
-        this.micMute = !this.micMute;
-        audioTrack[0].enabled = !this.micMute;
+      if (!this.stream) {
+        return;
       }
+
+      const audioTrack = this.stream.getAudioTracks();
+      if (audioTrack.length === 0) {
+        console.error("Did not find an audio track");
+        return;
+      }
+
+      this.micMute = !this.micMute;
+      audioTrack[0].enabled = !this.micMute;
     },
     async toggleVideo() {
       if (this.video) {
@@ -122,20 +133,31 @@ export default {
         // video display with effects
         displayVideoStream("You-output", webcamStream);
 
+        this.video = true;
+
+        if (this.videoEffect) {
+          this.toggleVideoEffect(undefined, true);
+        }
+
         this.$store.dispatch("peer/setVideoStream", {
           videoStream: webcamStream,
         });
-
-        this.video = true;
       } catch (error) {
         this.video = false;
         console.error(error);
       }
     },
 
-    toggleVideoEffect() {
+    toggleVideoEffect(event, force = false) {
+      if (this.videoEffect && !force) {
+        // todo handle turning off
+        this.videoEffect = false;
+        return;
+      }
+      this.videoEffect = true;
+
+      // Video isn't active yet so we will handle the blur when it becomes active
       if (!this.video) {
-        console.log("No video stream to apply effects to");
         return false;
       }
 
