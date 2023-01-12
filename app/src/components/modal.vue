@@ -3,9 +3,9 @@
     <div class="modal-mask" v-on:click="$emit('close')">
       <div class="modal-wrapper">
         <div :class="`modal-container ${getModalSizeClass}`" v-on:click.stop>
-          <button type="button" class="close-btn" @click="$emit('close')">
+          <!-- <button type="button" class="close-btn" @click="$emit('close')">
             X
-          </button>
+          </button> -->
 
           <header class="modal-header">
             <slot name="header"> This is the default title! </slot>
