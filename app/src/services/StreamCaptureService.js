@@ -42,12 +42,22 @@ export async function getAudioInput(deviceId, exact) {
 }
 
 export function stopVideoStream(stream) {
-  if (stream)
+  if (stream) {
     stream.getTracks().forEach((track) => {
       if (track.readyState == "live" && track.kind === "video") {
         track.stop();
       }
     });
+  }
+
+  const videoElement = document.getElementById("You");
+  if (videoElement && videoElement.srcObject) {
+    videoElement.srcObject.getTracks().forEach((track) => {
+      if (track.readyState == "live" && track.kind === "video") {
+        track.stop();
+      }
+    });
+  }
 }
 
 export function checkVideoTrack(stream) {
