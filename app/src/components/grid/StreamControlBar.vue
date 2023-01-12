@@ -27,6 +27,7 @@
       <font-awesome-icon icon="video-slash" v-if="!video" />
     </div>
 
+    <!-- Video Effects Button -->
     <div @click="toggleVideoEffect" class="circle-btn has-tooltip">
       <span class="tooltip bottom">Video Effects</span>
       <font-awesome-icon icon="magic" :class="{ green: videoEffect }" />
@@ -116,16 +117,16 @@ export default {
         return false;
       }
 
-      // since you can only send one stream at a time you must stop one before starting the other
-      if (this.screenShare) {
-        this.screenShare = false;
-        stopVideoStream(this.stream);
-      }
-
       try {
         const webcamStream = await getWebcam({
           video: true,
         });
+
+        // since you can only send one stream at a time you must stop one before starting the other
+        if (this.screenShare) {
+          this.screenShare = false;
+          stopVideoStream(this.stream);
+        }
 
         // original video input before effects are added
         displayVideoStream("You", webcamStream);
@@ -135,23 +136,35 @@ export default {
 
         this.video = true;
 
-        if (this.videoEffect) {
-          this.toggleVideoEffect(undefined, true);
-        }
-
         this.$store.dispatch("peer/setVideoStream", {
           videoStream: webcamStream,
         });
+
+        if (this.videoEffect) {
+          await this.toggleVideoEffect(undefined, true);
+        }
       } catch (error) {
         this.video = false;
         console.error(error);
       }
     },
 
-    toggleVideoEffect(event, force = false) {
+    async toggleVideoEffect(event, force = false) {
       if (this.videoEffect && !force) {
         // todo handle turning off
         this.videoEffect = false;
+
+        const webcamStream = await getWebcam({
+          video: true,
+        });
+
+        displayVideoStream("You", webcamStream);
+        displayVideoStream("You-output", webcamStream);
+
+        this.$store.dispatch("peer/setVideoStream", {
+          videoStream: webcamStream,
+        });
+
         return;
       }
       this.videoEffect = true;
@@ -178,24 +191,27 @@ export default {
       this.settings = !this.settings;
     },
     async toggleScreenShare() {
-      // since you can only send one stream at a time you must stop one before starting the other
-      if (this.video) {
-        this.video = false;
-        stopVideoStream(this.stream);
-
-        return false;
-      }
-
       try {
         const captureStream = await getCaptureScreen({
           video: true,
           audio: true,
         });
 
+        // since you can only send one stream at a time you must stop one before starting the other
+        if (this.video) {
+          this.video = false;
+          stopVideoStream(this.stream);
+        }
+
         displayVideoStream("You-output", captureStream);
         this.$store.dispatch("peer/setVideoStream", {
-          videoStream: captureStream,
+          videoStream: this.stream,
         });
+
+        // Listen for screen sharing to stop
+        captureStream.getVideoTracks()[0].onended = () => {
+          stopVideoStream(this.stream);
+        };
 
         this.screenShare = true;
       } catch (error) {

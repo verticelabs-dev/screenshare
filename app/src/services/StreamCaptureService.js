@@ -50,6 +50,7 @@ export function stopVideoStream(stream) {
     });
   }
 
+  // Ensure to stop background video if video effects are in use
   const videoElement = document.getElementById("You");
   if (videoElement && videoElement.srcObject) {
     videoElement.srcObject.getTracks().forEach((track) => {
@@ -57,6 +58,14 @@ export function stopVideoStream(stream) {
         track.stop();
       }
     });
+  }
+
+  // Kill the black box left from the video when you stop the track
+  const videoOutputElement = document.getElementById("You-output");
+  if ("srcObject" in videoOutputElement) {
+    videoOutputElement.srcObject = undefined;
+  } else {
+    videoOutputElement.src = undefined;
   }
 }
 
