@@ -11,6 +11,7 @@ import {
   faMicrophoneAltSlash,
   faQuestionCircle,
   faTv,
+  faUser,
   faUserCircle,
   faUserFriends,
   faVideo,
@@ -38,7 +39,8 @@ library.add([
   faQuestionCircle,
   faCheckCircle,
   faUserCircle,
-  faLink
+  faLink,
+  faUser,
 ]);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

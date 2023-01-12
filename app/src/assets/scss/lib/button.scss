@@ -14,4 +14,10 @@
     @apply bg-blue-600 active:bg-blue-600;
     @apply rounded shadow hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150;
   }
+
+  &.btn-success {
+    @apply text-white;
+    @apply bg-green-600 active:bg-green-600;
+    @apply rounded shadow hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150;
+  }
 }

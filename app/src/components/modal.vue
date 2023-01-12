@@ -16,6 +16,14 @@
               <button class="btn btn-sm btn-primary" @click="$emit('close')">
                 Close
               </button>
+
+              <button
+                v-if="this.confirm"
+                class="btn btn-sm btn-success"
+                @click="$emit('close')"
+              >
+                Confirm
+              </button>
             </slot>
           </footer>
         </div>
@@ -29,6 +37,7 @@ export default {
   components: {},
   props: {
     size: String,
+    confirm: Function,
   },
   computed: {
     getModalSizeClass() {
