@@ -6,8 +6,6 @@
     </template>
     <template v-slot:body>
       <div>
-        <section></section>
-
         <section>
           <v-select
             v-model="selectedAudioInput"
