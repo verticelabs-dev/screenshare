@@ -1,13 +1,11 @@
 <template>
-  <Modal v-on:close="close">
-    <template v-slot:header> Settings </template>
+  <Modal v-on:close="close" size="medium">
+    <template v-slot:header>
+      <h3 class="freinds-list-title">Settings</h3>
+      <hr class="freinds-list-title-line" />
+    </template>
     <template v-slot:body>
       <div>
-        <section>
-          <h3 class="freinds-list-title">Settings</h3>
-          <hr class="freinds-list-title-line" />
-        </section>
-
         <section>
           <v-select
             v-model="selectedAudioInput"
