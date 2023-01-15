@@ -124,7 +124,13 @@ export default {
       peer._user = userInfo.user || {};
 
       if (userInfo.signal) peer.signal(userInfo.signal);
-      if (context.state.videoStream) peer.addStream(context.state.videoStream);
+
+      // If the user already has a video stream started when joining a room
+      // then we need to add the video stream as a track
+      if (context.state.videoStream) {
+        const track = context.state.videoStream.getVideoTracks()[0];
+        peer.addTrack(track, audioStream);
+      }
 
       peer.on("signal", async (data) => {
         if (data.type === "offer" && peer._joinRequest) {

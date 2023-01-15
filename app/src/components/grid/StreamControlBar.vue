@@ -151,19 +151,20 @@ export default {
 
     async toggleVideoEffect(event, force = false) {
       if (this.videoEffect && !force) {
-        // todo handle turning off
         this.videoEffect = false;
 
-        const webcamStream = await getWebcam({
-          video: true,
-        });
+        if (this.video) {
+          const webcamStream = await getWebcam({
+            video: true,
+          });
 
-        displayVideoStream("You", webcamStream);
-        displayVideoStream("You-output", webcamStream);
+          displayVideoStream("You", webcamStream);
+          displayVideoStream("You-output", webcamStream);
 
-        this.$store.dispatch("peer/setVideoStream", {
-          videoStream: webcamStream,
-        });
+          this.$store.dispatch("peer/setVideoStream", {
+            videoStream: webcamStream,
+          });
+        }
 
         return;
       }
