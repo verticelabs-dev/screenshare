@@ -216,6 +216,7 @@ export default {
         captureStream.getVideoTracks()[0].onended = () => {
           this.$store.dispatch("peer/removeVideoStream");
           stopVideoStream(this.videoStream);
+          this.screenShare = false;
         };
 
         this.screenShare = true;
