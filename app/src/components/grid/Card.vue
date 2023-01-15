@@ -111,6 +111,16 @@ export default {
 
     self.peer.on("stream", (stream) => {
       self.renderStream(stream);
+
+      stream.onremovetrack = () => {
+        self.removeVideoStream();
+      };
+    });
+
+    self.peer.on("track", (track, stream) => {
+      if (track.kind === "video") {
+        self.renderStream(stream);
+      }
     });
   },
   data() {
@@ -122,11 +132,25 @@ export default {
     };
   },
   methods: {
+    removeVideoStream() {
+      const video = this.$refs[this.peer._peerID];
+
+      if ("srcObject" in video) {
+        video.srcObject = undefined;
+      } else {
+        video.src = undefined;
+      }
+    },
     renderStream(stream) {
-      const video = document.getElementById(this.peer._peerID);
+      const video = this.$refs[this.peer._peerID];
 
       if (video && stream) {
-        video.srcObject = stream;
+        if ("srcObject" in video) {
+          video.srcObject = stream;
+        } else {
+          video.src = stream;
+        }
+        video.addEventListener("ended", () => console.log("inactive!"));
         video.play();
       } else {
         console.error("Failed to render stream");

@@ -66,6 +66,19 @@ export default {
         });
       }
     },
+    removeVideoStream(context) {
+      const ogVideoStream = context.state.videoStream;
+
+      context.state.peers.forEach((peer) => {
+        if (peer._peerID === "You") return false;
+
+        const track = ogVideoStream.getVideoTracks()[0];
+
+        peer.removeTrack(track, context.state.audioStream);
+
+        context.commit(mutations.SET_VIDEO_STREAM, { videoStream: undefined });
+      });
+    },
     setVideoStream(context, params) {
       const ogVideoStream = context.state.videoStream;
       context.commit(mutations.SET_VIDEO_STREAM, params);

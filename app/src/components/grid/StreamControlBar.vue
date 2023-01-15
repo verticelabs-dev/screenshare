@@ -112,6 +112,7 @@ export default {
     async toggleVideo() {
       if (this.video) {
         this.video = false;
+        this.$store.dispatch("peer/removeVideoStream");
         stopVideoStream(this.videoStream);
 
         return false;
@@ -125,6 +126,7 @@ export default {
         // since you can only send one stream at a time you must stop one before starting the other
         if (this.screenShare) {
           this.screenShare = false;
+          this.$store.dispatch("peer/removeVideoStream");
           stopVideoStream(this.videoStream);
         }
 
@@ -201,16 +203,18 @@ export default {
         // since you can only send one stream at a time you must stop one before starting the other
         if (this.video) {
           this.video = false;
+          this.$store.dispatch("peer/removeVideoStream");
           stopVideoStream(this.videoStream);
         }
 
         displayVideoStream("You-output", captureStream);
         this.$store.dispatch("peer/setVideoStream", {
-          videoStream: this.videoStream,
+          videoStream: captureStream,
         });
 
         // Listen for screen sharing to stop
         captureStream.getVideoTracks()[0].onended = () => {
+          this.$store.dispatch("peer/removeVideoStream");
           stopVideoStream(this.videoStream);
         };
 
