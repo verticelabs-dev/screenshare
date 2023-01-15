@@ -96,11 +96,11 @@ export default {
       });
     },
     toggleMicMute() {
-      if (!this.stream) {
+      if (!this.audioStream) {
         return;
       }
 
-      const audioTrack = this.stream.getAudioTracks();
+      const audioTrack = this.audioStream.getAudioTracks();
       if (audioTrack.length === 0) {
         console.error("Did not find an audio track");
         return;
@@ -112,7 +112,7 @@ export default {
     async toggleVideo() {
       if (this.video) {
         this.video = false;
-        stopVideoStream(this.stream);
+        stopVideoStream(this.videoStream);
 
         return false;
       }
@@ -125,7 +125,7 @@ export default {
         // since you can only send one stream at a time you must stop one before starting the other
         if (this.screenShare) {
           this.screenShare = false;
-          stopVideoStream(this.stream);
+          stopVideoStream(this.videoStream);
         }
 
         // original video input before effects are added
@@ -201,17 +201,17 @@ export default {
         // since you can only send one stream at a time you must stop one before starting the other
         if (this.video) {
           this.video = false;
-          stopVideoStream(this.stream);
+          stopVideoStream(this.videoStream);
         }
 
         displayVideoStream("You-output", captureStream);
         this.$store.dispatch("peer/setVideoStream", {
-          videoStream: this.stream,
+          videoStream: this.videoStream,
         });
 
         // Listen for screen sharing to stop
         captureStream.getVideoTracks()[0].onended = () => {
-          stopVideoStream(this.stream);
+          stopVideoStream(this.videoStream);
         };
 
         this.screenShare = true;
