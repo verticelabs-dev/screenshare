@@ -1,8 +1,8 @@
 <template>
   <Modal v-on:close="close" size="medium">
     <template v-slot:header>
-      <h3 class="freinds-list-title">Settings</h3>
-      <hr class="freinds-list-title-line" />
+      <h3 class="friends-list-title">Settings</h3>
+      <hr class="friends-list-title-line" />
     </template>
     <template v-slot:body>
       <div>

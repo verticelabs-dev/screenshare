@@ -2,7 +2,7 @@
   <div>
     <div>
       <div class="flex flex-row items-center ml-4">
-        <CopyRoomCodeControl />
+        <RoomControlBar />
         <StreamControlBar class="ml-6" />
       </div>
 
@@ -18,7 +18,7 @@
 import { mapGetters, mapState } from "vuex";
 
 import ScreenGrid from "../components/grid/ScreenGrid";
-import CopyRoomCodeControl from "../components/CopyRoomCodeControl";
+import RoomControlBar from "../components/RoomControlBar";
 import StreamControlBar from "../components/grid/StreamControlBar";
 
 export default {
@@ -45,7 +45,7 @@ export default {
   },
   components: {
     ScreenGrid,
-    CopyRoomCodeControl,
+    RoomControlBar,
     StreamControlBar,
   },
   computed: {
@@ -55,4 +55,6 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+
+</style>
